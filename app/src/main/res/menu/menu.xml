@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="HOME" />
+    <item
+        android:id="@+id/item_orderlist"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_menu_book_24"
+        android:title="주문목록" />
+    <item
+        android:id="@+id/item_waiting"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_timer_24"
+        android:title="웨이팅" />
+    <item
+        android:id="@+id/item_mypage"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:title="마이페이지" />
+
+</menu>
