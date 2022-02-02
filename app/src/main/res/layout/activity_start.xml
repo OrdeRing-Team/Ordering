@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context=".StartActivity"
+    android:background="@color/black">
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/buttonShown_MotionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/button_shown_scene"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:paddingTop="16dp">
+
+                    <TextView
+                        android:id="@+id/introduceContentsTitleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매장 식사, 포장, 웨이팅 모두를 하나의 앱에서!"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/signupButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="200dp"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="12dp"
+                        android:text="번호인증하고 회원가입"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/introduceContentsTitleTextView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gatheringThingsBackgroundMotionLayout"
+                    app:layoutDescription="@xml/gathering_things_background_scene">
+
+                    <ImageView
+                        android:id="@+id/gatheringThingsBackgroundImageView"
+                        android:layout_width="0dp"
+                        android:layout_height="400dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/start_activity_middle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:id="@+id/backgroundDimView"
+                        android:background="@color/black"
+                        app:layout_constraintTop_toTopOf="@id/gatheringThingsBackgroundMotionLayout"
+                        app:layout_constraintStart_toStartOf="@id/gatheringThingsBackgroundMotionLayout"
+                        app:layout_constraintEnd_toEndOf="@id/gatheringThingsBackgroundMotionLayout"
+                        app:layout_constraintBottom_toBottomOf="@id/gatheringThingsBackgroundMotionLayout"/>
+
+                    <androidx.constraintlayout.motion.widget.MotionLayout
+                        android:id="@+id/gatheringThingsLayout"
+                        android:layout_width="480dp"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="120dp"
+                        android:layout_gravity="center_horizontal"
+                        app:layout_constraintTop_toTopOf="@id/gatheringThingsBackgroundImageView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layoutDescription="@xml/gathering_things_scene">
+
+                        <ImageView
+                            android:id="@+id/phoneImageView"
+                            android:layout_width="250dp"
+                            android:layout_height="250dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_phone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/orderImageView"
+                            android:layout_width="200dp"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_order"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/waitingImageView"
+                            android:layout_width="200dp"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_waiting"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gatheringThingsTitleTextView"
+                        android:layout_marginTop="32dp"
+                        android:gravity="center_horizontal"
+                        android:text="줄서서 기다리지 않고\n빠르게 주문"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/gatheringThingsContentTextView"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="더이상 앞사람 주문이 끝날때 까지\n기다리지 마세요"
+                        android:textColor="@color/white_60"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toBottomOf="@+id/gatheringThingsTitleTextView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.motion.widget.MotionLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp"
+                    android:layout_marginBottom="80dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QR코드 스캔 한번으로\n편리한 주문"
+                        android:gravity="center_horizontal"
+                        android:id="@+id/curationTitleTextView"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/curationContentTextView"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="배고픈 나를 위해\n시간을 낭비할 순 없으니까"
+                        android:textColor="@color/white_60"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toBottomOf="@id/curationTitleTextView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+                    <androidx.constraintlayout.motion.widget.MotionLayout
+                        android:id="@+id/curationAnimationMotionLayout"
+                        android:layout_width="480dp"
+                        android:layout_height="480dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layoutDescription="@xml/curation_animation_scene">
+
+                        <ImageView
+                            android:id="@+id/curationFood1ImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/shape_circle"
+                            android:src="@drawable/curation_food1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/curationFood2ImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/shape_circle"
+                            android:src="@drawable/curation_food2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/curationFood3ImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/shape_circle"
+                            android:src="@drawable/curation_food3"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/curationFood4ImageView"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/shape_circle"
+                            android:src="@drawable/curation_food4"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/curationCenterView"
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:alpha="0"
+                            android:background="@drawable/shape_circle"
+                            android:src="@drawable/qrcode_img"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/start_floating_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="false"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:fitsSystemWindows="false"
+            app:contentScrim="@android:color/transparent"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@android:color/transparent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/collapsingToolbarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="420dp"
+                android:fitsSystemWindows="false"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/introImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="false"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/start_activity_top_resize" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/introTitleLayout"
+                layout="@layout/layout_intro_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:layout_scrollFlags="scroll" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:elevation="0dp"
+                android:fitsSystemWindows="false"
+                app:layout_collapseMode="pin"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true">
+
+                    <View
+                        android:id="@+id/toolbarBackgroundView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/black"
+                        android:fitsSystemWindows="false" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/toolbarContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:fitsSystemWindows="true">
+
+                        <TextView
+                            android:id="@+id/logoTextView"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/start_appbar_logo"
+                            android:textColor="#E1695E"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:text="@string/start_appbar_login"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
