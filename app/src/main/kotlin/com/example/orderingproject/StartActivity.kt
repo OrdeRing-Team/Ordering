@@ -23,6 +23,7 @@ class StartActivity : AppCompatActivity() {
     val binding by lazy { ActivityStartBinding.inflate(layoutInflater) }
 
     private var isGatheringMotionAnimating: Boolean = false
+    private var isCurationMotionAnimating: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +60,14 @@ class StartActivity : AppCompatActivity() {
                     binding.buttonShownMotionLayout.transitionToStart()
                 }
             }
+
+            if(scrolledValue > binding.scrollView.height) {
+                if(isCurationMotionAnimating.not()){
+                    binding.curationAnimationMotionLayout.setTransition(R.id.curation_animation_start1, R.id.curation_animation_end1)
+                    binding.curationAnimationMotionLayout.transitionToEnd()
+                    isCurationMotionAnimating = true
+                }
+            }
         }
     }
 
@@ -72,6 +81,23 @@ class StartActivity : AppCompatActivity() {
 
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int){
                 isGatheringMotionAnimating = false
+            }
+
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) = Unit
+        })
+
+        binding.curationAnimationMotionLayout.setTransitionListener(object : MotionLayout.TransitionListener{
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) = Unit
+
+            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) = Unit
+
+            override fun onTransitionCompleted(p0: MotionLayout?, currentId: Int){
+                when(currentId){
+                    R.id.curation_animation_end1 ->{
+                        binding.curationAnimationMotionLayout.setTransition(R.id.curation_animation_start2, R.id.curation_animation_end2)
+                        binding.curationAnimationMotionLayout.transitionToEnd()
+                    }
+                }
             }
 
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) = Unit

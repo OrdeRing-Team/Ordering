@@ -5,9 +5,9 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:fitsSystemWindows="false"
-    tools:context=".StartActivity"
-    android:background="@color/black">
+    tools:context=".StartActivity">
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/buttonShown_MotionLayout"
@@ -66,9 +66,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/gatheringThingsBackgroundMotionLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/gatheringThingsBackgroundMotionLayout"
                     app:layoutDescription="@xml/gathering_things_background_scene">
 
                     <ImageView
@@ -77,30 +77,31 @@
                         android:layout_height="400dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/start_activity_middle"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <View
+                        android:id="@+id/backgroundDimView"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:id="@+id/backgroundDimView"
                         android:background="@color/black"
-                        app:layout_constraintTop_toTopOf="@id/gatheringThingsBackgroundMotionLayout"
-                        app:layout_constraintStart_toStartOf="@id/gatheringThingsBackgroundMotionLayout"
+                        app:layout_constraintBottom_toBottomOf="@id/gatheringThingsBackgroundMotionLayout"
                         app:layout_constraintEnd_toEndOf="@id/gatheringThingsBackgroundMotionLayout"
-                        app:layout_constraintBottom_toBottomOf="@id/gatheringThingsBackgroundMotionLayout"/>
+                        app:layout_constraintStart_toStartOf="@id/gatheringThingsBackgroundMotionLayout"
+                        app:layout_constraintTop_toTopOf="@id/gatheringThingsBackgroundMotionLayout" />
 
                     <androidx.constraintlayout.motion.widget.MotionLayout
                         android:id="@+id/gatheringThingsLayout"
                         android:layout_width="480dp"
                         android:layout_height="300dp"
-                        android:layout_marginTop="120dp"
                         android:layout_gravity="center_horizontal"
-                        app:layout_constraintTop_toTopOf="@id/gatheringThingsBackgroundImageView"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="120dp"
+                        app:layoutDescription="@xml/gathering_things_scene"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layoutDescription="@xml/gathering_things_scene">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/gatheringThingsBackgroundImageView">
 
                         <ImageView
                             android:id="@+id/phoneImageView"
@@ -138,33 +139,34 @@
                     </androidx.constraintlayout.motion.widget.MotionLayout>
 
                     <TextView
+                        android:id="@+id/gatheringThingsTitleTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/gatheringThingsTitleTextView"
                         android:layout_marginTop="32dp"
                         android:gravity="center_horizontal"
                         android:text="줄서서 기다리지 않고\n빠르게 주문"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/gatheringThingsContentTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/gatheringThingsContentTextView"
                         android:layout_marginTop="8dp"
                         android:gravity="center_horizontal"
                         android:text="더이상 앞사람 주문이 끝날때 까지\n기다리지 마세요"
                         android:textColor="@color/white_60"
                         android:textSize="16sp"
-                        app:layout_constraintTop_toBottomOf="@+id/gatheringThingsTitleTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@+id/gatheringThingsTitleTextView" />
 
                 </androidx.constraintlayout.motion.widget.MotionLayout>
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -172,103 +174,136 @@
                     android:layout_marginBottom="80dp">
 
                     <TextView
+                        android:id="@+id/curationTitleTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="QR코드 스캔 한번으로\n편리한 주문"
                         android:gravity="center_horizontal"
-                        android:id="@+id/curationTitleTextView"
+                        android:text="QR코드 스캔 한번으로\n편리한 주문"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/curationContentTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/curationContentTextView"
                         android:layout_marginTop="8dp"
                         android:gravity="center_horizontal"
                         android:text="배고픈 나를 위해\n시간을 낭비할 순 없으니까"
                         android:textColor="@color/white_60"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@id/curationTitleTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@id/curationTitleTextView" />
 
 
-
-                    <androidx.constraintlayout.motion.widget.MotionLayout
-                        android:id="@+id/curationAnimationMotionLayout"
-                        android:layout_width="480dp"
-                        android:layout_height="480dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/curationBackgroundMotionLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/curationContentTextView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layoutDescription="@xml/curation_animation_scene">
+                        >
 
                         <ImageView
-                            android:id="@+id/curationFood1ImageView"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:background="@drawable/shape_circle"
-                            android:src="@drawable/curation_food1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/curationBackgroundImageView"
+                            android:layout_width="0dp"
+                            android:layout_height="400dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/curation_background_image"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/curationFood2ImageView"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:background="@drawable/shape_circle"
-                            android:src="@drawable/curation_food2"
-                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/curationFood3ImageView"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:background="@drawable/shape_circle"
-                            android:src="@drawable/curation_food3"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="parent"/>
 
-                        <ImageView
-                            android:id="@+id/curationFood4ImageView"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:background="@drawable/shape_circle"
-                            android:src="@drawable/curation_food4"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/curationCenterView"
-                            android:layout_width="180dp"
-                            android:layout_height="180dp"
-                            android:alpha="0"
-                            android:background="@drawable/shape_circle"
-                            android:src="@drawable/qrcode_img"
+                        <androidx.constraintlayout.motion.widget.MotionLayout
+                            android:id="@+id/curationAnimationMotionLayout"
+                            android:layout_width="480dp"
+                            android:layout_height="480dp"
+                            app:layoutDescription="@xml/curation_animation_scene"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.constraintlayout.motion.widget.MotionLayout>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/curationFood1ImageView"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:scaleType="centerCrop"
+                                app:civ_border_overlay="true"
+                                app:civ_border_width="2dp"
+                                app:civ_border_color="#E1695E"
+                                android:src="@drawable/curation_food1"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/curationFood2ImageView"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:scaleType="centerCrop"
+                                app:civ_border_overlay="true"
+                                app:civ_border_width="2dp"
+                                app:civ_border_color="#E1695E"
+                                android:src="@drawable/curation_food4"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/curationFood3ImageView"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:scaleType="centerCrop"
+                                app:civ_border_overlay="true"
+                                app:civ_border_width="2dp"
+                                app:civ_border_color="#E1695E"
+                                android:src="@drawable/curation_food3"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/curationFood4ImageView"
+                                android:layout_width="120dp"
+                                android:layout_height="120dp"
+                                android:scaleType="centerCrop"
+                                app:civ_border_overlay="true"
+                                app:civ_border_width="2dp"
+                                app:civ_border_color="#E1695E"
+                                android:src="@drawable/curation_food2"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/centerView"
+                                android:layout_width="180dp"
+                                android:layout_height="180dp"
+                                android:alpha="0"
+                                android:background="@drawable/shape_circle"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/qrcode_img"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.motion.widget.MotionLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
