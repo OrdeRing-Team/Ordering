@@ -61,7 +61,7 @@ class StartActivity : AppCompatActivity() {
                 }
             }
 
-            if(scrolledValue > binding.scrollView.height) {
+            if(scrolledValue > binding.curationAnimationMotionLayout.bottom) {
                 if(isCurationMotionAnimating.not()){
                     binding.curationAnimationMotionLayout.setTransition(R.id.curation_animation_start1, R.id.curation_animation_end1)
                     binding.curationAnimationMotionLayout.transitionToEnd()
