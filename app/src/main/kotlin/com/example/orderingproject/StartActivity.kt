@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.orderingproject.databinding.ActivityStartBinding
 import com.google.android.material.appbar.AppBarLayout
 import java.lang.Math.abs
@@ -29,6 +31,7 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         makeStatusBarTransParent()
 
         initAppBar()
@@ -38,6 +41,8 @@ class StartActivity : AppCompatActivity() {
         initScrollViewListeners()
 
         initMotionLayoutListeners()
+
+        initIntroPostDelay()
 
     }
 
@@ -150,6 +155,13 @@ class StartActivity : AppCompatActivity() {
             it.setDisplayHomeAsUpEnabled(false)
             it.setDisplayShowHomeEnabled(false)
         }
+    }
+
+    private fun initIntroPostDelay() {
+        Handler().postDelayed({
+            binding.introBackgroundMotionLayout.transitionToEnd()
+            Glide.with(this).load(R.raw.ordering_main_neon_with_background).into(binding.introImageView);
+        },600L)
     }
 
 }

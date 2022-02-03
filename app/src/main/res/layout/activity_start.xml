@@ -346,15 +346,37 @@
                 android:layout_height="420dp"
                 android:fitsSystemWindows="false"
                 app:layout_collapseMode="parallax">
-
-                <ImageView
-                    android:id="@+id/introImageView"
+                <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/introBackgroundMotionLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="false"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/start_activity_top_resize" />
+                    android:layout_height="420dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layoutDescription="@xml/intro_background_scene">
 
+                    <ImageView
+                        android:id="@+id/introImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="false"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                    <View
+                        android:id="@+id/introBackgroundDimView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@id/introBackgroundMotionLayout"
+                        app:layout_constraintEnd_toEndOf="@id/introBackgroundMotionLayout"
+                        app:layout_constraintStart_toStartOf="@id/introBackgroundMotionLayout"
+                        app:layout_constraintTop_toTopOf="@id/introBackgroundMotionLayout" />
+
+                </androidx.constraintlayout.motion.widget.MotionLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
