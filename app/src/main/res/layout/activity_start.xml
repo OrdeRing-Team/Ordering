@@ -296,7 +296,6 @@
                                 android:alpha="0"
                                 android:background="@drawable/shape_circle"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/qrcode_img"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"

@@ -99,6 +99,7 @@ class StartActivity : AppCompatActivity() {
             override fun onTransitionCompleted(p0: MotionLayout?, currentId: Int){
                 when(currentId){
                     R.id.curation_animation_end1 ->{
+                        Glide.with(this@StartActivity).load(R.raw.qrcode_img_gradation).into(binding.centerView);
                         binding.curationAnimationMotionLayout.setTransition(R.id.curation_animation_start2, R.id.curation_animation_end2)
                         binding.curationAnimationMotionLayout.transitionToEnd()
                     }
