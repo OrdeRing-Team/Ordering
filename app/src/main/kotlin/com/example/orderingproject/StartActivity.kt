@@ -55,7 +55,8 @@ class StartActivity : AppCompatActivity() {
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
             val scrolledValue = binding.scrollView.scrollY
 
-            if (scrolledValue > 150f.dpToPx(this@StartActivity).toInt()) {
+            // 150f.dpToPx(this@StartActivity).toInt()
+            if (scrolledValue > binding.gatheringThingsTitleTextView.top) {
                 if (isGatheringMotionAnimating.not()) {
                     binding.gatheringThingsBackgroundMotionLayout.transitionToEnd()
                     binding.gatheringThingsLayout.transitionToEnd()
