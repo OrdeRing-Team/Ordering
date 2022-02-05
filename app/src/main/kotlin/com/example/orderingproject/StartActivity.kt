@@ -2,6 +2,7 @@ package com.example.orderingproject
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -43,6 +44,8 @@ class StartActivity : AppCompatActivity() {
         initMotionLayoutListeners()
 
         initIntroPostDelay()
+
+        initButtonListener()
 
     }
 
@@ -163,6 +166,15 @@ class StartActivity : AppCompatActivity() {
             binding.introBackgroundMotionLayout.transitionToEnd()
             Glide.with(this).load(R.raw.ordering_main_neon_with_background).into(binding.introImageView);
         },600L)
+    }
+
+    private fun initButtonListener(){
+        binding.button.setOnClickListener {
+            startActivity(Intent(this,AuthActivity::class.java))
+        }
+        binding.signupButton.setOnClickListener {
+            startActivity(Intent(this,AuthActivity::class.java))
+        }
     }
 
 }

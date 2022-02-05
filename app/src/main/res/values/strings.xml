@@ -5,4 +5,14 @@
     <string name="start_floating_button">오더링 회원가입</string>
     <string name="start_appbar_logo">OrdeRing</string>
     <string name="start_appbar_login">로그인</string>
+    <string name="auth_info">본인 인증</string>
+    <string name="auth_errorcode">인증번호가 일치하지 않습니다.</string>
+    <string name="auth_phonenumber_hint">\'-\' 없이 입력해주세요.</string>
+    <string name="auth_phoneNum">휴대폰 번호</string>
+    <string name="auth_getAuth_buttonText">인증번호 받기</string>
+    <string name="auth_verficationCode">인증번호</string>
+    <string name="auth_verification_hint">문자로 받은 6자리 번호를 입력해주세요.</string>
+    <string name="auth_checkAuth_buttonText">인증번호 확인</string>
+    <string name="auth_resend_buttonText">인증번호 재전송</string>
+    <string name="auth_timeText">남은 시간</string>
 </resources>
