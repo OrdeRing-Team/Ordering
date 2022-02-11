@@ -21,11 +21,11 @@ import com.example.orderingproject.databinding.ActivityAuthBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
-//import com.google.firebase.auth.AuthResult;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.PhoneAuthCredential;
-//import com.google.firebase.auth.PhoneAuthOptions;
-//import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,15 +38,15 @@ public class AuthActivity extends BasicActivity {
     private ActivityAuthBinding binding;
 
     //코드 전송에 실패하면 재전송 코드를 위해 선언
-//    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
-//
-//    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private String mVerificationId; // 코드를 담을 변수
 
     private static final String TAG = "SIGNUP_TAG";
 
-//    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     int minute, second;
 
@@ -72,51 +72,51 @@ public class AuthActivity extends BasicActivity {
         binding.tvTimerSec.setVisibility(View.GONE);
         ButtonLock(binding.btnSendSMS);
         ButtonLock(binding.btnVerifyCode);
-//        firebaseAuth = FirebaseAuth.getInstance();
-//
-//        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//            @Override
-//            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//
-//                signInWithPhoneAuthCredential(phoneAuthCredential);
-//                Log.e("AuthActivity", "::onVerificationCompleted 실행");
-//                Toast.makeText(AuthActivity.this, "인증되었습니다.", Toast.LENGTH_SHORT).show();
-//            }
+        firebaseAuth = FirebaseAuth.getInstance();
 
-//            @Override
-//            public void onVerificationFailed(@NonNull FirebaseException e) {
-//                // ProgressBar 제거
-//                binding.progressBar.setVisibility(View.GONE);
-//                Toast.makeText(AuthActivity.this, "번호를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show();
-//            }
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
 
-//            @Override
-//            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-//                super.onCodeSent(verificationId, forceResendingToken);
-//                binding.tvResend.setVisibility(View.VISIBLE);
-//                binding.tvVerifyCode.setVisibility(View.VISIBLE);
-//                binding.etVerifyCode.setVisibility(View.VISIBLE);
-//                binding.btnVerifyCode.setVisibility(View.VISIBLE);
-//                binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
-//                binding.btnSendSMS.setEnabled(false);
-//                binding.etPhoneSignup.setEnabled(false);
-//                binding.etPhoneSignup.setTextColor(Color.parseColor("#9A9A9A"));
-//
-//                binding.etVerifyCode.requestFocus();
-//
-//                // progressBar 제거
-//                binding.progressBar.setVisibility(View.GONE);
-//
-//                mVerificationId = verificationId;
-//                forceResendingToken = token;
-//
-//                //키보드 보이게 하는 부분
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-//
-//                TimerStart();
-//            }
-//        };
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+                Log.e("AuthActivity", "::onVerificationCompleted 실행");
+                Toast.makeText(AuthActivity.this, "인증되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                // ProgressBar 제거
+                binding.progressBar.setVisibility(View.GONE);
+                Toast.makeText(AuthActivity.this, "번호를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                super.onCodeSent(verificationId, forceResendingToken);
+                binding.tvResend.setVisibility(View.VISIBLE);
+                binding.tvVerifyCode.setVisibility(View.VISIBLE);
+                binding.etVerifyCode.setVisibility(View.VISIBLE);
+                binding.btnVerifyCode.setVisibility(View.VISIBLE);
+                binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
+                binding.btnSendSMS.setEnabled(false);
+                binding.etPhoneSignup.setEnabled(false);
+                binding.etPhoneSignup.setTextColor(Color.parseColor("#9A9A9A"));
+
+                binding.etVerifyCode.requestFocus();
+
+                // progressBar 제거
+                binding.progressBar.setVisibility(View.GONE);
+
+                mVerificationId = verificationId;
+                forceResendingToken = token;
+
+                //키보드 보이게 하는 부분
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+                TimerStart();
+            }
+        };
 
         /* 전화번호 입력란 글자수 리스너 입니다 */
         binding.etPhoneSignup.addTextChangedListener(new TextWatcher() {
@@ -189,7 +189,7 @@ public class AuthActivity extends BasicActivity {
                 imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
                 // 문자 전송
-//                startPhoneNumberVerification(phoneNum);
+                startPhoneNumberVerification(phoneNum);
 
                 // progressBar 실행
                 binding.progressBar.setVisibility(View.VISIBLE);
@@ -197,48 +197,39 @@ public class AuthActivity extends BasicActivity {
         });
 
 
-//        binding.tvResend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String phoneNum = "+82" + binding.etPhoneSignup.getText().toString().trim().substring(1);
-//
-//                // progressBar 실행
-//                binding.progressBar.setVisibility(View.VISIBLE);
-//
-//                // 인증번호 재전송 함수 호출
-//                ResendVerificationCode(phoneNum, forceResendingToken);
-//
-//                // 인증번호 입력란 clear
-//                binding.etVerifyCode.setText(null);
-//            }
-//        });
+        binding.tvResend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNum = "+82" + binding.etPhoneSignup.getText().toString().trim().substring(1);
+
+                // progressBar 실행
+                binding.progressBar.setVisibility(View.VISIBLE);
+
+                // 인증번호 재전송 함수 호출
+                ResendVerificationCode(phoneNum, forceResendingToken);
+
+                // 인증번호 입력란 clear
+                binding.etVerifyCode.setText(null);
+            }
+        });
 
 
-//        binding.btnVerifyCode.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String codeNum = binding.etVerifyCode.getText().toString().trim();
-//                verifyCode(mVerificationId, codeNum);
-//
-//                // 에러 메세지 숨기기
-//                binding.ivError.setVisibility(View.GONE);
-//                binding.tvErrorcode.setVisibility(View.GONE);
-//
-//                // 키보드 내리기
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
-//            }
-//        });
+        binding.btnVerifyCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String codeNum = binding.etVerifyCode.getText().toString().trim();
+                verifyCode(mVerificationId, codeNum);
 
-//        binding.btnGoInfo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(AuthActivity.this, InfoActivity.class);
-//                startActivity(intent);
-//
-//                FinishWithAnim();
-//            }
-//        });
+                // 에러 메세지 숨기기
+                binding.ivError.setVisibility(View.GONE);
+                binding.tvErrorcode.setVisibility(View.GONE);
+
+                // 키보드 내리기
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
+            }
+        });
+
     }
 
     private void TimerStart() {
@@ -338,116 +329,116 @@ public class AuthActivity extends BasicActivity {
     }
 
 
-//    /* 문자 전송 함수 */
-//    private void startPhoneNumberVerification(String phoneNum) {
-//        PhoneAuthOptions options =
-//                PhoneAuthOptions.newBuilder(firebaseAuth)
-//                        .setPhoneNumber(phoneNum)
-//                        .setTimeout(120L, TimeUnit.SECONDS)
-//                        .setActivity(this)
-//                        .setCallbacks(mCallbacks)
-//                        .build();
-//        PhoneAuthProvider.verifyPhoneNumber(options);
-//    }
-//
-//
-//    /* 인증번호 재전송 함수 */
-//    private void ResendVerificationCode(String phoneNum, PhoneAuthProvider.ForceResendingToken token) {
-//        // ProgressBar 실행
-//        binding.progressBar.setVisibility(View.VISIBLE);
-//
-//        PhoneAuthOptions options =
-//                PhoneAuthOptions.newBuilder(firebaseAuth)
-//                        .setPhoneNumber(phoneNum)
-//                        .setTimeout(120L, TimeUnit.SECONDS)
-//                        .setActivity(this)
-//                        .setCallbacks(mCallbacks)
-//                        .setForceResendingToken(token)
-//                        .build();
-//        PhoneAuthProvider.verifyPhoneNumber(options);
+    /* 문자 전송 함수 */
+    private void startPhoneNumberVerification(String phoneNum) {
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(firebaseAuth)
+                        .setPhoneNumber(phoneNum)
+                        .setTimeout(120L, TimeUnit.SECONDS)
+                        .setActivity(this)
+                        .setCallbacks(mCallbacks)
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
 
-//        // 타이머 초기화
-//        if (timerTask != null) {
-//            timerTask.cancel();
-//            timerTask = null;
-//        }
-//
-//        Toast.makeText(AuthActivity.this, "인증번호가 재전송되었습니다.", Toast.LENGTH_SHORT).show();
-//
-//        // progressBar 실행
-//        binding.progressBar.setVisibility(View.VISIBLE);
-//    }
-//
-//
-//    /* 인증번호 확인 함수 */
-//    private void verifyCode(String mVerificationId, String codeNum) {
-//        // ProgressBar 실행
-//        binding.progressBar.setVisibility(View.VISIBLE);
-//
-//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeNum);
-//        signInWithPhoneAuthCredential(credential);
-//
-//    }
-//
-//
-//    /* 계정 생성 함수 */
-//    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-//        // ProgressBar 실행
-//        binding.progressBar.setVisibility(View.VISIBLE);
-//
-//        firebaseAuth.signInWithCredential(credential)
-//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        // 계정 생성 성공시
-//
-//                        // ProgressBar 제거
-//                        binding.progressBar.setVisibility(View.GONE);
-//
-//                        String phoneNum = "0" + firebaseAuth.getCurrentUser().getPhoneNumber().substring(3);
-//                        Log.e("AuthActivity: signInWithPhoneAuthCredential", "PhoneNum = " + phoneNum);
-//                        Toast.makeText(AuthActivity.this, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-//
-//                        // 휴대폰으로 생성된 계정은 탈퇴처리
-//                        FirebaseAuth.getInstance().getCurrentUser().delete();
-//
-//                        Intent intent = new Intent(AuthActivity.this, SignupActivity.class);
-//                        intent.putExtra("phoneNum", phoneNum);
-//                        startActivity(intent);
-//
-//                        FinishWithAnim();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        // 계정 생성 실패시
-//
-//                        Animation error = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
-//
-//                        // ProgressBar 제거
-//                        binding.progressBar.setVisibility(View.GONE);
-//
-//                        // 에러메세지 출력
-//                        binding.ivError.setVisibility(View.VISIBLE);
-//                        binding.tvErrorcode.setVisibility(View.VISIBLE);
-//
-//                        // 에러메세지 애니메이션 실행
-//                        binding.ivError.startAnimation(error);
-//                        binding.tvErrorcode.startAnimation(error);
-//
-//                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-//                        long[] pattern = {10, 50, 10, 50}; // miliSecond
-//                        //               대기,진동,대기,진동
-//                        // 짝수 인덱스 : 대기시간
-//                        // 홀수 인덱스 : 진동시간
-//                        vibrator.vibrate(pattern, -1);
-//                        // 0 : 무한반복, -1: 반복없음,
-//                        // 양의정수 : 진동패턴배열의 해당 인덱스부터 진동 무한반복
-//
-//                        //Toast.makeText(AuthActivity.this, "인증번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                });
-//    }
+
+    /* 인증번호 재전송 함수 */
+    private void ResendVerificationCode(String phoneNum, PhoneAuthProvider.ForceResendingToken token) {
+        // ProgressBar 실행
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(firebaseAuth)
+                        .setPhoneNumber(phoneNum)
+                        .setTimeout(120L, TimeUnit.SECONDS)
+                        .setActivity(this)
+                        .setCallbacks(mCallbacks)
+                        .setForceResendingToken(token)
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+
+        // 타이머 초기화
+        if (timerTask != null) {
+            timerTask.cancel();
+            timerTask = null;
+        }
+
+        Toast.makeText(AuthActivity.this, "인증번호가 재전송되었습니다.", Toast.LENGTH_SHORT).show();
+
+        // progressBar 실행
+        binding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+
+    /* 인증번호 확인 함수 */
+    private void verifyCode(String mVerificationId, String codeNum) {
+        // ProgressBar 실행
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeNum);
+        signInWithPhoneAuthCredential(credential);
+
+    }
+
+
+    /* 계정 생성 함수 */
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        // ProgressBar 실행
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        firebaseAuth.signInWithCredential(credential)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        // 계정 생성 성공시
+
+                        // ProgressBar 제거
+                        binding.progressBar.setVisibility(View.GONE);
+
+                        String phoneNum = "0" + firebaseAuth.getCurrentUser().getPhoneNumber().substring(3);
+                        Log.e("AuthActivity: signInWithPhoneAuthCredential", "PhoneNum = " + phoneNum);
+                        Toast.makeText(AuthActivity.this, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+
+                        // 휴대폰으로 생성된 계정은 탈퇴처리
+                        FirebaseAuth.getInstance().getCurrentUser().delete();
+
+                        Intent intent = new Intent(AuthActivity.this, SignupActivity.class);
+                        intent.putExtra("phoneNum", phoneNum);
+                        startActivity(intent);
+
+                        FinishWithAnim();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // 계정 생성 실패시
+
+                        Animation error = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
+
+                        // ProgressBar 제거
+                        binding.progressBar.setVisibility(View.GONE);
+
+                        // 에러메세지 출력
+                        binding.ivError.setVisibility(View.VISIBLE);
+                        binding.tvErrorcode.setVisibility(View.VISIBLE);
+
+                        // 에러메세지 애니메이션 실행
+                        binding.ivError.startAnimation(error);
+                        binding.tvErrorcode.startAnimation(error);
+
+                        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        long[] pattern = {10, 50, 10, 50}; // miliSecond
+                        //               대기,진동,대기,진동
+                        // 짝수 인덱스 : 대기시간
+                        // 홀수 인덱스 : 진동시간
+                        vibrator.vibrate(pattern, -1);
+                        // 0 : 무한반복, -1: 반복없음,
+                        // 양의정수 : 진동패턴배열의 해당 인덱스부터 진동 무한반복
+
+                        //Toast.makeText(AuthActivity.this, "인증번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
 }

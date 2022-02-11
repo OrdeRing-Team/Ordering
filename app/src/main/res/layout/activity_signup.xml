@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+
+        <EditText
+            android:id="@+id/editTextNickname"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="55dp"
+            android:backgroundTint="#E1695E"
+            android:ems="7"
+            android:fontFamily="@font/baeminjua"
+            android:inputType="text"
+            android:maxLength="11"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/nickname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/nickname"
+            tools:ignore="Autofill,LabelFor" />
+
+        <ImageButton
+            android:id="@+id/ib_randomNick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/ic_refresh"
+            android:backgroundTint="#808080"
+            app:layout_constraintBottom_toTopOf="@+id/tv_nickNameError"
+            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
+            app:layout_constraintTop_toTopOf="@+id/editTextNickname"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/iv_error"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/tv_nickNameError"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNickname"
+            app:srcCompat="@drawable/ic_baseline_error_outline_24"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_nickNameError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="55dp"
+            android:text="@string/NicknameErrorText"
+            android:textColor="#FF0000"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_error"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/NicknameSubText"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/EmailSubText"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nickname" />
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E1695E"
+            android:ems="7"
+            android:inputType="textEmailAddress"
+            android:textColor="#000000"
+            android:textColorHint="#C1C1C1"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/email"
+            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
+            app:layout_constraintStart_toStartOf="@+id/editTextNickname"
+            app:layout_constraintTop_toTopOf="@+id/email"
+            tools:ignore="Autofill,LabelFor" />
+
+        <ImageView
+            android:id="@+id/iv_error4"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/tv_emailError"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            app:srcCompat="@drawable/ic_baseline_error_outline_24"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_emailError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="55dp"
+            android:text="@string/EmailErrorText"
+            android:textColor="#FF1100"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_error4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_error4"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/PasswordSubText"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+
+        <TextView
+            android:id="@+id/passwordCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/PasswordCheckSubText"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_psCheck"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/passwordCheck"
+            app:layout_constraintStart_toEndOf="@+id/passwordCheck"
+            app:layout_constraintTop_toTopOf="@+id/passwordCheck"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#E1695E"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPasswordCheck"
+                android:layout_width="210dp"
+                android:layout_height="50dp"
+                android:backgroundTint="#E1695E"
+                android:inputType="textPassword"
+                android:textColor="#636363"
+                android:textColorHint="#E1695E"
+                android:textSize="18sp"
+                app:passwordToggleEnabled="true">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_error3"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/tv_psAccord"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_psCheck"
+            app:srcCompat="@drawable/ic_baseline_error_outline_24"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_psAccord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/PasswordCheckErrorText"
+            android:textColor="#FF1100"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_error3"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout_psCheck"
+            app:layout_constraintTop_toTopOf="@+id/iv_error3"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_ps"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/password"
+            app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
+            app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+            app:layout_constraintTop_toTopOf="@+id/password"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#E1695E"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="210dp"
+                android:layout_height="50dp"
+                android:backgroundTint="#E1695E"
+                android:inputType="textPassword"
+                android:textColor="#636363"
+                android:textColorHint="#E1695E"
+                android:textSize="18sp">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_error2"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayout_psCheck"
+            app:layout_constraintEnd_toStartOf="@+id/tv_psLength"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout_ps"
+            app:srcCompat="@drawable/ic_baseline_error_outline_24"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_psLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="55dp"
+            android:text="@string/PasswordErrorText"
+            android:textColor="#FF1100"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_error2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_error2"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/baeminjua"
+            android:text="@string/OrderingMainText"
+            android:textColor="#E1695E"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:text="@string/auth_phoneNum"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_signupPhoneNum"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_signupPhoneNum" />
+
+        <TextView
+            android:id="@+id/tv_signupPhoneNum"
+            android:layout_width="210dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="55dp"
+            android:background="@drawable/round_rectangle_locked"
+            android:gravity="center"
+            android:textColor="#B6B6B6"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NicknameGuideText"
+            android:textColor="#8F8F8F"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editTextNickname"
+            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
+            app:layout_constraintStart_toStartOf="@+id/nickname" />
+
+
+        <ImageView
+            android:id="@+id/iv_psComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout_ps"
+            app:layout_constraintTop_toTopOf="@+id/password"
+            app:srcCompat="@drawable/ic_check"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_psCheckComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout_psCheck"
+            app:layout_constraintTop_toTopOf="@+id/passwordCheck"
+            app:srcCompat="@drawable/ic_check"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_emailComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/editTextEmail"
+            app:layout_constraintTop_toTopOf="@+id/email"
+            app:srcCompat="@drawable/ic_check"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_nickNameComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/editTextNickname"
+            app:layout_constraintTop_toTopOf="@+id/nickname"
+            app:srcCompat="@drawable/ic_check"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0D70E6"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/SignupButtonText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
