@@ -172,6 +172,7 @@ public class AuthActivity extends BasicActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
+                startActivity(new Intent(AuthActivity.this, StartActivity.class));
                 FinishWithAnim();
             }
         });

@@ -422,7 +422,7 @@ public class SignupActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 updateDB(user, phoneNum, Nickname, Email);
                                 startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                                showToast(SignupActivity.this,"회원가입 완료");
+                                showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
                                 finish();
                             }
                         } else {

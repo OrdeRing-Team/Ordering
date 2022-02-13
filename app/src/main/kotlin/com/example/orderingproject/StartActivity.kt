@@ -19,6 +19,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.orderingproject.databinding.ActivityStartBinding
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.lang.Math.abs
 
 class StartActivity : AppCompatActivity() {
@@ -28,10 +30,13 @@ class StartActivity : AppCompatActivity() {
     private var isGatheringMotionAnimating: Boolean = false
     private var isCurationMotionAnimating: Boolean = false
 
+    private var user: FirebaseUser? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        loginUserCheck()
 
         makeStatusBarTransParent()
 
@@ -47,6 +52,15 @@ class StartActivity : AppCompatActivity() {
 
         initButtonListener()
 
+    }
+
+    private fun loginUserCheck(){
+        user = FirebaseAuth.getInstance().currentUser
+
+        if(user != null){
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
     }
 
     private fun initScrollViewListeners(){
@@ -172,9 +186,15 @@ class StartActivity : AppCompatActivity() {
     private fun initButtonListener(){
         binding.button.setOnClickListener {
             startActivity(Intent(this,AuthActivity::class.java))
+            finish()
         }
         binding.signupButton.setOnClickListener {
             startActivity(Intent(this,AuthActivity::class.java))
+            finish()
+        }
+        binding.loginTextView.setOnClickListener {
+            val bottomSheet = BottomSheetLogin()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
     }
 
