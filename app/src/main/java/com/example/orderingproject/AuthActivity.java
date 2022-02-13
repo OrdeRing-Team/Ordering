@@ -442,4 +442,14 @@ public class AuthActivity extends BasicActivity {
                     }
                 });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(AuthActivity.this, StartActivity.class));
+        finish();
+    }
+
+
 }

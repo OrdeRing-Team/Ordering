@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(user == null){
             startActivity(new Intent(MainActivity.this, StartActivity.class));
+            finish();
         }
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
