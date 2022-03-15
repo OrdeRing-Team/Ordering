@@ -5,11 +5,7 @@ import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -85,9 +81,10 @@ public class HttpApi<T> {
             byte[] input = objJson.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
 
+            Log.e("서버 요청 성공","return");
             return getResponse();
         } catch (IOException e) {
-            // TODO 안드로이드에서 오류 알림창 띄울 것
+            Log.e("서버 요청 실패 ::",e.toString());// TODO 안드로이드에서 오류 알림창 띄울 것
         }
 
         return null;
@@ -105,8 +102,8 @@ public class HttpApi<T> {
 
         bufferedReader.close();
         String json = builder.toString();
-        Log.e("json: ", json);
 
-        return mapper.readValue(json, new TypeReference<ResultDto<T>>(){ });
+        ResultDto<T> response = mapper.readValue(json, new TypeReference<ResultDto<T>>() { });
+        return response;
     }
 }

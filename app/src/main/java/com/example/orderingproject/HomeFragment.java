@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,17 +78,27 @@ public class HomeFragment extends Fragment {
 
     public void push(){
         Toast.makeText(getActivity(),"버튽1234 클릭" ,Toast.LENGTH_SHORT).show();
-        PhoneNumberDto phoneNumberDto = new PhoneNumberDto();
-        phoneNumberDto.setPhoneNumber("01025065410");
-
         try {
+            // test obj
+            PhoneNumberDto phoneNumberDto = new PhoneNumberDto();
+            phoneNumberDto.setPhoneNumber("01073868114");
+
             URL url = new URL("http://www.ordering.ml/api/customer/verification/get");
             HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
-            ResultDto<Boolean> resultDto = httpApi.requestToServer(phoneNumberDto);
 
-            //Log.e("resultDto.getData()", resultDto.getData().toString());
-        }catch (MalformedURLException e){
-            System.out.println(e.getMessage());
+            /* 3.15 오늘의 교훈 http 요청은 쓰레드 새로 파서 하자!!!!!!!!!!!!!!!!!!!!!!!!!! 꼭!!!!!!!!! */
+            // 안드로이드는 기본적으로 https 프로토콜만 지원함 http를 사용하려면 예외 처리를 해주어야 한다
+            // 매니페스트에서 cleartext HTTP를 활성화 시켜주면 끝!
+            new Thread() {
+                public void run() {
+                    ResultDto<Boolean> result = httpApi.requestToServer(phoneNumberDto);
+                }
+            }.start();
+
+            //System.out.println(result.getData());
+
+        } catch ( MalformedURLException e) {
+            Log.e("e = " , e.getMessage());
         }
     }
     /* 로그아웃 */
