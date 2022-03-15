@@ -10,8 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.orderingproject.Dto.HttpApi;
+import com.example.orderingproject.Dto.PhoneNumberDto;
+import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,12 +26,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class HomeFragment extends Fragment {
 
     private View view;
 
     private FragmentHomeBinding binding;
 
+    Button button1234;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,6 +45,14 @@ public class HomeFragment extends Fragment {
 
         initButtonClickListener();
 
+        button1234 = view.findViewById(R.id.button1234);
+
+        button1234.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                push();
+            }
+        });
         return view;
     }
 
@@ -58,6 +74,22 @@ public class HomeFragment extends Fragment {
         }
     };
 
+
+    public void push(){
+        Toast.makeText(getActivity(),"버튽1234 클릭" ,Toast.LENGTH_SHORT).show();
+        PhoneNumberDto phoneNumberDto = new PhoneNumberDto();
+        phoneNumberDto.setPhoneNumber("01025065410");
+
+        try {
+            URL url = new URL("http://www.ordering.ml/api/customer/verification/get");
+            HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
+            ResultDto<Boolean> resultDto = httpApi.requestToServer(phoneNumberDto);
+
+            //Log.e("resultDto.getData()", resultDto.getData().toString());
+        }catch (MalformedURLException e){
+            System.out.println(e.getMessage());
+        }
+    }
     /* 로그아웃 */
     public void logout() {
         FirebaseAuth.getInstance().signOut();
@@ -101,4 +133,6 @@ public class HomeFragment extends Fragment {
                 });
 
     }
+
+
 }
