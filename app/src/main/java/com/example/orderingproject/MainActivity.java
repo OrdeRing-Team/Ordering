@@ -15,19 +15,16 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView; //바텀네비뷰
 
-    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(user == null){
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
-            finish();
-        }
+//        if(user == null){
+//            startActivity(new Intent(MainActivity.this, StartActivity.class));
+//            finish();
+//        }
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
 

@@ -6,14 +6,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -193,7 +191,7 @@ class StartActivity : AppCompatActivity() {
             finish()
         }
         binding.loginTextView.setOnClickListener {
-            val bottomSheet = BottomSheetLogin()
+            val bottomSheet = LoginBottomSheet()
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
     }

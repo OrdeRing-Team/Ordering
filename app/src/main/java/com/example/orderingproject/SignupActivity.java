@@ -57,6 +57,9 @@ public class SignupActivity extends AppCompatActivity {
 
     Animation complete;
 
+    // 아이디 형식 패턴(영문 소문자, 숫자만)
+    Pattern ps = Pattern.compile("^[a-zA-Z0-9_]*$");
+
     private static final String TAG = "SignupActivity_TAG";
 
     //viewbinding
@@ -195,7 +198,8 @@ public class SignupActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 String input = binding.etMemberId.getText().toString();
-                if(input.length()> 4 && input.length() < 21){
+
+                if(input.length()> 4 && input.length() < 21 && ps.matcher(input).matches()){
                     isMemberIdWritten = true;
                 } else {
                     isMemberIdWritten = false;
@@ -393,31 +397,10 @@ public class SignupActivity extends AppCompatActivity {
         String password = binding.editTextPassword.getText().toString();
         String phoneNum = binding.tvSignupPhoneNum.getText().toString();
 
-        Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
 
         // 이메일 계정 생성 시작
         if (memberId.length() > 4 && memberId.length() < 21 && password.length() > 5 && nickname.length() > 2) {
-//            mAuth.createUserWithEmailAndPassword(Email, Password)
-//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//
-//                                updateUI(Nickname, Email, Password);
-//                            } else {
-//                                // 실패시
-//                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
-//
-//                                    String Errormsg = task.getException().toString();
-//                                    Log.w(TAG, "이메일 생성 실패", task.getException());
-//                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
-//
-//                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                            }
-//                        }
-//                    });
-            // twilio
+                // twilio
             try {
                 Log.e("닉네임", nickname);
                 Log.e("아이디", memberId);
@@ -431,34 +414,34 @@ public class SignupActivity extends AppCompatActivity {
                 new Thread() {
                     public void run() {
                         ResultDto<Boolean> result = httpApi.requestToServer(customerSignUpDto);
-                        if(result.getData() != null){
+                        if (result.getData() != null) {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    updateDB(memberId,phoneNum,nickname);
+                                    updateDB(memberId, phoneNum, nickname);
                                     startActivity(new Intent(SignupActivity.this, MainActivity.class));
                                     finish();
-                                    Log.e(TAG,"회원가입 성공\n아이디:"+memberId+"\n전화번호:" + phoneNum+"\n비밀번호:"+password+"\n닉네임:"+nickname);
-                                    showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
+                                    Log.e(TAG, "회원가입 성공\n아이디:" + memberId + "\n전화번호:" + phoneNum + "\n비밀번호:" + password + "\n닉네임:" + nickname);
+                                    showToast(SignupActivity.this, "회원가입을 완료하였습니다.");
                                 }
                             });
-                        }
-                        else{
+                        } else {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
                                     Log.w(TAG, "회원가입 실패");
-                                    showToast(SignupActivity.this,"이미 존재하는 아이디입니다.");
+                                    showToast(SignupActivity.this, "이미 존재하는 아이디입니다.");
                                 }
                             });
                         }
                     }
                 }.start();
 
-            } catch ( MalformedURLException e) {
-                Toast.makeText(this,"회원가입 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
-                Log.e("e = " , e.getMessage());
+            } catch (MalformedURLException e) {
+                Toast.makeText(this, "회원가입 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                Log.e("e = ", e.getMessage());
             }
+
         }
 
     }

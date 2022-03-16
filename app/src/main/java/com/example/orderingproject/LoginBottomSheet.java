@@ -1,7 +1,12 @@
 package com.example.orderingproject;
 
+import static com.example.orderingproject.Utillity.showToast;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +18,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.orderingproject.Dto.CustomerSignUpDto;
+import com.example.orderingproject.Dto.HttpApi;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.SignInDto;
 import com.example.orderingproject.databinding.BottomSheetDialogLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,14 +29,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.annotation.Nullable;
 
-public class BottomSheetLogin extends BottomSheetDialogFragment {
+public class LoginBottomSheet extends BottomSheetDialogFragment {
 
     private View view;
-
-
-    private FirebaseAuth mAuth;
 
     private ImageButton ib_close;
     private Button btn_login;
@@ -66,31 +75,47 @@ public class BottomSheetLogin extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v){
                 String memberId = getMemberIdText();
-                String Password = getPasswordEditText();
-
-                mAuth = FirebaseAuth.getInstance();
+                String password = getPasswordEditText();
 
                 // 로그인 조건 처리
-                if (memberId.length() > 0 && Password.length() > 0) {
-                    /*mAuth.signInWithEmailAndPassword(Email, Password)
-                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        if(mAuth.getCurrentUser() != null){
+                if (memberId.length() > 0 && password.length() > 0) {
+                    try {
+                        SignInDto signInDto = new SignInDto(memberId, password);
+
+                        URL url = new URL("http://www.ordering.ml/api/customer/signin");
+                        HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
+
+                        new Thread() {
+                            public void run() {
+                                ResultDto<Boolean> result = httpApi.requestToServer(signInDto);
+                                if(result.getData() != null){
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
                                             startActivity(new Intent(getActivity(), MainActivity.class));
                                             dismiss();
                                             getActivity().finish();
                                         }
-                                    } else {
-
-                                        Toast.makeText(getActivity(), "로그인 실패",Toast.LENGTH_SHORT).show();
-                                    }
+                                    });
                                 }
-                            });*/
+                                else{
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+                                            showToast(getActivity(),"아이디 혹은 비밀번호가 틀렸습니다.");
+                                        }
+                                    });
+                                }
+                            }
+                        }.start();
 
+                    } catch ( MalformedURLException e) {
+                        Toast.makeText(getActivity(),"로그인 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
+                        Log.e("e = " , e.getMessage());
+                    }
                 } else {
-                    Toast.makeText(getActivity(), "아이디와 비밀번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "아이디와 비밀번호를 모두 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
