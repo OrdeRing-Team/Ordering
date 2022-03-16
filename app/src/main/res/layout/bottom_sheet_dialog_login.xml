@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이메일"
+            android:text="아이디"
             android:layout_marginStart="24dp"
             android:textSize="18sp"
             android:layout_gravity="start"
@@ -57,11 +57,10 @@
             android:layout_marginTop="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_email"
+                android:id="@+id/et_memberId"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/blue"
-                android:inputType="textEmailAddress"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#616161"
                 android:textSize="20sp" />
@@ -91,7 +90,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/blue"
-                android:inputType="textEmailAddress"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#616161"
                 android:textSize="20sp" />

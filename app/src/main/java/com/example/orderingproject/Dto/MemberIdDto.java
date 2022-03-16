@@ -2,12 +2,10 @@ package com.example.orderingproject.Dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SignInDto {
+public class MemberIdDto {
 
-    private String signInId;
-    private String password;
+    private Long id;
 }

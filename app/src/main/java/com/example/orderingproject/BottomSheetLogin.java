@@ -31,7 +31,7 @@ public class BottomSheetLogin extends BottomSheetDialogFragment {
 
     private ImageButton ib_close;
     private Button btn_login;
-    private EditText emailEditText;
+    private EditText memberIdEditText;
     private EditText passwordEditText;
     @Nullable
     @Override
@@ -50,7 +50,7 @@ public class BottomSheetLogin extends BottomSheetDialogFragment {
     public void bindViews(){
         ib_close = view.findViewById(R.id.ib_close);
         btn_login = view.findViewById(R.id.btn_login);
-        emailEditText = view.findViewById(R.id.et_email);
+        memberIdEditText = view.findViewById(R.id.et_memberId);
         passwordEditText = view.findViewById(R.id.et_password);
     }
 
@@ -65,14 +65,14 @@ public class BottomSheetLogin extends BottomSheetDialogFragment {
         btn_login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                String Email = getEmailText();
+                String memberId = getMemberIdText();
                 String Password = getPasswordEditText();
 
                 mAuth = FirebaseAuth.getInstance();
 
                 // 로그인 조건 처리
-                if (Email.length() > 0 && Password.length() > 0) {
-                    mAuth.signInWithEmailAndPassword(Email, Password)
+                if (memberId.length() > 0 && Password.length() > 0) {
+                    /*mAuth.signInWithEmailAndPassword(Email, Password)
                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -87,17 +87,17 @@ public class BottomSheetLogin extends BottomSheetDialogFragment {
                                         Toast.makeText(getActivity(), "로그인 실패",Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            });
+                            });*/
 
                 } else {
-                    Toast.makeText(getActivity(), "이메일과 비밀번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "아이디와 비밀번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    public String getEmailText(){
-        return emailEditText.getText().toString();
+    public String getMemberIdText(){
+        return memberIdEditText.getText().toString();
     }
 
     public String getPasswordEditText(){

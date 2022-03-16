@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.orderingproject.Dto.HttpApi;
+import com.example.orderingproject.Dto.PhoneNumberDto;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.VerificationDto;
 import com.example.orderingproject.databinding.ActivityAuthBinding;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
@@ -27,6 +34,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -49,7 +58,7 @@ public class AuthActivity extends BasicActivity {
     private FirebaseAuth firebaseAuth;
 
     int minute, second;
-
+    String totalPhoneNum;
     // 재전송 버튼을 누르면 초기화 하기 위해 전역으로 선언
     Timer timer = new Timer();
     TimerTask timerTask;
@@ -72,51 +81,7 @@ public class AuthActivity extends BasicActivity {
         binding.tvTimerSec.setVisibility(View.GONE);
         ButtonLock(binding.btnSendSMS);
         ButtonLock(binding.btnVerifyCode);
-        firebaseAuth = FirebaseAuth.getInstance();
 
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-
-                signInWithPhoneAuthCredential(phoneAuthCredential);
-                Log.e("AuthActivity", "::onVerificationCompleted 실행");
-                Toast.makeText(AuthActivity.this, "인증되었습니다.", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onVerificationFailed(@NonNull FirebaseException e) {
-                // ProgressBar 제거
-                binding.progressBar.setVisibility(View.GONE);
-                Toast.makeText(AuthActivity.this, "번호를 올바르게 입력해 주세요.", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                super.onCodeSent(verificationId, forceResendingToken);
-                binding.tvResend.setVisibility(View.VISIBLE);
-                binding.tvVerifyCode.setVisibility(View.VISIBLE);
-                binding.etVerifyCode.setVisibility(View.VISIBLE);
-                binding.btnVerifyCode.setVisibility(View.VISIBLE);
-                binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
-                binding.btnSendSMS.setEnabled(false);
-                binding.etPhoneSignup.setEnabled(false);
-                binding.etPhoneSignup.setTextColor(Color.parseColor("#9A9A9A"));
-
-                binding.etVerifyCode.requestFocus();
-
-                // progressBar 제거
-                binding.progressBar.setVisibility(View.GONE);
-
-                mVerificationId = verificationId;
-                forceResendingToken = token;
-
-                //키보드 보이게 하는 부분
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
-                TimerStart();
-            }
-        };
 
         /* 전화번호 입력란 글자수 리스너 입니다 */
         binding.etPhoneSignup.addTextChangedListener(new TextWatcher() {
@@ -182,15 +147,14 @@ public class AuthActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 // 010부터 받은 전화번호를 +8210... 으로 변환해준다.
-                String phoneNum = "+82" + binding.etPhoneSignup.getText().toString().trim().substring(1);
-                Toast.makeText(AuthActivity.this, phoneNum, Toast.LENGTH_SHORT).show();
+                totalPhoneNum = "+82" + binding.etPhoneSignup.getText().toString();
 
                 // 키보드 내리기
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.etPhoneSignup.getWindowToken(), 0);
 
                 // 문자 전송
-                startPhoneNumberVerification(phoneNum);
+                startPhoneNumberVerification();
 
                 // progressBar 실행
                 binding.progressBar.setVisibility(View.VISIBLE);
@@ -219,7 +183,7 @@ public class AuthActivity extends BasicActivity {
             @Override
             public void onClick(View v) {
                 String codeNum = binding.etVerifyCode.getText().toString().trim();
-                verifyCode(mVerificationId, codeNum);
+                verifyCode(codeNum);
 
                 // 에러 메세지 숨기기
                 binding.ivError.setVisibility(View.GONE);
@@ -331,7 +295,8 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 문자 전송 함수 */
-    private void startPhoneNumberVerification(String phoneNum) {
+    /* Firebase PhoneNumberVerification */
+    /*private void startPhoneNumberVerification(String phoneNum) {
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(firebaseAuth)
                         .setPhoneNumber(phoneNum)
@@ -340,23 +305,56 @@ public class AuthActivity extends BasicActivity {
                         .setCallbacks(mCallbacks)
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-    }
+    }*/
 
+    /* twilio PhoneNumberVerification */
+    public void startPhoneNumberVerification(){
+        try {
+            String phoneNum = binding.etPhoneSignup.getText().toString();
+            Log.e("phoneNum", phoneNum);
+            PhoneNumberDto phoneNumberDto = new PhoneNumberDto(phoneNum);
+
+            URL url = new URL("http://www.ordering.ml/api/customer/verification/get");
+            HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
+
+            /* 3.15 오늘의 교훈 http 요청은 쓰레드 새로 파서 하자!!!!!!!!!!!!!!!!!!!!!!!!!! 꼭!!!!!!!!! */
+            // 안드로이드는 기본적으로 https 프로토콜만 지원함 http를 사용하려면 예외 처리를 해주어야 한다
+            // 매니페스트에서 cleartext HTTP를 활성화 시켜주면 끝!
+            new Thread() {
+                public void run() {
+                    ResultDto<Boolean> result = httpApi.requestToServer(phoneNumberDto);
+                    if(result.getData()){
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onCodeSent();
+                            }
+                        });
+                    }else{
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.progressBar.setVisibility(View.GONE);
+                            Toast.makeText(AuthActivity.this, "이미 가입된 전화번호 입니다.", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(AuthActivity.this, StartActivity.class));
+                            finish();
+                        }
+                    });
+                    }
+                }
+            }.start();
+
+        } catch ( MalformedURLException e) {
+            Log.e("e = " , e.getMessage());
+        }
+    }
 
     /* 인증번호 재전송 함수 */
     private void ResendVerificationCode(String phoneNum, PhoneAuthProvider.ForceResendingToken token) {
         // ProgressBar 실행
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(firebaseAuth)
-                        .setPhoneNumber(phoneNum)
-                        .setTimeout(120L, TimeUnit.SECONDS)
-                        .setActivity(this)
-                        .setCallbacks(mCallbacks)
-                        .setForceResendingToken(token)
-                        .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
+        startPhoneNumberVerification();
 
         // 타이머 초기화
         if (timerTask != null) {
@@ -372,16 +370,88 @@ public class AuthActivity extends BasicActivity {
 
 
     /* 인증번호 확인 함수 */
-    private void verifyCode(String mVerificationId, String codeNum) {
+    private void verifyCode(String codeNum) {
         // ProgressBar 실행
         binding.progressBar.setVisibility(View.VISIBLE);
 
+        /* Firebase
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeNum);
         signInWithPhoneAuthCredential(credential);
+        */
 
+        // twilio
+        try {
+            Log.e("codeNum", codeNum);
+            Log.e("totalPhoneNum", totalPhoneNum);
+            VerificationDto verificationDto = new VerificationDto(totalPhoneNum, codeNum);
+
+            URL url = new URL("http://www.ordering.ml/api/customer/verification/check");
+            HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
+
+            /* 3.15 오늘의 교훈 http 요청은 쓰레드 새로 파서 하자!!!!!!!!!!!!!!!!!!!!!!!!!! 꼭!!!!!!!!! */
+            // 안드로이드는 기본적으로 https 프로토콜만 지원함 http를 사용하려면 예외 처리를 해주어야 한다
+            // 매니페스트에서 cleartext HTTP를 활성화 시켜주면 끝!
+            new Thread() {
+                public void run() {
+                    ResultDto<Boolean> result = httpApi.requestToServer(verificationDto);
+                    if(result.getData()){
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onCodeSuccess();
+                            }
+                        });
+                    }
+                    else{
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Animation error = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
+
+                                // ProgressBar 제거
+                                binding.progressBar.setVisibility(View.GONE);
+
+                                // 에러메세지 출력
+                                binding.ivError.setVisibility(View.VISIBLE);
+                                binding.tvErrorcode.setVisibility(View.VISIBLE);
+
+                                // 에러메세지 애니메이션 실행
+                                binding.ivError.startAnimation(error);
+                                binding.tvErrorcode.startAnimation(error);
+
+                                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                                long[] pattern = {10, 50, 10, 50}; // miliSecond
+                                //               대기,진동,대기,진동
+                                // 짝수 인덱스 : 대기시간
+                                // 홀수 인덱스 : 진동시간
+                                vibrator.vibrate(pattern, -1);
+                                // 0 : 무한반복, -1: 반복없음,
+                                // 양의정수 : 진동패턴배열의 해당 인덱스부터 진동 무한반복
+                                Toast.makeText(AuthActivity.this, "인증번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                                Log.e("resultCode", "False");
+                            }
+                        });
+                    }
+                }
+            }.start();
+
+        } catch ( MalformedURLException e) {
+            Log.e("e = " , e.getMessage());
+        }
     }
 
+    private void onCodeSuccess(){
+        binding.progressBar.setVisibility(View.GONE);
 
+        String phoneNum = totalPhoneNum.trim().substring(3);
+        Toast.makeText(AuthActivity.this, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(AuthActivity.this, SignupActivity.class);
+        intent.putExtra("phoneNum", phoneNum);
+        startActivity(intent);
+
+        FinishWithAnim();
+    }
     /* 계정 생성 함수 */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         // ProgressBar 실행
@@ -451,5 +521,26 @@ public class AuthActivity extends BasicActivity {
         finish();
     }
 
+    public void onCodeSent(){
+        binding.tvResend.setVisibility(View.VISIBLE);
+        binding.tvVerifyCode.setVisibility(View.VISIBLE);
+        binding.etVerifyCode.setVisibility(View.VISIBLE);
+        binding.btnVerifyCode.setVisibility(View.VISIBLE);
+        binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
+        binding.btnSendSMS.setEnabled(false);
+        binding.etPhoneSignup.setEnabled(false);
+        binding.etPhoneSignup.setTextColor(Color.parseColor("#9A9A9A"));
+
+        binding.etVerifyCode.requestFocus();
+
+        // progressBar 제거
+        binding.progressBar.setVisibility(View.GONE);
+
+        //키보드 보이게 하는 부분
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        TimerStart();
+    }
 
 }

@@ -6,8 +6,9 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SignInDto {
+public class OwnerSignUpDto {
 
     private String signInId;
     private String password;
+    private String totalPhoneNum;
 }

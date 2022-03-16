@@ -77,12 +77,12 @@
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
-            android:id="@+id/email"
+            android:id="@+id/tv_memberId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
             android:layout_marginTop="40dp"
-            android:text="@string/EmailSubText"
+            android:text="@string/memberIdSubText"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -90,19 +90,18 @@
             app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
         <EditText
-            android:id="@+id/editTextEmail"
+            android:id="@+id/et_memberId"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#E1695E"
             android:ems="7"
-            android:inputType="textEmailAddress"
             android:textColor="#000000"
             android:textColorHint="#C1C1C1"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/email"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_memberId"
             app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
             app:layout_constraintStart_toStartOf="@+id/editTextNickname"
-            app:layout_constraintTop_toTopOf="@+id/email"
+            app:layout_constraintTop_toTopOf="@+id/tv_memberId"
             tools:ignore="Autofill,LabelFor" />
 
         <ImageView
@@ -111,18 +110,18 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/tv_emailError"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            app:layout_constraintEnd_toStartOf="@+id/tv_idError"
+            app:layout_constraintTop_toBottomOf="@+id/et_memberId"
             app:srcCompat="@drawable/ic_baseline_error_outline_24"
             tools:ignore="ContentDescription"
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/tv_emailError"
+            android:id="@+id/tv_idError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="55dp"
-            android:text="@string/EmailErrorText"
+            android:text="@string/memberIdErrorText"
             android:textColor="#FF1100"
             android:textSize="12sp"
             android:visibility="gone"
@@ -142,7 +141,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_memberId" />
 
         <TextView
             android:id="@+id/passwordCheck"
@@ -213,8 +212,8 @@
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/password"
-            app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
-            app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+            app:layout_constraintEnd_toEndOf="@+id/et_memberId"
+            app:layout_constraintStart_toStartOf="@+id/et_memberId"
             app:layout_constraintTop_toTopOf="@+id/password"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="#E1695E"
@@ -341,12 +340,12 @@
             tools:visibility="visible" />
 
         <ImageView
-            android:id="@+id/iv_emailComplete"
+            android:id="@+id/iv_idComplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/editTextEmail"
-            app:layout_constraintTop_toTopOf="@+id/email"
+            app:layout_constraintStart_toEndOf="@+id/et_memberId"
+            app:layout_constraintTop_toTopOf="@+id/tv_memberId"
             app:srcCompat="@drawable/ic_check"
             tools:ignore="ContentDescription"
             tools:visibility="visible" />

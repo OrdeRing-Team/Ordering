@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,6 +22,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.orderingproject.Dto.CustomerSignUpDto;
+import com.example.orderingproject.Dto.HttpApi;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.VerificationDto;
 import com.example.orderingproject.databinding.ActivitySignupBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
     String phoneNum;
 
     Boolean isNickNameWritten = true;
-    Boolean isEmailWritten = false;
+    Boolean isMemberIdWritten = false;
     Boolean isPasswordWritten = false;
     Boolean isPasswordCheckAccord = false;
 
@@ -74,8 +83,10 @@ public class SignupActivity extends AppCompatActivity {
         // 전화번호 받아온 뒤 표시
         intent = getIntent();
         phoneNum = intent.getStringExtra("phoneNum");
-        String convertedPhoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
-        binding.tvSignupPhoneNum.setText(convertedPhoneNum);
+        Log.e("phoneNum",phoneNum);
+        // String convertedPhoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
+        // String convertedPhoneNum = phoneNum.substring(0, 3) + "-" + phoneNum.substring(3,7) + "-" + phoneNum.substring(7);
+        binding.tvSignupPhoneNum.setText(phoneNum);
 
         ButtonLock(binding.btnSignup);
 
@@ -167,7 +178,7 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         /* 이메일 입력란 변경 리스너 */
-        binding.editTextEmail.addTextChangedListener(new TextWatcher() {
+        binding.etMemberId.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -175,7 +186,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                binding.ivEmailComplete.setVisibility(View.GONE);
+                binding.ivIdComplete.setVisibility(View.GONE);
 
                 checkAllWritten();
             }
@@ -183,28 +194,27 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                String input = binding.editTextEmail.getText().toString();
-                Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
-                if(pattern.matcher(input).matches()){
-                    isEmailWritten = true;
+                String input = binding.etMemberId.getText().toString();
+                if(input.length()> 4 && input.length() < 21){
+                    isMemberIdWritten = true;
                 } else {
-                    isEmailWritten = false;
+                    isMemberIdWritten = false;
                     binding.ivError4.setVisibility(View.VISIBLE);
-                    binding.tvEmailError.setVisibility(View.VISIBLE);
+                    binding.tvIdError.setVisibility(View.VISIBLE);
                 }
-                if(isEmailWritten){
+                if(isMemberIdWritten){
 
                     binding.ivError4.setVisibility(View.GONE);
-                    binding.tvEmailError.setVisibility(View.GONE);
+                    binding.tvIdError.setVisibility(View.GONE);
 
                     // 통과 표시 출력
-                    binding.ivEmailComplete.setVisibility(View.VISIBLE);
+                    binding.ivIdComplete.setVisibility(View.VISIBLE);
 
                     // 통과 애니메이션 실행
-                    binding.ivEmailComplete.startAnimation(complete);
+                    binding.ivIdComplete.startAnimation(complete);
                 }
                 else{
-                    binding.ivEmailComplete.setVisibility(View.GONE);
+                    binding.ivIdComplete.setVisibility(View.GONE);
                 }
 
                 checkAllWritten();
@@ -356,7 +366,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void checkAllWritten(){
-        if(isEmailWritten && isPasswordWritten && isNickNameWritten && isPasswordCheckAccord){
+        if(isMemberIdWritten && isPasswordWritten && isNickNameWritten && isPasswordCheckAccord){
             ButtonRelease(binding.btnSignup);
         }
         else{
@@ -378,91 +388,110 @@ public class SignupActivity extends AppCompatActivity {
     /* 이메일 계정 생성 */
     private void createAccount() {
 
-        String Nickname = binding.editTextNickname.getText().toString();
-        String Email = binding.editTextEmail.getText().toString();
-        String Password = binding.editTextPassword.getText().toString();
+        String nickname = binding.editTextNickname.getText().toString();
+        String memberId = binding.etMemberId.getText().toString();
+        String password = binding.editTextPassword.getText().toString();
+        String phoneNum = binding.tvSignupPhoneNum.getText().toString();
 
         Pattern pattern = android.util.Patterns.EMAIL_ADDRESS;
 
         // 이메일 계정 생성 시작
-        if (pattern.matcher(Email).matches() && Password.length() > 5 && Nickname.length() > 2) {
-            mAuth.createUserWithEmailAndPassword(Email, Password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
+        if (memberId.length() > 4 && memberId.length() < 21 && password.length() > 5 && nickname.length() > 2) {
+//            mAuth.createUserWithEmailAndPassword(Email, Password)
+//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            if (task.isSuccessful()) {
+//
+//                                updateUI(Nickname, Email, Password);
+//                            } else {
+//                                // 실패시
+//                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
+//
+//                                    String Errormsg = task.getException().toString();
+//                                    Log.w(TAG, "이메일 생성 실패", task.getException());
+//                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
+//
+//                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
+//                                    }
+//                            }
+//                        }
+//                    });
+            // twilio
+            try {
+                Log.e("닉네임", nickname);
+                Log.e("아이디", memberId);
+                Log.e("비밀번호", password);
+                Log.e("전화번호", phoneNum);
+                CustomerSignUpDto customerSignUpDto = new CustomerSignUpDto(nickname, memberId, password, phoneNum);
 
-                                updateUI(Nickname, Email, Password);
-                            } else {
-                                // 실패시
-                                    String ErrorEmailAlreadyUse = "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.";
+                URL url = new URL("http://www.ordering.ml/api/customer/signup");
+                HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
 
-                                    String Errormsg = task.getException().toString();
-                                    Log.w(TAG, "이메일 생성 실패", task.getException());
-                                    if (Errormsg.equals(ErrorEmailAlreadyUse)) {
-
-                                        Toast.makeText(SignupActivity.this, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                            }
+                new Thread() {
+                    public void run() {
+                        ResultDto<Boolean> result = httpApi.requestToServer(customerSignUpDto);
+                        if(result.getData() != null){
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateDB(memberId,phoneNum,nickname);
+                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                    finish();
+                                    Log.e(TAG,"회원가입 성공\n아이디:"+memberId+"\n전화번호:" + phoneNum+"\n비밀번호:"+password+"\n닉네임:"+nickname);
+                                    showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
+                                }
+                            });
                         }
-                    });
+                        else{
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.w(TAG, "회원가입 실패");
+                                    showToast(SignupActivity.this,"이미 존재하는 아이디입니다.");
+                                }
+                            });
+                        }
+                    }
+                }.start();
+
+            } catch ( MalformedURLException e) {
+                Toast.makeText(this,"회원가입 도중 일시적인 오류가 발생하였습니다.",Toast.LENGTH_LONG).show();
+                Log.e("e = " , e.getMessage());
+            }
         }
 
     }
 
-    private void updateUI(String Nickname, String Email, String Password) {
+//    private void updateUI(String Nickname, String Email, String Password) {
+//
+//        mAuth.signInWithEmailAndPassword(Email, Password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//
+//                        if (task.isSuccessful()) {
+//                            if(mAuth.getCurrentUser()!=null){
+//                                FirebaseUser user = mAuth.getCurrentUser();
+//                                updateDB(user, phoneNum, Nickname, Email);
+//                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+//                                showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
+//                                finish();
+//                            }
+//                        } else {
+//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+//                            showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
+//                        }
+//                        // ...
+//                    }
+//                });
+//    }
 
-        mAuth.signInWithEmailAndPassword(Email, Password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if (task.isSuccessful()) {
-                            if(mAuth.getCurrentUser()!=null){
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateDB(user, phoneNum, Nickname, Email);
-                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                                showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
-                                finish();
-                            }
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
-                        }
-                        // ...
-                    }
-                });
-    }
-
-    private void updateDB(FirebaseUser user, String phoneNum, String Nickname, String Email) {
-
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        //UserInfo userinfo = new UserInfo(name, birthyear, birthmonth, birthday,followerlist,followinglist,contents);
-
+    private void updateDB(String memberId, String phoneNum, String Nickname) {
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("이메일", Email);
+        userInfo.put("아이디", memberId);
         userInfo.put("휴대폰번호", phoneNum);
         userInfo.put("닉네임", Nickname);
-        userInfo.put("매장정보","False");
-
-        // 새로운 사용자 DB 생성
-        db.collection("users")
-                .document(user.getUid()).set(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, phoneNum + "의 DB 생성 완료  ::  " + user.getUid());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "의 DB 생성 실패", e);
-                    }
-                });
-
     }
 
     @Override

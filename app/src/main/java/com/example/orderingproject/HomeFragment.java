@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    Button button1234;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,14 +45,6 @@ public class HomeFragment extends Fragment {
 
         initButtonClickListener();
 
-        button1234 = view.findViewById(R.id.button1234);
-
-        button1234.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                push();
-            }
-        });
         return view;
     }
 
@@ -76,31 +67,7 @@ public class HomeFragment extends Fragment {
     };
 
 
-    public void push(){
-        Toast.makeText(getActivity(),"버튽1234 클릭" ,Toast.LENGTH_SHORT).show();
-        try {
-            // test obj
-            PhoneNumberDto phoneNumberDto = new PhoneNumberDto();
-            phoneNumberDto.setPhoneNumber("01073868114");
 
-            URL url = new URL("http://www.ordering.ml/api/customer/verification/get");
-            HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
-
-            /* 3.15 오늘의 교훈 http 요청은 쓰레드 새로 파서 하자!!!!!!!!!!!!!!!!!!!!!!!!!! 꼭!!!!!!!!! */
-            // 안드로이드는 기본적으로 https 프로토콜만 지원함 http를 사용하려면 예외 처리를 해주어야 한다
-            // 매니페스트에서 cleartext HTTP를 활성화 시켜주면 끝!
-            new Thread() {
-                public void run() {
-                    ResultDto<Boolean> result = httpApi.requestToServer(phoneNumberDto);
-                }
-            }.start();
-
-            //System.out.println(result.getData());
-
-        } catch ( MalformedURLException e) {
-            Log.e("e = " , e.getMessage());
-        }
-    }
     /* 로그아웃 */
     public void logout() {
         FirebaseAuth.getInstance().signOut();

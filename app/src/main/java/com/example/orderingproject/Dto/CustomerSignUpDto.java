@@ -8,7 +8,7 @@ import lombok.*;
 public class CustomerSignUpDto {
 
     private String nickname;
-    private String email;
+    private String signInId;
     private String password;
-    private String totalPhoneNum;
+    private String phoneNumber;
 }
