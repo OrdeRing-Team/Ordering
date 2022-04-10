@@ -11,4 +11,5 @@
     <color name="et_hint">#858585</color>
     <color name="error">#FF0000</color>
     <color name="blue">#0D70E6</color>
+    <color name="main">#E35555</color>
 </resources>
