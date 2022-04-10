@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/main_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavi" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavi"
         android:layout_width="match_parent"
@@ -13,13 +19,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="#fff"
+        app:itemIconTint="@drawable/menu_selector_color"
+        app:itemTextColor="@drawable/menu_selector_color"
         app:menu="@menu/menu"
         tools:ignore="MissingConstraints" />
+
     <!-- app:layoutVisibilityMode="unlabeled" 아이콘만 보여주고 싶을 때 사용 -->
 
-    <FrameLayout
-        android:id="@+id/main_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 
 </RelativeLayout>
