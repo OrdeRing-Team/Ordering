@@ -7,210 +7,224 @@
     tools:context=".HomeFragment"
     android:background="#F3F3F3">
 
-    <LinearLayout
-        android:id="@+id/logo_layout"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!--로고 텍스트-->
-        <TextView
-            android:id="@+id/tv_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="OrdeRing"
-            android:textColor="@color/main"
-            android:textSize="23sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            android:layout_marginBottom="15dp"/>
-
-    </LinearLayout>
-
-
-
-    <!--이벤트 및 쿠폰 레이아웃 (임시 !!!!)-->
-    <LinearLayout
-        android:id="@+id/layout_event"
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:background="#EAC5C5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_layout">
-
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center"
-            android:text="이벤트 및 쿠폰" />
+            android:layout_height="match_parent">
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/logo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_event">
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="60dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_qr_camera"
-            android:layout_width="177dp"
-            android:layout_height="135dp"
-            android:layout_gravity="center"
-            android:background="@drawable/background_custom"
-            android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:src="@drawable/qr_scan_image" />
+                <!--로고 텍스트-->
+                <TextView
+                    android:id="@+id/tv_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="OrdeRing"
+                    android:textColor="@color/main"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    android:layout_marginBottom="15dp"/>
 
-        <ImageButton
-            android:id="@+id/btn_arranged_store"
-            android:layout_width="177dp"
-            android:layout_height="135dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:background="@drawable/background_custom"
-            android:scaleType="fitCenter"
-            android:layout_weight="1"
-            android:src="@drawable/store_list_image" />
+            </LinearLayout>
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
-        <LinearLayout
-            android:layout_width="177dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/background_custom"
-            android:orientation="vertical">
+            <!--이벤트 및 쿠폰 레이아웃 (임시 !!!!)-->
+            <LinearLayout
+                android:id="@+id/layout_event"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:background="#EAC5C5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logo_layout">
 
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="38dp"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:text="이벤트 및 쿠폰" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="7dp"
-                android:background="@color/fui_transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_favorite_24"
-                app:tint="@color/main" />
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_event">
 
-            <Button
+                <ImageButton
+                    android:id="@+id/btn_qr_camera"
+                    android:layout_width="177dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_custom"
+                    android:scaleType="fitCenter"
+                    android:layout_weight="1"
+                    android:src="@drawable/qr_scan_image" />
+
+                <ImageButton
+                    android:id="@+id/btn_arranged_store"
+                    android:layout_width="177dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/background_custom"
+                    android:scaleType="fitCenter"
+                    android:layout_weight="1"
+                    android:src="@drawable/store_list_image" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_gravity="center"
-                android:background="@color/fui_transparent"
-                android:text="찜한 매장"
-                android:textColor="@color/black" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                <LinearLayout
+                    android:layout_width="177dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_custom"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:background="@color/fui_transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_favorite_24"
+                        app:tint="@color/main" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center"
+                        android:background="@color/fui_transparent"
+                        android:text="찜한 매장"
+                        android:textColor="@color/black" />
 
 
-        </LinearLayout>
+                </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="177dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/background_custom"
-            android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="177dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_custom"
+                    android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="38dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="7dp"
-                android:background="@color/fui_transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_folder_24"
-                app:tint="@color/blue" />
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:background="@color/fui_transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_baseline_folder_24"
+                        app:tint="@color/blue" />
 
-            <Button
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center"
+                        android:background="@color/fui_transparent"
+                        android:text="쿠폰함"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_gravity="center"
-                android:background="@color/fui_transparent"
-                android:text="쿠폰함"
-                android:textColor="@color/black" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="최근에 주문했어요 !"
-        android:textColor="#404040"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.077"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="최근에 주문했어요 !"
+                android:textColor="#404040"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.077"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 
-    <!--최근 주문 매장 (임시 !!!!)-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:background="#DAC1DF">
+            <!--최근 주문 매장 (임시 !!!!)-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                android:background="#DAC1DF">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="최근 주문 매장 리스트" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:text="최근 주문 매장 리스트" />
 
 
-        <!-- 리사이클러뷰 필요 -->
+                <!-- 리사이클러뷰 필요 -->
 
-    </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
