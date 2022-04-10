@@ -19,22 +19,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.orderingproject.Dto.CustomerSignUpDto;
-import com.example.orderingproject.Dto.HttpApi;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.CustomerSignUpDto;
 import com.example.orderingproject.Dto.ResultDto;
-import com.example.orderingproject.Dto.VerificationDto;
+import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.databinding.ActivitySignupBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,6 +36,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -397,10 +396,8 @@ public class SignupActivity extends AppCompatActivity {
         String password = binding.editTextPassword.getText().toString();
         String phoneNum = binding.tvSignupPhoneNum.getText().toString();
 
-
         // 이메일 계정 생성 시작
         if (memberId.length() > 4 && memberId.length() < 21 && password.length() > 5 && nickname.length() > 2) {
-                // twilio
             try {
                 Log.e("닉네임", nickname);
                 Log.e("아이디", memberId);
@@ -408,67 +405,77 @@ public class SignupActivity extends AppCompatActivity {
                 Log.e("전화번호", phoneNum);
                 CustomerSignUpDto customerSignUpDto = new CustomerSignUpDto(nickname, memberId, password, phoneNum);
 
-                URL url = new URL("http://www.ordering.ml/api/customer/signup");
-                HttpApi<Boolean> httpApi = new HttpApi<>(url, "POST");
-
                 new Thread() {
+                    @SneakyThrows
                     public void run() {
-                        ResultDto<Boolean> result = httpApi.requestToServer(customerSignUpDto);
-                        if (result.getData() != null) {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateDB(memberId, phoneNum, nickname);
-                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                                    finish();
-                                    Log.e(TAG, "회원가입 성공\n아이디:" + memberId + "\n전화번호:" + phoneNum + "\n비밀번호:" + password + "\n닉네임:" + nickname);
-                                    showToast(SignupActivity.this, "회원가입을 완료하였습니다.");
+                        // login
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/customer/signup/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        Log.e("aaaaaa","aaaaaaa");
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Long>> call = service.customerSignUp(customerSignUpDto);
+
+                        call.enqueue(new Callback<ResultDto<Long>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<Long>> call, Response<ResultDto<Long>> response) {
+
+                                Log.e("bbbbbbbb","bbbbbbbbbb");
+                                ResultDto<Long> result = response.body();
+                                if(result == null){
+                                    Log.e("result","nullllllllll");
                                 }
-                            });
-                        } else {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.w(TAG, "회원가입 실패");
-                                    showToast(SignupActivity.this, "이미 존재하는 아이디입니다.");
+                                else{
+                                    Log.e("result","notNullllllll");
                                 }
-                            });
-                        }
+                                if (response.isSuccessful()) {
+                                    Log.e("xxxxxx","xxxxxxx");
+                                    if (result.getData() != null) {
+                                        Log.e("cccc","cccccc");
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                Log.e("dddddddd","ddddddddd");
+                                                updateDB(memberId, phoneNum, nickname);
+                                                startActivity(new Intent(SignupActivity.this, StartActivity.class));
+                                                finish();
+                                                showToast(SignupActivity.this, "회원가입을 완료하였습니다.");
+                                            }
+                                        });
+                                    } else {
+                                        Log.e("eeeeee","eeeeee");
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Log.e("fffff","ffffff");
+                                                Log.w(TAG, "회원가입 실패");
+                                                showToast(SignupActivity.this, "이미 존재하는 아이디입니다.");
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+                                Log.e("ggggg","gggggg");
+                                Toast.makeText(SignupActivity.this,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요1111",Toast.LENGTH_LONG).show();
+                                Log.e("e = " , t.getMessage());
+                            }
+                        });
                     }
                 }.start();
 
-            } catch (MalformedURLException e) {
-                Toast.makeText(this, "회원가입 도중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                Log.e("e = ", e.getMessage());
+            } catch (Exception e) {
+                Log.e("hhhhhhh","hhhhhhh");
+                Toast.makeText(SignupActivity.this,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                Log.e("e = " , e.getMessage());
             }
-
         }
 
     }
-
-//    private void updateUI(String Nickname, String Email, String Password) {
-//
-//        mAuth.signInWithEmailAndPassword(Email, Password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                        if (task.isSuccessful()) {
-//                            if(mAuth.getCurrentUser()!=null){
-//                                FirebaseUser user = mAuth.getCurrentUser();
-//                                updateDB(user, phoneNum, Nickname, Email);
-//                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
-//                                showToast(SignupActivity.this,"회원가입을 완료하였습니다.");
-//                                finish();
-//                            }
-//                        } else {
-//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            showToast(SignupActivity.this,"회원가입에 실패하였습니다.");
-//                        }
-//                        // ...
-//                    }
-//                });
-//    }
 
     private void updateDB(String memberId, String phoneNum, String Nickname) {
         Map<String, Object> userInfo = new HashMap<>();
