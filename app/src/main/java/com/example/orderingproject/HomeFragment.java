@@ -31,15 +31,25 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
 
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        goStore();
 
         return view;
     }
 
-
+    private void goStore() {
+        binding.btnStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(getActivity(), StoresActivity.class);
+                startActivity(intent);
+                getActivity().finish();   //현재 액티비티 종료
+            }
+        });
+    }
 
 
 }

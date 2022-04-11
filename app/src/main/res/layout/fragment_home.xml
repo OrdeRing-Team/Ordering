@@ -106,7 +106,7 @@
                     android:src="@drawable/qr_scan_image" />
 
                 <ImageButton
-                    android:id="@+id/btn_arranged_store"
+                    android:id="@+id/btn_store"
                     android:layout_width="177dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"
