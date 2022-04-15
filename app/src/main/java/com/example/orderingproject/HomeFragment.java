@@ -6,12 +6,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.orderingproject.Dto.EventDto;
+import com.example.orderingproject.Dto.EventsDto;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,8 +41,11 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        // progressBar를 위해 ui 완료될 때 까지 숨김
+        binding.scrollView.setVisibility(View.GONE);
+        showProgress();
+
         goStore();
-        initViews();
         initData();
         return view;
     }
@@ -56,11 +61,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void initViews(){
-        ArrayList<String> eventList = new ArrayList<>();
-        eventList.add("asdasd");
-        binding.vpEvent.setAdapter(new EventPagerAdapter(eventList,getActivity()));
-    }
 
     private void initData(){
         // 이벤트,쿠폰 배너에 사용되는 remoteConfig
@@ -75,32 +75,57 @@ public class HomeFragment extends Fragment {
                 .build();
         remoteConfig.setConfigSettingsAsync(configSettings);
 
-
         remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<Boolean>() {
                     @Override
                     public void onComplete(@NonNull Task<Boolean> task) {
                         if (task.isSuccessful()) {
                             // fetchAndActivate가 성공 했을 때
-                            List<EventDto> eventDto = parseEventsJson(remoteConfig.getString("imageUrl"));
+                            try {
+                                List<EventsDto> eventDto = parseEventsJson(remoteConfig.getString("events"));
+                                EventPagerAdapter adapter = new EventPagerAdapter((ArrayList<EventsDto>) eventDto,getActivity());
+                                binding.vpEvent.setAdapter(adapter);
+                                binding.vpEvent.setCurrentItem(adapter.getItemCount()/2 -1,false);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         } else {
-                            Toast.makeText(getActivity(), "Fetch failed",
+                            Toast.makeText(getActivity(), "배너 로딩 중 오류가 발생했습니다.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
+        hideProgress();
+        binding.scrollView.setVisibility(View.VISIBLE);
+        Log.e("fetch&Activate","Completed");
     }
 
-    private List<EventDto> parseEventsJson(String json) throws JSONException {
+    private List<EventsDto> parseEventsJson(String json) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
-        List<JSONObject> jsonList = new ArrayList<>();
+        List<EventsDto> urls = new ArrayList<>();
         for(int index = 0; index < jsonArray.length(); index++){
             JSONObject jsonObject = jsonArray.getJSONObject(index);
             if(jsonObject != null){
-                jsonList.add(jsonObject);
+                EventsDto eventsDto = new EventsDto();
+                JSONObject object = (JSONObject) jsonArray.get(index);
+                String imageUrl = (String)object.get("imageUrl");
+                String loadUrl = (String)object.get("loadUrl");
+                eventsDto.setUrls(imageUrl,loadUrl);
+                urls.add(eventsDto);
             }
         }
+        return urls;
+    }
 
-        return
+    public void showProgress(){
+        binding.progressBar.setVisibility(View.VISIBLE);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public void hideProgress(){
+        binding.progressBar.setVisibility(View.GONE);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }
