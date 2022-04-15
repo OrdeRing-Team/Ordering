@@ -62,24 +62,17 @@
 
 
             <!--이벤트 및 쿠폰 레이아웃 (임시 !!!!)-->
-            <LinearLayout
-                android:id="@+id/layout_event"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_event"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="200dp"
                 android:background="#EAC5C5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/logo_layout">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    android:text="이벤트 및 쿠폰" />
 
-            </LinearLayout>
+            </androidx.viewpager2.widget.ViewPager2>
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -93,7 +86,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_event">
+                app:layout_constraintTop_toBottomOf="@+id/vp_event">
 
                 <ImageButton
                     android:id="@+id/btn_qr_camera"
