@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     int currentPage = SplashActivity.adapter.getItemCount() / 2;
 
     Timer timer;
-    final long DELAY_MS = 3000;           // (초기 웨이팅 타임) ex) 앱 로딩 후 3초 뒤 플립됨.
+    final long DELAY_MS = 5000;           // (초기 웨이팅 타임) ex) 앱 로딩 후 5초 뒤 플립됨.
     final long PERIOD_MS = 5000;          // 5초 주기로 배너 이동
     GestureDetector detector; // 배너 터치 감지
     @Override
@@ -86,6 +86,13 @@ public class HomeFragment extends Fragment {
                     // 2페이지에서 사용자가 1페이지로 슬라이드 했을 때
                     // 자동 스크롤 시 다음 페이지를 3번이 아닌 2번으로 다시 바꿔줌
                     currentPage = position;
+                    if(timer != null){
+                        // 타이머 종료 후 재실
+                        timer.cancel();
+                        timer = null;
+
+                        timerStart();
+                    }
                 }
             });
         } else {
