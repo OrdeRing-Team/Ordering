@@ -43,10 +43,13 @@ public class HomeFragment extends Fragment {
 
     int currentPage = SplashActivity.adapter.getItemCount() / 2;
 
+    String eventPageDescript;
+    int listSize;
+
     Timer timer;
-    final long DELAY_MS = 5000;           // (초기 웨이팅 타임) ex) 앱 로딩 후 5초 뒤 플립됨.
-    final long PERIOD_MS = 5000;          // 5초 주기로 배너 이동
-    GestureDetector detector; // 배너 터치 감지
+    final long DELAY_MS = 5000;  // (초기 웨이팅 타임) ex) 앱 로딩 후 5초 뒤 플립됨.
+    final long PERIOD_MS = 5000; // 5초 주기로 배너 이동
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class HomeFragment extends Fragment {
         view = binding.getRoot();
 
         initData();
+        initViews();
         goStore();
         return view;
     }
@@ -72,6 +76,8 @@ public class HomeFragment extends Fragment {
 
     private void initData() {
         if (SplashActivity.adapter != null) {
+            this.listSize = SplashActivity.listSize;
+
             binding.vpEvent.setAdapter(SplashActivity.adapter);
             Log.e("adapterItemCount", Integer.toString(SplashActivity.adapter.getItemCount()));
 
@@ -82,7 +88,7 @@ public class HomeFragment extends Fragment {
                 public void onPageSelected(int position) {
                     super.onPageSelected(position);
                     // 스크롤 했을 때 현재 페이지를 설정해준다.
-                    // 자동 스크롤의 경우 currentPage의 변수값을 현재 position으로 잡는데
+                    // 자동 스크롤의 경우 currentPage의 변수 값을 현재 position으로 잡는데
                     // 2페이지에서 사용자가 1페이지로 슬라이드 했을 때
                     // 자동 스크롤 시 다음 페이지를 3번이 아닌 2번으로 다시 바꿔줌
                     currentPage = position;
@@ -93,12 +99,23 @@ public class HomeFragment extends Fragment {
 
                         timerStart();
                     }
+
+                    // 페이지가 스크롤(자동스크롤, 사용자 직접 스크롤 모두 포함)될 때마다 페이지 번호를 갱신
+                    eventPageDescript = getString(R.string.EventViewPagerDescript, position % listSize+1, listSize);
+
+                    binding.tvPagenum.setText(eventPageDescript);
                 }
             });
         } else {
             Toast.makeText(getActivity(), "배너 로딩 중 오류가 발생했습니다.",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initViews(){
+        // 초기 실행 시 페이지는 1번으로 설정하고, 그 이후는 initData()의 onPageSelected를 따름
+        eventPageDescript = getString(R.string.EventViewPagerDescript,1, listSize);
+        binding.tvPagenum.setText(eventPageDescript);
     }
 
     @Override

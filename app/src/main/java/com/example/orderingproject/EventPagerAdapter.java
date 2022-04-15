@@ -43,7 +43,6 @@ public class EventPagerAdapter extends RecyclerView.Adapter<EventPagerAdapter.Ev
         // 각 position에 해당하는 url을 리스트로부터 받아온다.
         String imageUrl = eventList.get(actualPosition).getImageUrl();
         String loadUrl = eventList.get(actualPosition).getLoadUrl();
-
         // 해당 url 값으로 이미지를 배치시킨다.
         Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.ivEvent);
 
@@ -72,6 +71,7 @@ public class EventPagerAdapter extends RecyclerView.Adapter<EventPagerAdapter.Ev
     public class EventViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivEvent;
+        TextView tvPageNum;
 
         public EventViewHolder(@NonNull View view) {
             super(view);

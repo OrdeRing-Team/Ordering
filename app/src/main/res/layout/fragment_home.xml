@@ -84,6 +84,19 @@
 
             </androidx.viewpager2.widget.ViewPager2>
 
+            <TextView
+                android:id="@+id/tv_pagenum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/vp_event"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:background="@drawable/round_background"/>
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"

@@ -28,6 +28,7 @@ import java.util.List;
 public class SplashActivity extends Activity {
 
     public static EventPagerAdapter adapter;
+    public static int listSize;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -88,7 +89,7 @@ public class SplashActivity extends Activity {
                             try {
                                 List<EventsDto> eventDto = parseEventsJson(remoteConfig.getString("events"));
                                 adapter = new EventPagerAdapter((ArrayList<EventsDto>) eventDto,getApplicationContext());
-
+                                listSize = eventDto.size();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
