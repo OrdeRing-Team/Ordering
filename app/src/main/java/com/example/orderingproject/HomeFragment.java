@@ -1,13 +1,18 @@
 package com.example.orderingproject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -27,6 +32,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends Fragment {
 
@@ -34,6 +41,12 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
+    int currentPage = SplashActivity.adapter.getItemCount() / 2;
+
+    Timer timer;
+    final long DELAY_MS = 3000;           // (초기 웨이팅 타임) ex) 앱 로딩 후 3초 뒤 플립됨.
+    final long PERIOD_MS = 5000;          // 5초 주기로 배너 이동
+    GestureDetector detector; // 배너 터치 감지
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,11 +73,61 @@ public class HomeFragment extends Fragment {
     private void initData() {
         if (SplashActivity.adapter != null) {
             binding.vpEvent.setAdapter(SplashActivity.adapter);
-            Log.e("adapterItemCount",Integer.toString(SplashActivity.adapter.getItemCount()));
-            binding.vpEvent.setCurrentItem(SplashActivity.adapter.getItemCount() / 2, false);
-        }else{
+            Log.e("adapterItemCount", Integer.toString(SplashActivity.adapter.getItemCount()));
+
+            binding.vpEvent.setCurrentItem(currentPage, false);
+
+            binding.vpEvent.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    // 스크롤 했을 때 현재 페이지를 설정해준다.
+                    // 자동 스크롤의 경우 currentPage의 변수값을 현재 position으로 잡는데
+                    // 2페이지에서 사용자가 1페이지로 슬라이드 했을 때
+                    // 자동 스크롤 시 다음 페이지를 3번이 아닌 2번으로 다시 바꿔줌
+                    currentPage = position;
+                }
+            });
+        } else {
             Toast.makeText(getActivity(), "배너 로딩 중 오류가 발생했습니다.",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        timerStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // 다른 탭으로 이동 시 타이머 중지시킴
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    private void timerStart() {
+        // Adapter 세팅 후 타이머 실행
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                int nextPage = currentPage + 1;
+                binding.vpEvent.setCurrentItem(nextPage, true);
+                currentPage = nextPage;
+            }
+        };
+        timer = new Timer();
+        // thread에 작업용 thread 추가
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
     }
 }
