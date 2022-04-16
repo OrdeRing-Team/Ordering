@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,18 +39,27 @@ public class EventPagerAdapter extends RecyclerView.Adapter<EventPagerAdapter.Ev
     @Override
     public void onBindViewHolder(@NonNull EventPagerAdapter.EventViewHolder holder, int position) {
         // infinite View Pager를 위한 position 변수
-        int actualPosition = position % eventList.size();
+        int actualPosition = holder.getBindingAdapterPosition() % eventList.size();
 
         // 각 position에 해당하는 url을 리스트로부터 받아온다.
         String imageUrl = eventList.get(actualPosition).getImageUrl();
         String loadUrl = eventList.get(actualPosition).getLoadUrl();
+        String title = eventList.get(actualPosition).getTitle();
+
         // 해당 url 값으로 이미지를 배치시킨다.
         Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.ivEvent);
 
         holder.ivEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"actualpos:"+actualPosition+", position:"+position +"\nloadUrl:"+loadUrl,Toast.LENGTH_LONG).show();
+//                Toast.makeText(context,"actualpos:"+actualPosition+", position:"+holder.getBindingAdapterPosition() +"\nloadUrl:"+loadUrl,Toast.LENGTH_SHORT).show();
+                Log.e("title",title);
+
+                Intent intent = new Intent(context,EventWebView.class);
+                intent.putExtra("title",title);
+                intent.putExtra("url",loadUrl);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
     }

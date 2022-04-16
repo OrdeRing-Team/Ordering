@@ -109,7 +109,8 @@ public class SplashActivity extends Activity {
                 JSONObject object = (JSONObject) jsonArray.get(index);
                 String imageUrl = (String)object.get("imageUrl");
                 String loadUrl = (String)object.get("loadUrl");
-                eventsDto.setUrls(imageUrl,loadUrl);
+                String title = (String)object.get("title");
+                eventsDto.setUrls(imageUrl,loadUrl, title);
                 urls.add(eventsDto);
             }
         }

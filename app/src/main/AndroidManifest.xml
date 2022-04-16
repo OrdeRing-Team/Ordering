@@ -51,6 +51,9 @@
         <activity
             android:name=".SignupActivity"
             android:exported="true" />
+        <activity
+            android:name=".EventWebView"
+            android:exported="true" />
     </application>
 
 </manifest>
