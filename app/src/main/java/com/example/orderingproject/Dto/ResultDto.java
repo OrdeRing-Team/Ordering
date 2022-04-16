@@ -9,4 +9,8 @@ public class ResultDto<T> {
 
     private int size;
     private T data;
+
+    public T getData(){
+        return data;
+    }
 }

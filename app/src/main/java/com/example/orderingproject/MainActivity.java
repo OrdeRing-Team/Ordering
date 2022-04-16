@@ -3,6 +3,8 @@ package com.example.orderingproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.orderingproject.Dto.EventsDto;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView; //바텀네비뷰
     private ActivityMainBinding binding;
 
+    static ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
+
+        progressBar = binding.progressBar;
 
         //처음화면
         getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new HomeFragment()).commit(); //FrameLayout에 QrFragment.xml띄우기
@@ -76,14 +82,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void showProgress(){
-        binding.progressBar.setVisibility(View.VISIBLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+    public static void showProgress(Activity activity){
+        progressBar.setVisibility(View.VISIBLE);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    public void hideProgress(){
-        binding.progressBar.setVisibility(View.GONE);
-        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    public static void hideProgress(Activity activity){
+        progressBar.setVisibility(View.GONE);
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public static void showToast(Activity activity, String msg){
+        Toast.makeText(activity, msg,Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showLongToast(Activity activity, String msg){
+        Toast.makeText(activity, msg,Toast.LENGTH_LONG).show();
     }
 }

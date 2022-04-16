@@ -23,6 +23,10 @@ public interface RetrofitService {
    	@POST("/api/customer/signin")
 	Call<ResultDto<CustomerSignInResultDto>> customerSignIn(@Body SignInDto signInDto);
 
+	// 회원탈퇴
+	@DELETE("/api/customer/{customerId}")
+	Call<ResultDto<Boolean>> deleteaccount(@Path("customerId") Long customerId);
+
    	// 회원가입
 	@POST("/api/customer/signup")
 	Call<ResultDto<Long>> customerSignUp(@Body CustomerSignUpDto customerSignUpDto);
