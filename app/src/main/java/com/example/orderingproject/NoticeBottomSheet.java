@@ -1,5 +1,6 @@
 package com.example.orderingproject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,9 @@ import com.example.orderingproject.databinding.BottomSheetDialogLoginBinding;
 import com.example.orderingproject.databinding.BottomSheetDialogNoticeBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.annotation.Nullable;
 
 import lombok.SneakyThrows;
@@ -47,7 +51,9 @@ public class NoticeBottomSheet extends BottomSheetDialogFragment {
 
     private View view;
 
-    SharedPreferences loginSP;
+    String todaySDFormat = "0";
+
+    SharedPreferences noticeShow;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -55,11 +61,18 @@ public class NoticeBottomSheet extends BottomSheetDialogFragment {
         view = binding.getRoot();
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
 
+        initData();
         bindViews();
-
         initListener();
 
         return view;
+    }
+
+    public void initData(){
+
+        // 현재 시간을 파라미터로 넘김
+        // NoticeInfo의 getDate 메소드는 long 형의 현재시간을 받아 날짜를 계산하여 String형으로 반환
+        todaySDFormat = NoticeInfo.getDate(System.currentTimeMillis());
     }
 
     public void bindViews(){
@@ -78,7 +91,21 @@ public class NoticeBottomSheet extends BottomSheetDialogFragment {
        binding.tvDontshow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                // 오늘 하루 그만보기 코드
+                // 현재 시간을 통해 오늘 날짜를 구함
+                // 오늘 날짜를 dd 포맷으로 변환(18)한 뒤 SharedPreferences에 저장
+                // 만약 내일(19) 다시 접속 했다면 SharedPrefereces값과 비교 한 뒤 뺀다.
+                // 뺀 결과 값이 1이므로 날짜가 다름 -> 공지 띄움
+                // 뺀 결과 값이 0이면 같은 날 이므로 공지 안띄움
+                // SplashActivity의 getNoticeSP 메소드 참고 할 것
 
+                noticeShow = getActivity().getSharedPreferences("notice", Activity.MODE_PRIVATE);
+
+                SharedPreferences.Editor autoLoginEdit = noticeShow.edit();
+                autoLoginEdit.putString("show", todaySDFormat);
+                autoLoginEdit.commit();
+
+                dismiss();
             }
         });
 

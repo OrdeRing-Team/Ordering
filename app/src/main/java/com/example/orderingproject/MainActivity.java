@@ -83,13 +83,21 @@ public class MainActivity extends BasicActivity {
     }
 
     public void initData(){
-        // 공지 데이터
+        Log.e("NoticeInfo",Boolean.toString(NoticeInfo.getShow()));
+
+        // NoticeDialog 띄울지 여부
+        if(NoticeInfo.getShow()) initNoticeDialog();
+    }
+
+    public void initNoticeDialog(){
+        // "닫기"만 눌렀을 때는 앱을 재실행하면 다시 뜨도록 설정해야 하니까 true로 초기화
+        NoticeInfo.setShow(true);
+
         if(NoticeInfo.getNoticeImageUrl() != null && NoticeInfo.getShow()){
             NoticeBottomSheet noticeBottomSheet = new NoticeBottomSheet();
             noticeBottomSheet.show(getSupportFragmentManager(), "bottomSheet");
         }
     }
-
     public static void showProgress(Activity activity){
         progressBar.setVisibility(View.VISIBLE);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,

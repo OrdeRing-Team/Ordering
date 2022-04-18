@@ -45,7 +45,8 @@ public class SplashActivity extends Activity {
     public static int listSize;
 
     SharedPreferences loginSP;
-    String memberId, password;
+    SharedPreferences noticeSP;
+    String memberId, password, notice;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -65,6 +66,25 @@ public class SplashActivity extends Activity {
         password = loginSP.getString("password", null);
 
         return (memberId != null && password != null);
+    }
+
+    private void getNoticeSP(){
+        // 1. SP에서 날짜를 가져옴
+        noticeSP = getSharedPreferences("notice", Activity.MODE_PRIVATE);
+
+        // 2. 최근에 저장한 날짜("show")를 가져온다. 없다면 default값은 0이다.
+        notice = noticeSP.getString("show", "0");
+
+        // 현재 날짜 'dd'형태의 String값으로 저장
+        String today = NoticeInfo.getDate(System.currentTimeMillis());
+
+        // 현재 날짜 - SP에 저장된 날짜
+        // 만약 0이 아니라면 "오늘 하루 그만보기"를 누른 날과 오늘이 다르다는 것임
+        int noticeData = Integer.parseInt(today) - Integer.parseInt(notice);
+
+        // noticeData 값이 0이 아니면 setShow(true), 맞으면 setShow(false)로 설정
+        NoticeInfo.setShow(noticeData != 0);
+        // 이 값을 가지고 MainActivity에서 조건문을 실행한다.
     }
 
     private void startLoading() {
@@ -114,6 +134,7 @@ public class SplashActivity extends Activity {
                                     public void run() {
                                         UserInfo.setUserInfo(result.getData(), memberId);
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
                                         finish();
                                     }
                                 });
@@ -165,7 +186,7 @@ public class SplashActivity extends Activity {
         // 이벤트,쿠폰 배너에 사용되는 remoteConfig
         // remoteConfig를 통해 이미지 url(파베 스토리지에 업로드된 사진)을 실시간 가져온다.
         // 기본적으로 Fetch의 시간 간격은 12시간이다.
-        // 앱 사용자가 remoteConfig를 한번 받아오면 12시간 동안은 최신화 할 수 없다는 말이다
+        // 앱 사용자가 remoteConfig를 한번 받아오면 그 사용자는 12시간 동안은 최신화 할 수 없다는 말이다
         // 지금은 Test단계이기 때문에 0으로 설정 <- 바로바로 최신화가 반영됨
         // 너무 많은 요청 시 파베 자체에서 앱을 블락 시킬 수 있기 때문에 개발을 마친 상황에선 시간을 조정해야함
         FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
@@ -181,12 +202,12 @@ public class SplashActivity extends Activity {
                         if (task.isSuccessful()) {
                             // fetchAndActivate가 성공 했을 때
                             try {
-                                // 배너 Dto
+                                // 배너 remoteConfig
                                 List<EventsDto> eventDto = parseEventsJson(remoteConfig.getString("events"));
                                 adapter = new EventPagerAdapter((ArrayList<EventsDto>) eventDto,getApplicationContext());
                                 listSize = eventDto.size();
 
-                                // 공지 Dto
+                                // 공지 remoteConfig
                                 // 아래 함수에서 바로 setting
                                 parseNoticeJson(remoteConfig.getString("notice"));
 
@@ -197,6 +218,9 @@ public class SplashActivity extends Activity {
                     }
                 });
         Log.e("fetch&Activate","Completed");
+
+        // SharedPrefereces에 저장되어 있는 "오늘 하루 그만보기" 값 가져오기
+        getNoticeSP();
     }
 
     private List<EventsDto> parseEventsJson(String json) throws JSONException {
@@ -227,7 +251,7 @@ public class SplashActivity extends Activity {
                 String loadUrl = (String)object.get("loadUrl");
                 String title = (String)object.get("title");
 
-                // 바로 NoticeDto Setting
+                // NoticeInfo 초기화 & NoticeDto Setting
                 NoticeInfo.setNoticeInfo(imageUrl,loadUrl, title);
             }
         }
