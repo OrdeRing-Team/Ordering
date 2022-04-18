@@ -32,7 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BasicActivity {
 
     BottomNavigationView bottomNavigationView; //바텀네비뷰
     private ActivityMainBinding binding;
@@ -79,8 +79,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        initData();
     }
 
+    public void initData(){
+        // 공지 데이터
+        if(NoticeInfo.getNoticeImageUrl() != null && NoticeInfo.getShow()){
+            NoticeBottomSheet noticeBottomSheet = new NoticeBottomSheet();
+            noticeBottomSheet.show(getSupportFragmentManager(), "bottomSheet");
+        }
+    }
 
     public static void showProgress(Activity activity){
         progressBar.setVisibility(View.VISIBLE);

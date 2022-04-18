@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -19,9 +20,11 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.orderingproject.Dto.EventsDto;
+import com.example.orderingproject.databinding.BottomSheetDialogNoticeBinding;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.JsonObject;
@@ -75,6 +78,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initData() {
+        // 배너 데이터
         if (SplashActivity.adapter != null) {
             this.listSize = SplashActivity.listSize;
 
@@ -110,6 +114,7 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getActivity(), "배너 로딩 중 오류가 발생했습니다.",
                     Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void initViews(){

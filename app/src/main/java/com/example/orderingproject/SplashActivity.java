@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.orderingproject.Dto.EventsDto;
+import com.example.orderingproject.Dto.NoticeDto;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.SignInDto;
@@ -180,9 +181,15 @@ public class SplashActivity extends Activity {
                         if (task.isSuccessful()) {
                             // fetchAndActivate가 성공 했을 때
                             try {
+                                // 배너 Dto
                                 List<EventsDto> eventDto = parseEventsJson(remoteConfig.getString("events"));
                                 adapter = new EventPagerAdapter((ArrayList<EventsDto>) eventDto,getApplicationContext());
                                 listSize = eventDto.size();
+
+                                // 공지 Dto
+                                // 아래 함수에서 바로 setting
+                                parseNoticeJson(remoteConfig.getString("notice"));
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -210,6 +217,21 @@ public class SplashActivity extends Activity {
         return urls;
     }
 
+    private void parseNoticeJson(String json) throws JSONException {
+        JSONArray jsonArray = new JSONArray(json);
+        for(int index = 0; index < jsonArray.length(); index++){
+            JSONObject jsonObject = jsonArray.getJSONObject(index);
+            if(jsonObject != null){
+                JSONObject object = (JSONObject) jsonArray.get(index);
+                String imageUrl = (String)object.get("noticeImage");
+                String loadUrl = (String)object.get("loadUrl");
+                String title = (String)object.get("title");
+
+                // 바로 NoticeDto Setting
+                NoticeInfo.setNoticeInfo(imageUrl,loadUrl, title);
+            }
+        }
+    }
     private void startLoginActivity(){
         Intent intent= new Intent(getApplicationContext(), StartActivity.class);
         startActivity(intent);
