@@ -81,6 +81,19 @@ public class NoticeBottomSheet extends BottomSheetDialogFragment {
 
             }
         });
+
+       binding.ivNotice.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent(getActivity(),EventWebView.class);
+               intent.putExtra("title",NoticeInfo.getTitle());
+               intent.putExtra("url",NoticeInfo.getLoadUrl());
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               getActivity().startActivity(intent);
+
+               dismiss();
+           }
+       });
     }
 
 }
