@@ -234,7 +234,13 @@ public class SplashActivity extends Activity {
                 String imageUrl = (String)object.get("imageUrl");
                 String loadUrl = (String)object.get("loadUrl");
                 String title = (String)object.get("title");
-                eventsDto.setUrls(imageUrl,loadUrl, title);
+                // 폰에서는 에러없이 gif가 실행이 됨 근데 애뮬에서는 이상하게 JsonException이 뜸
+                // (해결) 앱 삭제 후 다시 까니까 됨;;
+                // optString은 name이 "gif"인 값을 불러오되, null값이면 2번째 파라미터를 디폴트로 할당함
+                String gif = object.optString("isGif", "false");
+//                String gif = (String)object.get("isGif");
+
+                eventsDto.setUrls(imageUrl,loadUrl, title, gif);
                 urls.add(eventsDto);
             }
         }

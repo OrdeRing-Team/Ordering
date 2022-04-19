@@ -45,9 +45,13 @@ public class EventPagerAdapter extends RecyclerView.Adapter<EventPagerAdapter.Ev
         String imageUrl = eventList.get(actualPosition).getImageUrl();
         String loadUrl = eventList.get(actualPosition).getLoadUrl();
         String title = eventList.get(actualPosition).getTitle();
+        boolean gif = eventList.get(actualPosition).getGif();
 
         // 해당 url 값으로 이미지를 배치시킨다.
-        Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.ivEvent);
+        // gif 값이 true이면 url이 gif파일을 갖고 있으므로 따로 세팅해야한다.
+        // viewpager의 ImageView에는 gif파일을 재생하려면 따로 설정해야 하는듯 하다.
+        if(gif) Glide.with(holder.itemView.getContext()).asGif().load(imageUrl).into(holder.ivEvent);
+        else Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.ivEvent);
 
         holder.ivEvent.setOnClickListener(new View.OnClickListener() {
             @Override
