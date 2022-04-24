@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class EventWebView extends BasicActivity{
         initButtonListener();
     }
 
+
     @SuppressLint("SetJavaScriptEnabled")
     private void initData(){
         title = getIntent().getStringExtra("title");
@@ -54,6 +56,10 @@ public class EventWebView extends BasicActivity{
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl(url);
 
+        // JavaScriptInterface 객체화
+        WebViewInterface mWebViewInterface = new WebViewInterface(EventWebView.this,binding.wvEvent);
+        // 웹뷰에 자바스크립트 인터페이스 연결
+        mWebView.addJavascriptInterface(mWebViewInterface,"Android");
     }
 
     private void initViews(){

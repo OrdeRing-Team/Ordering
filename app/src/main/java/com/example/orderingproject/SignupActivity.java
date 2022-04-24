@@ -390,7 +390,6 @@ public class SignupActivity extends AppCompatActivity {
 
     /* 이메일 계정 생성 */
     private void createAccount() {
-
         String nickname = binding.editTextNickname.getText().toString();
         String memberId = binding.etMemberId.getText().toString();
         String password = binding.editTextPassword.getText().toString();
