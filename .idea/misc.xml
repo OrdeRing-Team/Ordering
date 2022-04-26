@@ -33,6 +33,8 @@
         <entry key="app/src/main/res/drawable/menu_selector_color.xml" value="0.1905" />
         <entry key="app/src/main/res/drawable/round_background.xml" value="0.163" />
         <entry key="app/src/main/res/layout/activity_event_webview.xml" value="0.16921997070312503" />
+        <entry key="app/src/main/res/layout/activity_full_vertical_recyclerview.xml" value="0.16210739614994935" />
+        <entry key="app/src/main/res/layout/activity_full_vertical_viewpager.xml" value="0.2801834106445313" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15438232421875" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.2875905797101449" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19934143870314083" />
@@ -41,6 +43,7 @@
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_login.xml" value="0.19315940174147314" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_notice.xml" value="0.18638406095519922" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.2848731884057971" />
+        <entry key="app/src/main/res/layout/custom_dialog_one.xml" value="0.15501519756838905" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3401268115942029" />
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.3401268115942029" />
         <entry key="app/src/main/res/layout/fragment_orderlist.xml" value="0.3401268115942029" />
