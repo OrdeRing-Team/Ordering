@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/scan_box"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        zxing_scanner_layout="@layout/custom_qr_scanner"/>
+    <ImageView
+        android:id="@+id/iv_scan_anim"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="250dp"/>
+<!--    </com.journeyapps.barcodescanner.DecoratedBarcodeView>-->
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qr_out_line1"
+        app:layout_constraintStart_toStartOf="@id/scan_box"
+        app:layout_constraintTop_toTopOf="@id/scan_box"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qr_out_line2"
+        app:layout_constraintEnd_toEndOf="@id/scan_box"
+        app:layout_constraintTop_toTopOf="@id/scan_box"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qr_out_line3"
+        app:layout_constraintStart_toStartOf="@id/scan_box"
+        app:layout_constraintBottom_toBottomOf="@id/scan_box"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qr_out_line4"
+        app:layout_constraintEnd_toEndOf="@id/scan_box"
+        app:layout_constraintBottom_toBottomOf="@id/scan_box"/>
+
+    <TextView
+        android:id="@+id/tv_scanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="매장에 있는 QR코드를 스캔해 주세요"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scan_box"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@id/btn_close"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/circle_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_flash"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="250dp"
+        android:clickable="true"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        tools:ignore="KeyboardInaccessibleWidget">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/ic_baseline_close_24_sizeup"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_flash"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/circle_button"
+        app:layout_constraintStart_toEndOf="@id/btn_close"
+        app:layout_constraintTop_toTopOf="@id/btn_close"
+        app:layout_constraintBottom_toBottomOf="@id/btn_close"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/ic_baseline_highlight_24"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="스캔 닫기"
+        app:layout_constraintTop_toBottomOf="@id/btn_close"
+        app:layout_constraintStart_toStartOf="@id/btn_close"
+        app:layout_constraintEnd_toEndOf="@id/btn_close"
+        android:layout_marginTop="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_flash"
+        android:text="라이트 켜기/끄기"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/btn_flash"
+        app:layout_constraintEnd_toEndOf="@id/btn_flash"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/round_rectangle_background"
+        android:backgroundTint="@color/yellow"
+        android:text="카메라 렌즈에 먼지를 닦고 다시 스캔해 보세요"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+
+
+
+<!--    <com.journeyapps.barcodescanner.DecoratedBarcodeView-->
+<!--        android:id="@+id/scan_box"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:background="#FF000000"-->
+<!--        android:layout_marginBottom="250dp">-->
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_scan_anim"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"/>-->
+
+<!--    </com.journeyapps.barcodescanner.DecoratedBarcodeView-->>-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/translayout_left"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:background="#99000000"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/scan_box"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/translayout_right"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#99000000"-->
+<!--        app:layout_constraintStart_toEndOf="@id/scan_box"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="#99000000"-->
+<!--        app:layout_constraintStart_toEndOf="@id/translayout_left"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/translayout_right"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/scan_box"/>-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="#99000000"-->
+<!--        app:layout_constraintStart_toEndOf="@id/translayout_left"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/translayout_right"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/scan_box"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/qr_out_line1"-->
+<!--        app:layout_constraintStart_toStartOf="@id/scan_box"-->
+<!--        app:layout_constraintTop_toTopOf="@id/scan_box"/>-->
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/qr_out_line2"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/scan_box"-->
+<!--        app:layout_constraintTop_toTopOf="@id/scan_box"/>-->
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/qr_out_line3"-->
+<!--        app:layout_constraintStart_toStartOf="@id/scan_box"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/scan_box"/>-->
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/qr_out_line4"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/scan_box"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/scan_box"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_scanner"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="매장에 있는 QR코드를 스캔해 주세요"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/scan_box"-->
+<!--        android:textSize="18sp"-->
+<!--        android:layout_marginTop="20dp"/>-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@id/btn_close"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:background="@drawable/circle_button"-->
+<!--        app:layout_constraintStart_toEndOf="@id/translayout_left"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_scanner"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:clickable="true"-->
+<!--        tools:ignore="KeyboardInaccessibleWidget">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:background="@drawable/ic_baseline_close_24_sizeup"/>-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/btn_flash"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:background="@drawable/circle_button"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/translayout_right"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/tv_scanner"-->
+<!--        android:layout_marginTop="100dp">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:background="@drawable/ic_baseline_highlight_24"/>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:text="스캔 닫기"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/btn_close"-->
+<!--        app:layout_constraintStart_toStartOf="@id/btn_close"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/btn_close"-->
+<!--        android:layout_marginTop="5dp"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/btn_flash"-->
+<!--        android:text="라이트 켜기/끄기"-->
+<!--        android:textColor="@color/white"-->
+<!--        app:layout_constraintStart_toStartOf="@id/btn_flash"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/btn_flash"-->
+<!--        android:layout_marginTop="5dp"/>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:background="@drawable/round_rectangle_background"-->
+<!--        android:backgroundTint="@color/yellow"-->
+<!--        android:text="카메라 렌즈에 먼지를 닦고 다시 스캔해 보세요"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
+<!--        android:paddingTop="10dp"-->
+<!--        android:paddingBottom="10dp"-->
+<!--        android:paddingStart="15dp"-->
+<!--        android:paddingEnd="15dp"-->
+<!--        android:visibility="gone"-->
+<!--        tools:visibility="visible"/>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

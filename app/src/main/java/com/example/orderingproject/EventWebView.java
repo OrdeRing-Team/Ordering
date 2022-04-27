@@ -56,7 +56,7 @@ public class EventWebView extends BasicActivity{
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl(url);
 
-        // JavaScriptInterface 객체화
+        // JavaScriptInterface 객체화ut
         WebViewInterface mWebViewInterface = new WebViewInterface(EventWebView.this,binding.wvEvent);
         // 웹뷰에 자바스크립트 인터페이스 연결
         mWebView.addJavascriptInterface(mWebViewInterface,"Android");

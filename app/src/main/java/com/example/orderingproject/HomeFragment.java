@@ -62,17 +62,25 @@ public class HomeFragment extends Fragment {
 
         initData();
         initViews();
-        goStore();
+        initButtonListener();
         return view;
     }
 
-    private void goStore() {
+    private void initButtonListener() {
         binding.btnStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), StoresActivity.class);
                 startActivity(intent);
                 getActivity().finish();   //현재 액티비티 종료
+            }
+        });
+
+        binding.btnQrCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ScannerActivity.class);
+                startActivity(intent);
             }
         });
     }

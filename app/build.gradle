@@ -9,7 +9,7 @@ android {
 //
     defaultConfig {
         applicationId "com.example.orderingproject"
-        minSdk 23
+        minSdk 24
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -87,4 +87,8 @@ dependencies {
 
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    //Zxing 라이브러리(QR관련)
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    implementation 'com.google.zxing:core:3.4.1'
 }
