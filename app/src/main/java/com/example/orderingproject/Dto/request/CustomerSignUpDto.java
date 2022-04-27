@@ -11,4 +11,5 @@ public class CustomerSignUpDto {
     private String signInId;
     private String password;
     private String phoneNumber;
+
 }

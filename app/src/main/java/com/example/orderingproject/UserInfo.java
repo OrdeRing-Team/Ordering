@@ -17,9 +17,10 @@ public class UserInfo {
     private static String signInId;
     private static String nickname;
 
-    public static void setUserInfo(CustomerSignInResultDto dto) {
+    public static void setUserInfo(CustomerSignInResultDto dto, String mSignInId) {
         customerId = dto.getCustomerId();
         nickname = dto.getNickname();
+        signInId = mSignInId;
     }
 
     public static void setCustomerId(Long id){customerId = id;}

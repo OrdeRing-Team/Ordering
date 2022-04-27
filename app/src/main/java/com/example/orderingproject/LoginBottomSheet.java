@@ -1,8 +1,11 @@
 package com.example.orderingproject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.YuvImage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +30,7 @@ import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
+import com.example.orderingproject.databinding.BottomSheetDialogLoginBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.net.MalformedURLException;
@@ -43,16 +47,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginBottomSheet extends BottomSheetDialogFragment {
 
+    private BottomSheetDialogLoginBinding binding;
+
     private View view;
 
     private ImageButton ib_close;
     private Button btn_login;
     private EditText memberIdEditText;
     private EditText passwordEditText;
+
+    SharedPreferences loginSP;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        view = inflater.inflate(R.layout.bottom_sheet_dialog_login, container, false);
+        binding = BottomSheetDialogLoginBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
 
@@ -111,6 +120,15 @@ public class LoginBottomSheet extends BottomSheetDialogFragment {
                                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                 @Override
                                                 public void run() {
+                                                    if(binding.cbAutologin.isChecked()){
+                                                        loginSP = getActivity().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+
+                                                        SharedPreferences.Editor autoLoginEdit = loginSP.edit();
+                                                        autoLoginEdit.putString("signInId", memberId);
+                                                        autoLoginEdit.putString("password", password);
+                                                        autoLoginEdit.commit();
+                                                    }
+                                                    UserInfo.setUserInfo(result.getData(), memberId);
                                                     startActivity(new Intent(getActivity(), MainActivity.class));
                                                     dismiss();
                                                     getActivity().finish();

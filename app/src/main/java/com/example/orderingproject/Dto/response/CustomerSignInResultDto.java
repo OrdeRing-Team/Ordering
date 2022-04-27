@@ -15,4 +15,11 @@ public class CustomerSignInResultDto {
 
     private Long customerId;
     private String nickname;
+
+    public Long getCustomerId(){
+        return customerId;
+    }
+    public String getNickname(){
+        return nickname;
+    }
 }

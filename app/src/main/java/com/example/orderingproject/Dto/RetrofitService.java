@@ -1,5 +1,6 @@
 package com.example.orderingproject.Dto;
 
+import com.example.orderingproject.Dto.request.CouponSerialNumberDto;
 import com.example.orderingproject.Dto.request.CustomerSignUpDto;
 import com.example.orderingproject.Dto.request.OwnerSignUpDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
@@ -23,6 +24,10 @@ public interface RetrofitService {
    	@POST("/api/customer/signin")
 	Call<ResultDto<CustomerSignInResultDto>> customerSignIn(@Body SignInDto signInDto);
 
+	// 회원탈퇴
+	@DELETE("/api/customer/{customerId}")
+	Call<ResultDto<Boolean>> deleteaccount(@Path("customerId") Long customerId);
+
    	// 회원가입
 	@POST("/api/customer/signup")
 	Call<ResultDto<Long>> customerSignUp(@Body CustomerSignUpDto customerSignUpDto);
@@ -35,6 +40,9 @@ public interface RetrofitService {
 	@POST("/api/customer/verification/check")
 	Call<ResultDto<Boolean>> verification(@Body VerificationDto verificationDto);
 
+	// 쿠폰 발급
+	@POST("/api/customer/{customer_Id}/coupon")
+	Call<ResultDto<Boolean>> couponIssue(@Path("customer_Id") Long customerId, @Body CouponSerialNumberDto couponSerialNumberDto);
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")
 //	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);

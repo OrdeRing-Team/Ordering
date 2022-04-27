@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeFragment"
-    android:background="#F3F3F3">
+    android:background="#F3F3F3"
+    tools:context=".HomeFragment">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -62,25 +72,29 @@
 
 
             <!--이벤트 및 쿠폰 레이아웃 (임시 !!!!)-->
-            <LinearLayout
-                android:id="@+id/layout_event"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_event"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="200dp"
                 android:background="#EAC5C5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/logo_layout">
+            </androidx.viewpager2.widget.ViewPager2>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    android:text="이벤트 및 쿠폰" />
-
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_pagenum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/vp_event"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:background="@drawable/round_background"/>
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
@@ -93,7 +107,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_event">
+                app:layout_constraintTop_toBottomOf="@+id/vp_event">
 
                 <ImageButton
                     android:id="@+id/btn_qr_camera"
@@ -226,8 +240,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
