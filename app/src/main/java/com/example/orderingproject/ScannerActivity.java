@@ -37,7 +37,7 @@ public class ScannerActivity extends BasicActivity {
 
         // true일때는 onActivityResult에서 QR코드 스캔한 결과값만 받는것이 아닌
         // QR코드 이미지도 비트맵 형식으로 전달 받을 수 있다.
-        integrator.setBarcodeImageEnabled(true);
+        integrator.setBarcodeImageEnabled(false);
         integrator.setCaptureActivity(ScannerBackgroundActivity.class); //바코드 스캐너 시작
         integrator.setOrientationLocked(true);
 
