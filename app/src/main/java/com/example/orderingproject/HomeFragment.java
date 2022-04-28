@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), StoresActivity.class);
                 startActivity(intent);
-                getActivity().finish();   //현재 액티비티 종료
+                //getActivity().finish();   //현재 액티비티 종료
             }
         });
 
