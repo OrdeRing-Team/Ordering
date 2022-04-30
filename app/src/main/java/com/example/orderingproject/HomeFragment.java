@@ -28,6 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.JsonObject;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,8 +80,25 @@ public class HomeFragment extends Fragment {
         binding.btnQrCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ScannerActivity.class);
-                startActivity(intent);
+                IntentIntegrator integrator = new IntentIntegrator(getActivity());
+
+                // QR코드 포맷만 스캔하도록 설정
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+
+                // 바코드 인식시 소리 여부
+                integrator.setBeepEnabled(false);
+
+                // 0 = 후면카메라, 1 = 전면카메라
+                integrator.setCameraId(0);
+
+                // true일때는 onActivityResult에서 QR코드 스캔한 결과값만 받는것이 아닌
+                // QR코드 촬영한 이미지도 비트맵 형식으로 전달 받을 수 있다.
+                integrator.setBarcodeImageEnabled(false);
+
+                integrator.setCaptureActivity(ScannerActivity.class); //바코드 스캐너 시작
+                integrator.setOrientationLocked(true);
+
+                integrator.initiateScan();
             }
         });
     }

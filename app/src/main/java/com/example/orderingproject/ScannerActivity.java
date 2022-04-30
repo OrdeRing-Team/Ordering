@@ -1,48 +1,73 @@
 package com.example.orderingproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.databinding.ActivityQrscannerBinding;
-import com.google.zxing.integration.android.IntentIntegrator;
+import com.journeyapps.barcodescanner.CaptureManager;
 
-public class ScannerActivity extends BasicActivity {
+import java.security.Permission;
 
-    private static final String TAG = "ScannerActivity_TAG";
-
-    IntentIntegrator integrator;
+public class ScannerActivity extends BasicActivity{
 
     private ActivityQrscannerBinding binding;
 
+    CaptureManager captureManager;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         binding = ActivityQrscannerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        initData();
+        initViews();
+        initData(savedInstanceState);
     }
 
-    private void initData(){
-        integrator = new IntentIntegrator(this);
-
-        // QR코드 포맷만 스캔하도록 설정
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-
-        // 바코드 인식시 소리 여부
-        integrator.setBeepEnabled(false);
-
-        // 0 = 후면카메라, 1 = 전면카메라
-        integrator.setCameraId(0);
-
-        // true일때는 onActivityResult에서 QR코드 스캔한 결과값만 받는것이 아닌
-        // QR코드 이미지도 비트맵 형식으로 전달 받을 수 있다.
-        integrator.setBarcodeImageEnabled(false);
-        integrator.setCaptureActivity(ScannerBackgroundActivity.class); //바코드 스캐너 시작
-        integrator.setOrientationLocked(true);
-
-        integrator.initiateScan();
-
+    private void initData(Bundle savedInstanceState){
+        captureManager = new CaptureManager(this,binding.scanBox);
+        captureManager.initializeFromIntent(this.getIntent(), savedInstanceState);
+        captureManager.decode();
     }
 
+    private void initViews(){
+        Glide.with(this).load(R.drawable.qr_scan_animation_white).into(binding.ivScanAnim);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        captureManager.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        captureManager.onPause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        captureManager.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        captureManager.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        captureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
