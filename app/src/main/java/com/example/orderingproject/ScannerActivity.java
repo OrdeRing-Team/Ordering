@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -14,6 +17,8 @@ import com.example.orderingproject.databinding.ActivityQrscannerBinding;
 import com.journeyapps.barcodescanner.CaptureManager;
 
 import java.security.Permission;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ScannerActivity extends BasicActivity{
 
@@ -26,6 +31,9 @@ public class ScannerActivity extends BasicActivity{
     Drawable lightOnButton;
     Drawable lightOffButton;
 
+    Animation hintAnimAppear;
+    Animation hintAnimDisappear;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -36,6 +44,7 @@ public class ScannerActivity extends BasicActivity{
         initViews();
         initData(savedInstanceState);
         initClickListeners();
+        delayHint();
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -48,6 +57,9 @@ public class ScannerActivity extends BasicActivity{
         lightOff = getDrawable(R.drawable.light_off);
         lightOnButton = getDrawable(R.drawable.circle_button_light_on);
         lightOffButton = getDrawable(R.drawable.circle_button);
+
+        hintAnimAppear = AnimationUtils.loadAnimation(this, R.anim.anim_slide_in_right);
+        hintAnimDisappear = AnimationUtils.loadAnimation(this, R.anim.anim_slide_out_right);
     }
 
     private void initViews(){
@@ -82,6 +94,33 @@ public class ScannerActivity extends BasicActivity{
                 finish();
             }
         });
+    }
+
+    private void delayHint() {
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                showHint();
+            }
+        }, 5000);
+    }
+
+    private void showHint(){
+        binding.tvHint.setVisibility(View.VISIBLE);
+        binding.tvHint.startAnimation(hintAnimAppear);
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                binding.tvHint.startAnimation(hintAnimDisappear);
+                binding.tvHint.setVisibility(View.GONE);
+                delayHint();
+            }
+        }, 3000);
     }
 
     @Override
