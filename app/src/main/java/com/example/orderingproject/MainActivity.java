@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,5 +117,26 @@ public class MainActivity extends BasicActivity {
 
     public static void showLongToast(Activity activity, String msg){
         Toast.makeText(activity, msg,Toast.LENGTH_LONG).show();
+    }
+
+    // ZXING 스캔처리 후 호출됨
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult result = IntentIntegrator.parseActivityResult(
+                requestCode,
+                resultCode,
+                intent);
+        Log.e("onActivityResult","실행");
+        if (result != null) {
+            if (result.getContents() == null) {
+                // 스캔 취소시
+                Log.e("ZXING", "스캔 취소됨");
+            } else {
+                showLongToast(this, result.getContents());
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, intent);
+        }
     }
 }

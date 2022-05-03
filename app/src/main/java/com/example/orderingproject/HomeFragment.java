@@ -29,6 +29,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.JsonObject;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -185,4 +186,7 @@ public class HomeFragment extends Fragment {
             }
         }, DELAY_MS, PERIOD_MS);
     }
+
+
+
 }
