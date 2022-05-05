@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_store_top_image"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        app:layout_constraintStart_toEndOf="@id/iv_store_icon"
+        app:layout_constraintEnd_toEndOf="@id/iv_store_top_image"
+        app:layout_constraintTop_toBottomOf="@id/iv_store_top_image"/>
+    <View
+        android:id="@+id/view_division"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"
+        app:layout_constraintStart_toStartOf="@id/iv_store_top_image"
+        app:layout_constraintEnd_toStartOf="@id/iv_store_icon"
+        app:layout_constraintTop_toBottomOf="@id/iv_store_top_image"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_store_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/icon"
+        app:layout_constraintStart_toStartOf="@id/iv_store_top_image"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="170dp"/>
+
+    <TextView
+        android:id="@+id/tv_store_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/view_division"
+        android:text="GNU 중앙식당"
+        app:layout_constraintStart_toEndOf="@id/iv_store_icon"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+    <Button
+        android:id="@+id/btn_select_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/iv_store_top_image"
+        app:layout_constraintTop_toBottomOf="@id/tv_store_name"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/round_rectangle_background"
+        android:backgroundTint="@color/main"
+        android:text="메뉴 선택하기"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_rectangle_background"
+        app:layout_constraintEnd_toStartOf="@id/btn_select_menu"
+        app:layout_constraintTop_toTopOf="@id/btn_select_menu"
+        android:text="닫기"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:layout_marginEnd="15dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

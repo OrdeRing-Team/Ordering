@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.orderingproject.Dialog.CustomDialogOneType;
+import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.Dto.EventsDto;
 import com.example.orderingproject.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -133,6 +135,8 @@ public class MainActivity extends BasicActivity {
                 Log.e("ZXING", "스캔 취소됨");
             } else {
                 showLongToast(this, result.getContents());
+                CustomStoreDialog dialog = new CustomStoreDialog(getApplicationContext(),result.getContents());
+                dialog.show();
             }
         }
         else{
