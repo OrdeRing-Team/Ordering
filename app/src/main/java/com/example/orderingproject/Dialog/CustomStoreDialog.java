@@ -38,11 +38,11 @@ public class CustomStoreDialog extends Dialog {
     }
 
     public CustomStoreDialog(@NonNull Context context,
-                             String url){
+                             String store, String service){
         super(context);
-        //String[] urls = url.split(".ml");
-        //getStoreInfo();
+
+//        getStoreInfo();
     }
 
-    //private void getStoreInfo
+//    private void getStoreInfo
 }

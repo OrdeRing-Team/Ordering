@@ -135,8 +135,17 @@ public class MainActivity extends BasicActivity {
                 Log.e("ZXING", "스캔 취소됨");
             } else {
                 showLongToast(this, result.getContents());
-                CustomStoreDialog dialog = new CustomStoreDialog(getApplicationContext(),result.getContents());
-                dialog.show();
+                String url[] = result.getContents().split("/");
+                // url[]: url[0] : http:  url[1] :   url[2] : ordering.ml  url[3] : 6  url[4] : table36
+                // url[3] = ownerid, url[4] 포장/웨이팅/테이블
+
+                if(!url[2].equals("ordering.ml")){
+                    showLongToast(this, "오더링 매장의 QR코드가 아닙니다. 다시 확인해 주세요.");
+                }
+                else {
+                    CustomStoreDialog dialog = new CustomStoreDialog(getApplicationContext(), url[3], url[4]);
+                    dialog.show();
+                }
             }
         }
         else{
