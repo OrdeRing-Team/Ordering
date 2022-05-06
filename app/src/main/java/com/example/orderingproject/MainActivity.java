@@ -136,14 +136,21 @@ public class MainActivity extends BasicActivity {
             } else {
                 showLongToast(this, result.getContents());
                 String url[] = result.getContents().split("/");
+                StringBuilder sb = new StringBuilder();
+                int a = 0;
+                for(String i : url){
+                    sb.append("url["+a+"] = "+ i +"\n");
+                    a++;
+                }
+                Log.e("asdasd", sb.toString());
                 // url[]: url[0] : http:  url[1] :   url[2] : ordering.ml  url[3] : 6  url[4] : table36
                 // url[3] = ownerid, url[4] 포장/웨이팅/테이블
 
-                if(!url[2].equals("ordering.ml")){
+                if(!url[2].equals("www.ordering.ml")){
                     showLongToast(this, "오더링 매장의 QR코드가 아닙니다. 다시 확인해 주세요.");
                 }
                 else {
-                    CustomStoreDialog dialog = new CustomStoreDialog(getApplicationContext(), url[3], url[4]);
+                    CustomStoreDialog dialog = new CustomStoreDialog(MainActivity.this, url[3], url[4]);
                     dialog.show();
                 }
             }

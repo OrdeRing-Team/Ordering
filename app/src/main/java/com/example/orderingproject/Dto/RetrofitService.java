@@ -4,6 +4,7 @@ import com.example.orderingproject.Dto.request.CouponSerialNumberDto;
 import com.example.orderingproject.Dto.request.CustomerSignUpDto;
 import com.example.orderingproject.Dto.request.OwnerSignUpDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
+import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
@@ -43,6 +44,11 @@ public interface RetrofitService {
 	// 쿠폰 발급
 	@POST("/api/customer/{customer_Id}/coupon")
 	Call<ResultDto<Boolean>> couponIssue(@Path("customer_Id") Long customerId, @Body CouponSerialNumberDto couponSerialNumberDto);
+
+	// 매장 다이얼로그 호출
+	@POST("/api/restaurant/{restaurant_id}/preview")
+	Call<ResultDto<RestaurantPreviewDto>> storePreview(@Path("restaurant_id") Long restaurantId);
+
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")
 //	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);

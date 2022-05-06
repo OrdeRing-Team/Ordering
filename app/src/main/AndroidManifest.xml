@@ -61,9 +61,6 @@
             android:screenOrientation="fullSensor"
             tools:replace="android:screenOrientation"
             android:stateNotNeeded="true"/>
-        <activity
-            android:name=".ScannerBackgroundActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
