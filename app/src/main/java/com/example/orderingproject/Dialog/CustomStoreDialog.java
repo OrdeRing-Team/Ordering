@@ -26,6 +26,7 @@ import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.MainActivity;
 import com.example.orderingproject.StartActivity;
 import com.example.orderingproject.databinding.CustomStoreInfoDialogBinding;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -61,7 +62,8 @@ public class CustomStoreDialog extends Dialog {
         binding.btnSelectMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Toast.makeText(mContext,"메뉴선택하기 버튼 clicked",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,"푸시알림 테스트",Toast.LENGTH_LONG).show();
+                
                 dismiss();
             }
         });
@@ -71,10 +73,10 @@ public class CustomStoreDialog extends Dialog {
                              String store, String service){
         super(context);
         mContext = context;
-        getStoreInfo(store);
+        getStoreInfo(store, service);
     }
 
-    private void getStoreInfo(String restaurantId){
+    private void getStoreInfo(String restaurantId, String type){
         try {
             new Thread() {
                 @SneakyThrows
@@ -102,6 +104,7 @@ public class CustomStoreDialog extends Dialog {
                                             String backgroundImageUrl = result.getData().getBackgroundImageUrl();
 
                                             binding.tvStoreName.setText(restaurantName);
+                                            binding.tvTemp.setText(String.format("QR종류 : %s",type));
                                             Glide.with(getContext()).load(backgroundImageUrl).into(binding.ivStoreTopImage);
                                             Glide.with(getContext()).load(profileImageUrl).into(binding.ivStoreIcon);
 
