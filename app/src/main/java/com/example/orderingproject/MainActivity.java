@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -144,7 +145,7 @@ public class MainActivity extends BasicActivity {
                 }
                 Log.e("asdasd", sb.toString());
                 // url[]: url[0] : http:  url[1] :   url[2] : ordering.ml  url[3] : 6  url[4] : table36
-                // url[3] = ownerid, url[4] 포장/웨이팅/테이블
+                // url[3] = restaurantId, url[4] 포장/웨이팅/테이블
 
                 if(!url[2].equals("www.ordering.ml")){
                     showLongToast(this, "오더링 매장의 QR코드가 아닙니다. 다시 확인해 주세요.");
@@ -152,6 +153,8 @@ public class MainActivity extends BasicActivity {
                 else {
                     CustomStoreDialog dialog = new CustomStoreDialog(MainActivity.this, url[3], url[4]);
                     dialog.show();
+                    Window window = dialog.getWindow();
+                    window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
                 }
             }
         }
