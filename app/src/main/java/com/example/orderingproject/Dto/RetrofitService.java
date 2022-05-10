@@ -9,6 +9,8 @@ import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -48,6 +50,10 @@ public interface RetrofitService {
 	// 매장 다이얼로그 호출
 	@POST("/api/restaurant/{restaurant_id}/preview")
 	Call<ResultDto<RestaurantPreviewDto>> storePreview(@Path("restaurant_id") Long restaurantId);
+
+	// 매장 모든 음식 불러오기
+	@POST("/api/restaurant/{restaurantId}/foods")
+	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")
