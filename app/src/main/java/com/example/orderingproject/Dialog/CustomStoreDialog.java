@@ -24,6 +24,7 @@ import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.MainActivity;
+import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.StartActivity;
 import com.example.orderingproject.databinding.CustomStoreInfoDialogBinding;
 import com.google.zxing.qrcode.encoder.QRCode;
@@ -38,6 +39,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CustomStoreDialog extends Dialog {
     private CustomStoreInfoDialogBinding binding;
     Context mContext;
+
+    String restaurantName;
+    String profileImageUrl;
+    String backgroundImageUrl;
+    String store;
+    String service;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -62,8 +69,14 @@ public class CustomStoreDialog extends Dialog {
         binding.btnSelectMenu.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Toast.makeText(mContext,"푸시알림 테스트",Toast.LENGTH_LONG).show();
-                
+                Intent intent = new Intent(getContext(), MenuActivity.class);
+                intent.putExtra("store",store);
+                intent.putExtra("service",service);
+                intent.putExtra("restaurantName",restaurantName);
+                intent.putExtra("profileImageUrl",profileImageUrl);
+                intent.putExtra("backgroundImageUrl",backgroundImageUrl);
+                getContext().startActivity(intent);
+
                 dismiss();
             }
         });
@@ -73,6 +86,8 @@ public class CustomStoreDialog extends Dialog {
                              String store, String service){
         super(context);
         mContext = context;
+        this.store = store;
+        this.service = service;
         getStoreInfo(store, service);
     }
 
@@ -99,9 +114,9 @@ public class CustomStoreDialog extends Dialog {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            String restaurantName = result.getData().getRestaurantName();
-                                            String profileImageUrl = result.getData().getProfileImageUrl();
-                                            String backgroundImageUrl = result.getData().getBackgroundImageUrl();
+                                            restaurantName = result.getData().getRestaurantName();
+                                            profileImageUrl = result.getData().getProfileImageUrl();
+                                            backgroundImageUrl = result.getData().getBackgroundImageUrl();
 
                                             binding.tvStoreName.setText(restaurantName);
                                             binding.tvTemp.setText(String.format("QR종류 : %s",type));

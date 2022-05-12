@@ -57,12 +57,12 @@ public class MenuListFragment extends Fragment {
                 public void run() {
 
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/restaurant/"+Long.valueOf(3)+"/foods/")
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+MenuActivity.store+"/foods/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<FoodDto>>> call = service.getFood(Long.valueOf(3));
+                    Call<ResultDto<List<FoodDto>>> call = service.getFood(Long.valueOf(MenuActivity.store));
 
                     call.enqueue(new Callback<ResultDto<List<FoodDto>>>() {
                         @Override
