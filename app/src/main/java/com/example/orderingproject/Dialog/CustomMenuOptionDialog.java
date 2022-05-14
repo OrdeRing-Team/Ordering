@@ -5,10 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -29,7 +32,6 @@ public class CustomMenuOptionDialog extends Dialog {
     String menuImageUrl;
     String menuInfo;
     String price;
-    String addbtn;
     String finalPrice;
     int count = 1;
     @Override
@@ -78,7 +80,7 @@ public class CustomMenuOptionDialog extends Dialog {
                     buttonLock(binding.btnPlus);
                 }
                 // 장바구니 담기 버튼 텍스트 설정
-                finalPrice = computePrice();
+                finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
                 binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
             }
         });
@@ -95,7 +97,7 @@ public class CustomMenuOptionDialog extends Dialog {
                         buttonRelease(binding.btnPlus);
                     }
                     // 장바구니 담기 버튼 텍스트 설정
-                    finalPrice = computePrice();
+                    finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
                     binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
                 }
             }
@@ -112,10 +114,22 @@ public class CustomMenuOptionDialog extends Dialog {
         this.price = price;
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ObsoleteSdkInt"})
     private void initViews(){
         // 메뉴 이미지 설정
         Glide.with(getContext()).load(menuImageUrl).into(binding.ivMenuimage);
+        // 둥근 모서리 이미지뷰에서는 scaleType 변경 시 둥근 모서리가 해제됨. 따라서 코드상에서 다시 설정 해준다.
+        // 아래 메서드는 API 21 이상부터 사용 가능
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            binding.ivMenuimage.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0,0,view.getWidth(),view.getHeight(),40);
+                }
+            });
+
+            binding.ivMenuimage.setClipToOutline(true);
+        }
 
         // 메뉴 이름 설정
         binding.tvMenuname.setText(menuName);
@@ -124,24 +138,21 @@ public class CustomMenuOptionDialog extends Dialog {
         binding.tvMenuinfo.setText(menuInfo);
 
         // 장바구니 담기 버튼 텍스트 설정
-        finalPrice = computePrice();
+        finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
         binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
 
     }
 
-    private String computePrice(){
-        int resultInt = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
+    public static String computePrice(int resultInt){
         StringBuilder sb = new StringBuilder();
         String resultStr = Integer.toString(resultInt);
         int length = resultStr.length();
-        // 7654321  ->  7,654,321,123
-        if(length > 3){
-            for(int i = length; i > 0; i--){
-                if(i == 1) sb.append(",");
-                if((i-2) % 3 == 0) sb.append(",");
-                sb.append(resultStr.charAt(length-1));
-            }
+        // 7654321  ->  7,654,321
+        for(int i = 0; i < length; i++){
+            sb.append(resultStr.charAt(i));
+            if((length - (i + 1)) % 3 == 0 && i != length - 1) sb.append(",");
         }
+        Log.e("sb = ", sb.toString());
         return sb.toString();
     }
 
