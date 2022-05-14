@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableResource;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -61,13 +63,19 @@ public class MenuActivity extends AppCompatActivity {
         Log.e("store", store);
         Log.e("service", service);
         Log.e("restaurantName", restaurantName);
-        Log.e("profileImageUrl", profileImageUrl);
-        Log.e("backgroundImageUrl", backgroundImageUrl);
+        if(profileImageUrl != null) {
+            Log.e("profileImageUrl", profileImageUrl);
+        }
+        if(backgroundImageUrl != null) {
+            Log.e("backgroundImageUrl", backgroundImageUrl);
+        }
     }
 
     private void initView(){
         Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
         Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
         binding.tvStoreName.setText(restaurantName);
+        if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+        if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
     }
 }
