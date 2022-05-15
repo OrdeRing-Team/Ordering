@@ -32,28 +32,9 @@ public class MenuActivity extends AppCompatActivity {
         initData();
         initView();
         initButtonListener();
-        //뷰페이저 세팅
-        TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
-        ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this, 1,3);
-        viewPager2.setAdapter(adapter);
+        setViewPager();
 
-        new TabLayoutMediator(tabLayout, viewPager2,
-                new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override
-                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                        //tab.setText("Tab" + (position + 1));
-                        if (position == 0) {
-                            tab.setText("메뉴");
-                        }
-                        else if (position == 1) {
-                            tab.setText("정보");
-                        }
-                        else {
-                            tab.setText("리뷰");
-                        }
-                    }
-                }).attach();
+
     }
     private void initButtonListener(){
         binding.btnBackToManageFrag.setOnClickListener(new View.OnClickListener() {
@@ -93,5 +74,30 @@ public class MenuActivity extends AppCompatActivity {
         binding.tvStoreName.setText(restaurantName);
         if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
         if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+    }
+
+    private void setViewPager() {
+        //뷰페이저 세팅
+        TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
+        ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, 1,3);
+        viewPager2.setAdapter(adapter);
+
+        new TabLayoutMediator(tabLayout, viewPager2,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        //tab.setText("Tab" + (position + 1));
+                        if (position == 0) {
+                            tab.setText("메뉴");
+                        }
+                        else if (position == 1) {
+                            tab.setText("정보");
+                        }
+                        else {
+                            tab.setText("리뷰");
+                        }
+                    }
+                }).attach();
     }
 }
