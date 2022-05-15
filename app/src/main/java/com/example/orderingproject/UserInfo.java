@@ -24,7 +24,7 @@ public class UserInfo {
     }
 
     public static void setCustomerId(Long id){customerId = id;}
-    public static Long getCusetomerId(){return customerId;}
+    public static Long getCustomerId(){return customerId;}
 
     public static void setSignInId(String id){
         signInId = id;

@@ -105,7 +105,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
                         arrayList.get(position).getName(),
                         String.valueOf(arrayList.get(position).getIntro()),
                         imageURL,
-                        String.valueOf(arrayList.get(position).getPrice()));
+                        String.valueOf(arrayList.get(position).getPrice()),
+                        arrayList.get(position).getFoodId());
                 dialog.show();
             }
         });

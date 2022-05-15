@@ -7,6 +7,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableResource;
@@ -28,7 +31,7 @@ public class MenuActivity extends AppCompatActivity {
 
         initData();
         initView();
-
+        initButtonListener();
         //뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
@@ -52,7 +55,20 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 }).attach();
     }
-
+    private void initButtonListener(){
+        binding.btnBackToManageFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        binding.btnBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MenuActivity.this,"장바구니 버튼 클릭",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     private void initData(){
         store = getIntent().getStringExtra("store");
         service = getIntent().getStringExtra("service");

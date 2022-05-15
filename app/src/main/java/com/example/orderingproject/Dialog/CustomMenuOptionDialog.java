@@ -9,6 +9,8 @@ import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -19,9 +21,20 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.example.orderingproject.MainActivity;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.BasketDto;
+import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
+import com.example.orderingproject.UserInfo;
 import com.example.orderingproject.databinding.CustomDialogMenuOptionBinding;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class CustomMenuOptionDialog extends Dialog {
@@ -33,6 +46,7 @@ public class CustomMenuOptionDialog extends Dialog {
     String menuInfo;
     String price;
     String finalPrice;
+    Long foodId;
     int count = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -61,7 +75,54 @@ public class CustomMenuOptionDialog extends Dialog {
             @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view){
-                Toast.makeText(mContext,(String.format("장바구니에 담은 금액 : %d", finalPrice)),Toast.LENGTH_LONG).show();
+                try {
+                    new Thread() {
+                        @SneakyThrows
+                        public void run() {
+                            String url = "http://www.ordering.ml/";
+                            int totalPrice = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
+                            int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
+                            BasketDto basketDto = new BasketDto(foodId, totalPrice, totalCount);
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(url)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+
+                            RetrofitService service = retrofit.create(RetrofitService.class);
+                            Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(),Long.valueOf(MenuActivity.store), basketDto);
+
+                            call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                @Override
+                                public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                    if (response.isSuccessful()) {
+                                        ResultDto<Boolean> result;
+                                        result = response.body();
+                                        if (result.getData()) {
+                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(mContext,"장바구니에 메뉴를 추가했습니다.",Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                    Toast.makeText(mContext, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                    Log.e("e = ", t.getMessage());
+                                }
+                            });
+                        }
+                    }.start();
+
+                } catch (Exception e) {
+                    Toast.makeText(mContext, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                    Log.e("e = ", e.getMessage());
+                }
 
                 dismiss();
             }
@@ -105,13 +166,14 @@ public class CustomMenuOptionDialog extends Dialog {
     }
 
     public CustomMenuOptionDialog(@NonNull Context context,
-                                  String menuName, String menuInfo, String menuImageUrl, String price){
+                                  String menuName, String menuInfo, String menuImageUrl, String price, Long foodId){
         super(context);
         mContext = context;
         this.menuName = menuName;
         this.menuInfo = menuInfo;
         this.menuImageUrl = menuImageUrl;
         this.price = price;
+        this.foodId = foodId;
     }
 
     @SuppressLint({"SetTextI18n", "ObsoleteSdkInt"})
