@@ -241,5 +241,35 @@
 
     </ScrollView>
 
+    <Button
+        android:id="@+id/btn_seunggyu"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/btn_minju"
+        app:layout_constraintBottom_toBottomOf="@id/btn_minju"
+        app:layout_constraintTop_toTopOf="@id/btn_minju"
+        android:text="승규 매장 바로가기"
+        android:background="@color/blue"/>
 
+    <Button
+        android:id="@+id/btn_minju"
+        android:layout_width="120dp"
+        android:text="민주 매장 바로가기"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="70dp"
+        android:background="@color/teal_200" />
+
+    <Button
+        android:id="@+id/btn_jeonghyun"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/btn_minju"
+        app:layout_constraintBottom_toBottomOf="@id/btn_minju"
+        app:layout_constraintTop_toTopOf="@id/btn_minju"
+        android:text="정현 매장 바로가기"
+        android:background="@color/yellow"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

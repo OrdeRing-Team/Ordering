@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
-import com.example.orderingproject.Dto.request.BasketDto;
+import com.example.orderingproject.Dto.request.BasketRequestDto;
 import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
 import com.example.orderingproject.UserInfo;
@@ -82,14 +82,14 @@ public class CustomMenuOptionDialog extends Dialog {
                             String url = "http://www.ordering.ml/";
                             int totalPrice = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
                             int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
-                            BasketDto basketDto = new BasketDto(foodId, totalPrice, totalCount);
+                            BasketRequestDto basketRequestDto = new BasketRequestDto(foodId, totalPrice, totalCount);
                             Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl(url)
                                     .addConverterFactory(GsonConverterFactory.create())
                                     .build();
 
                             RetrofitService service = retrofit.create(RetrofitService.class);
-                            Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(),Long.valueOf(MenuActivity.store), basketDto);
+                            Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(),Long.valueOf(MenuActivity.store), basketRequestDto);
 
                             call.enqueue(new Callback<ResultDto<Boolean>>() {
                                 @Override
