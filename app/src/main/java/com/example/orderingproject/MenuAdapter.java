@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
+import com.example.orderingproject.Dialog.CustomStoreDialog;
 
 import java.util.ArrayList;
 
@@ -82,8 +84,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
     // position에 해당하는 data, viewHolder의 itemView에 표시함
 
         holder.tvName.setText(arrayList.get(position).getName());
-        holder.tvPrice.setText(String.valueOf(arrayList.get(position).getPrice()));
-        holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
+        holder.tvPrice.setText(CustomMenuOptionDialog.computePrice(Integer.parseInt(arrayList.get(position).getPrice())));
         holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
 
         // arrayList에 저장된 메뉴 이미지 url을 imageURL변수에 저장하고 Glide로 iv에 set
@@ -96,6 +97,19 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
             holder.tvSoldout.setVisibility(View.VISIBLE);
             holder.tvSoldout.setText("품절");
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomMenuOptionDialog dialog = new CustomMenuOptionDialog(view.getContext(),
+                        arrayList.get(position).getName(),
+                        String.valueOf(arrayList.get(position).getIntro()),
+                        imageURL,
+                        String.valueOf(arrayList.get(position).getPrice()),
+                        arrayList.get(position).getFoodId());
+                dialog.show();
+            }
+        });
     }
 
     @Override

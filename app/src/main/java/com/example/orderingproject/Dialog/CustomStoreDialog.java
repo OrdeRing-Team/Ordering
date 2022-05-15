@@ -25,6 +25,7 @@ import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.MainActivity;
 import com.example.orderingproject.MenuActivity;
+import com.example.orderingproject.R;
 import com.example.orderingproject.StartActivity;
 import com.example.orderingproject.databinding.CustomStoreInfoDialogBinding;
 import com.google.zxing.qrcode.encoder.QRCode;
@@ -73,8 +74,12 @@ public class CustomStoreDialog extends Dialog {
                 intent.putExtra("store",store);
                 intent.putExtra("service",service);
                 intent.putExtra("restaurantName",restaurantName);
-                intent.putExtra("profileImageUrl",profileImageUrl);
-                intent.putExtra("backgroundImageUrl",backgroundImageUrl);
+                if(profileImageUrl!= null) {
+                    intent.putExtra("profileImageUrl", profileImageUrl);
+                }
+                if(backgroundImageUrl != null) {
+                    intent.putExtra("backgroundImageUrl", backgroundImageUrl);
+                }
                 getContext().startActivity(intent);
 
                 dismiss();
@@ -120,9 +125,16 @@ public class CustomStoreDialog extends Dialog {
 
                                             binding.tvStoreName.setText(restaurantName);
                                             binding.tvTemp.setText(String.format("QR종류 : %s",type));
-                                            Glide.with(getContext()).load(backgroundImageUrl).into(binding.ivStoreTopImage);
-                                            Glide.with(getContext()).load(profileImageUrl).into(binding.ivStoreIcon);
-
+                                            if(backgroundImageUrl == null){
+                                                Glide.with(getContext()).load(R.drawable.icon).into(binding.ivStoreTopImage);
+                                            }else {
+                                                Glide.with(getContext()).load(backgroundImageUrl).into(binding.ivStoreTopImage);
+                                            }
+                                            if(profileImageUrl == null){
+                                                Glide.with(getContext()).load(R.drawable.icon).into(binding.ivStoreIcon);
+                                            }else {
+                                                Glide.with(getContext()).load(profileImageUrl).into(binding.ivStoreIcon);
+                                            }
                                         }
                                     });
                                 }

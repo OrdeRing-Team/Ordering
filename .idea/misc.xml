@@ -31,11 +31,15 @@
         <entry key="app/src/main/res/drawable-v24/ic_baseline_error_outline_24.xml" value="0.147" />
         <entry key="app/src/main/res/drawable-v24/menumanage1_custom.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke.xml" value="0.1735" />
+        <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_black_light_radius.xml" value="0.1735" />
+        <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_main_light_radius.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_locked.xml" value="0.156" />
         <entry key="app/src/main/res/drawable-v24/top_round_rectangle_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_custom.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/background_custom_gray.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/background_intro_title.xml" value="0.147" />
+        <entry key="app/src/main/res/drawable/circle_basket_count.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/circle_button.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.147" />
@@ -44,6 +48,7 @@
         <entry key="app/src/main/res/drawable/ic_close_black.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/menu_selector_color.xml" value="0.1905" />
+        <entry key="app/src/main/res/drawable/rectangle_button.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/round_background.xml" value="0.163" />
         <entry key="app/src/main/res/drawable/shape_circle.xml" value="0.156" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.2848731884057971" />
@@ -51,7 +56,7 @@
         <entry key="app/src/main/res/layout/activity_full_vertical_recyclerview.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/activity_full_vertical_viewpager.xml" value="0.2801834106445313" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3401268115942029" />
-        <entry key="app/src/main/res/layout/activity_menu.xml" value="0.2986361694335937" />
+        <entry key="app/src/main/res/layout/activity_menu.xml" value="0.20036877278101484" />
         <entry key="app/src/main/res/layout/activity_qrscanner.xml" value="0.131890869140625" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19934143870314083" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.1" />
@@ -59,6 +64,8 @@
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_login.xml" value="0.19315940174147314" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_notice.xml" value="0.18638406095519922" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.2848731884057971" />
+        <entry key="app/src/main/res/layout/custom_dialog_input.xml" value="0.15501519756838905" />
+        <entry key="app/src/main/res/layout/custom_dialog_menu_option.xml" value="0.20341033935546876" />
         <entry key="app/src/main/res/layout/custom_dialog_one.xml" value="0.15501519756838905" />
         <entry key="app/src/main/res/layout/custom_qr_scanner.xml" value="0.15501519756838905" />
         <entry key="app/src/main/res/layout/custom_store_info_dialog.xml" value="0.13722826086956522" />
@@ -69,7 +76,7 @@
         <entry key="app/src/main/res/layout/fragment_japanese_food.xml" value="0.26132246376811596" />
         <entry key="app/src/main/res/layout/fragment_korean_food.xml" value="0.26132246376811596" />
         <entry key="app/src/main/res/layout/fragment_menu_list.xml" value="0.22239583333333332" />
-        <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.3401268115942029" />
+        <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_orderlist.xml" value="0.3401268115942029" />
         <entry key="app/src/main/res/layout/fragment_snack_bar.xml" value="0.26132246376811596" />
         <entry key="app/src/main/res/layout/fragment_store_info.xml" value="0.22239583333333332" />
@@ -92,5 +99,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.18791809082031252" />
+      </ProjectState>
+    </option>
   </component>
 </project>
