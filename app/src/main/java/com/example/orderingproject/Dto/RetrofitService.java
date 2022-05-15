@@ -1,9 +1,8 @@
 package com.example.orderingproject.Dto;
 
-import com.example.orderingproject.Dto.request.BasketDto;
+import com.example.orderingproject.Dto.request.BasketRequestDto;
 import com.example.orderingproject.Dto.request.CouponSerialNumberDto;
 import com.example.orderingproject.Dto.request.CustomerSignUpDto;
-import com.example.orderingproject.Dto.request.OwnerSignUpDto;
 import com.example.orderingproject.Dto.request.PasswordChangeDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
@@ -13,15 +12,11 @@ import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 
 import java.util.List;
 
-import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -73,7 +68,7 @@ public interface RetrofitService {
 	@POST("api/order/basket")
 	Call<ResultDto<Boolean>> addBasket(@Query(value = "customer_id") Long customerId,
 									   @Query(value = "restaurant_id") Long restaurantId,
-									   @Body BasketDto basketDto);
+									   @Body BasketRequestDto basketRequestDto);
 
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")

@@ -10,16 +10,23 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.Dto.EventsDto;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.databinding.BottomSheetDialogNoticeBinding;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +46,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
@@ -100,6 +114,32 @@ public class HomeFragment extends Fragment {
                 integrator.setOrientationLocked(true);
 
                 integrator.initiateScan();
+            }
+        });
+
+        /** 임시 버튼 나중에 삭제 할 것 **/
+        binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "takeout");
+                dialog.show();
+                Window window = dialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            }
+        });
+        binding.btnMinju.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "3", "takeout");
+                dialog.show();
+                Window window = dialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            }
+        });
+        binding.btnJeonghyun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.showToast(getActivity(),"더미데이터 들어가면 추가할 예정!!!");
             }
         });
     }

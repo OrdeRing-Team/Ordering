@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="30dp"
+    android:background="@color/white">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_inner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_menuname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="아이스아메리카노"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/iv_menuimage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_menuname"
+            android:layout_marginTop="15dp"
+            android:scaleType="centerCrop"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/round_rectangle_background"/>
+
+        <TextView
+            android:id="@+id/tv_menuprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/iv_menuimage"
+            app:layout_constraintTop_toTopOf="@id/iv_menuimage"
+            android:text="○ 가격 : 3900원"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"/>
+        <TextView
+            android:id="@+id/tv_sumprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/iv_menuimage"
+            app:layout_constraintTop_toBottomOf="@id/tv_menuprice"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_inner"
+        android:background="@drawable/round_rectangle_background_stroke">
+        <Button
+            android:id="@+id/btn_minus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_minus"
+            android:backgroundTint="@color/light_gray"
+            android:layout_marginStart="10dp"/>
+
+        <Button
+            android:id="@+id/btn_plus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_add"
+            android:backgroundTint="@color/button_black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@id/btn_minus"
+            app:layout_constraintEnd_toStartOf="@id/btn_plus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="1"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/ic_baseline_close_24_sizeup"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
