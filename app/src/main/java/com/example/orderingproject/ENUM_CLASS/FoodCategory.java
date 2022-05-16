@@ -1,4 +1,4 @@
-package com.example.orderingproject.Dto.request;
+package com.example.orderingproject.ENUM_CLASS;
 
 public enum FoodCategory {
     KOREAN_FOOD, BUNSIK, CAFE_DESSERT, PORK_CUTLET_ROW_FISH_SUSHI, CHICKEN, PIZZA,
