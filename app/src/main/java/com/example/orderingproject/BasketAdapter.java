@@ -2,22 +2,38 @@ package com.example.orderingproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
 
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomViewHolder> {
-    ArrayList<BasketData> arrayBasketList;
+    static ArrayList<BasketData> arrayBasketList;
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -38,6 +54,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
             btnMinus = itemView.findViewById(R.id.btn_minus);
         }
     }
+
     public BasketAdapter(ArrayList<BasketData> arrayList, Context context) {
         this.arrayBasketList = arrayList;
         this.context = context;
@@ -54,7 +71,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.tvBasketMenuName.setText(arrayBasketList.get(position).getBasketFoodName());
-        holder.tvBasketPrice.setText(String.format("○ 가격 : %d원",arrayBasketList.get(position).getBasketPrice()));
+        holder.tvBasketPrice.setText(String.format("○ 가격 : %d원", arrayBasketList.get(position).getBasketPrice()));
         holder.tvBasketCount.setText(Integer.toString(arrayBasketList.get(position).getBasketCount()));
         int sum = arrayBasketList.get(position).getBasketPrice() * arrayBasketList.get(position).getBasketCount();
         holder.tvBasketSumPrice.setText(Integer.toString(sum));
@@ -63,29 +80,155 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 장바구니 항목 삭제 처리
+                int newPosition = holder.getAbsoluteAdapterPosition();
+                holder.btnDelete.setClickable(false);
+                try {
+                    new Thread() {
+                        @SneakyThrows
+                        public void run() {
+                            String url = "http://www.ordering.ml/";
+
+                            Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(url)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+
+                            RetrofitService service = retrofit.create(RetrofitService.class);
+                            Call<ResultDto<Boolean>> call =
+                                    service.deleteBasket(
+                                            arrayBasketList.get(newPosition).getBasketId(),
+                                            UserInfo.getCustomerId());
+
+                            call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                @Override
+                                public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                    if (response.isSuccessful()) {
+                                        ResultDto<Boolean> result;
+                                        result = response.body();
+                                        if (result.getData()) {
+                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Log.e("position", Integer.toString(newPosition));
+                                                    UserInfo.minusBasketCount(arrayBasketList.get(newPosition).getBasketCount());
+                                                    arrayBasketList.remove(newPosition);
+                                                    notifyItemRemoved(newPosition);
+                                                    if(arrayBasketList.isEmpty()){
+                                                        BasketActivity.setEmptyView();
+                                                    }
+                                                }
+                                            });
+                                            Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                        }else{
+                                            notifyItemInserted(newPosition);
+                                            holder.btnDelete.setClickable(true);
+                                            Log.e("result.getData() ", "false");
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                    notifyItemInserted(newPosition);
+                                    holder.btnDelete.setClickable(true);
+                                    Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                    Log.e("e = ", t.getMessage());
+                                }
+                            });
+                        }
+                    }.start();
+
+                } catch (Exception e) {
+                    notifyItemInserted(newPosition);
+                    holder.btnDelete.setClickable(true);
+                    Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                    Log.e("e = ", e.getMessage());
+                }
             }
         });
 
         holder.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 수량 증가 처리
+                int newPosition = holder.getAbsoluteAdapterPosition();
+                addCount(holder);
+                Log.e("position", Integer.toString(newPosition));
             }
         });
 
         holder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 수량 감소 처리
+                minusCount(holder);
             }
         });
-   }
+        buttonCheck(holder);
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void addCount(CustomViewHolder holder) {
+        int currentCount = Integer.parseInt(holder.tvBasketCount.getText().toString());
+
+        currentCount++;
+
+        holder.tvBasketCount.setText(Integer.toString(currentCount));
+
+        buttonCheck(holder);
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void minusCount(CustomViewHolder holder) {
+        int currentCount = Integer.parseInt(holder.tvBasketCount.getText().toString());
+
+        currentCount--;
+
+        holder.tvBasketCount.setText(Integer.toString(currentCount));
+
+        buttonCheck(holder);
+    }
+
+    private void buttonCheck(CustomViewHolder holder){
+        if (holder.tvBasketCount.getText().equals("1")) {
+            buttonLock(holder, false);
+        }
+        else{
+            buttonRelease(holder, false);
+        }
+        if(Integer.parseInt(holder.tvBasketCount.getText().toString()) >= 99){
+            buttonLock(holder, true);
+        }else{
+            buttonRelease(holder, true);
+        }
+    }
+
+    private void buttonLock(CustomViewHolder holder, Boolean isPlusButton) {
+        if (isPlusButton) {
+            holder.btnPlus.setClickable(false);
+            holder.btnPlus.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.light_gray)));
+        } else {
+            holder.btnMinus.setClickable(false);
+            holder.btnMinus.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.light_gray)));
+        }
+    }
+
+    private void buttonRelease(CustomViewHolder holder, Boolean isPlusButton) {
+        if (isPlusButton) {
+            holder.btnPlus.setClickable(true);
+            holder.btnPlus.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.button_black)));
+        } else {
+            holder.btnMinus.setClickable(true);
+            holder.btnMinus.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.button_black)));
+        }
+    }
 
     @Override
     public int getItemCount() {
         return (arrayBasketList != null ? arrayBasketList.size() : 0);
     }
 
+    public static ArrayList<BasketData> getArrayBasketList(){
+        return arrayBasketList;
+    }
 }
 

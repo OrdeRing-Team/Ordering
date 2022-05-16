@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
+import com.example.orderingproject.Dialog.CustomMenuOptionDialogListener;
 import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
@@ -36,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHolder> {
     ArrayList<MenuData> arrayList;
     Context context;
-    CustomMenuOptionDialog dialog;
+    public CustomMenuOptionDialog dialog;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
@@ -122,10 +123,63 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
                         imageURL,
                         String.valueOf(arrayList.get(position).getPrice()),
                         arrayList.get(position).getFoodId());
+                dialog.setDialogListener(new CustomMenuOptionDialogListener() {
+                    @Override
+                    public void onAddBasketButtonClicked(Long foodId, int totalPrice, int totalCount) {
+                        try {
+                            new Thread() {
+                                @SneakyThrows
+                                public void run() {
+                                    String url = "http://www.ordering.ml/";
+
+                                    BasketRequestDto basketDto = new BasketRequestDto(foodId, totalPrice, totalCount);
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl(url)
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+
+                                    RetrofitService service = retrofit.create(RetrofitService.class);
+                                    Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(), Long.valueOf(MenuActivity.store), basketDto);
+
+                                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                        @Override
+                                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                            if (response.isSuccessful()) {
+                                                ResultDto<Boolean> result;
+                                                result = response.body();
+                                                if (result.getData()) {
+                                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            UserInfo.addBasketCount(totalCount);
+        //                                                    MenuActivity.setBasketCount(totalCount);
+                                                            MenuActivity.updateBasket();
+                                                            Toast.makeText(holder.itemView.getContext(), "장바구니에 메뉴를 추가했습니다.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                    Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                            Log.e("e = ", t.getMessage());
+                                        }
+                                    });
+                                }
+                            }.start();
+
+                        } catch (Exception e) {
+                            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", e.getMessage());
+                        }
+                    }
+                });
                 dialog.show();
-                // 메뉴 옵션 선택 다이얼로그에서 장바구니 담기 버튼 클릭후 Dismiss되면
-                // MenuActivity의 장바구니 플로팅 버튼에 text를 갱신시켜주기 위해 리스너 설정
-                //dialog.setOnDismissListener((DialogInterface.OnDismissListener) holder.itemView.getContext());
+
             }
         });
 

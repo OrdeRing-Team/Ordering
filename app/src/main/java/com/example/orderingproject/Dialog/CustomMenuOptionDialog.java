@@ -39,9 +39,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class CustomMenuOptionDialog extends Dialog {
+public class CustomMenuOptionDialog extends Dialog implements View.OnClickListener{
     private CustomDialogMenuOptionBinding binding;
-
+    private CustomMenuOptionDialogListener dialogListener;
     Context mContext;
 
     String menuName;
@@ -51,6 +51,7 @@ public class CustomMenuOptionDialog extends Dialog {
     String finalPrice;
     Long foodId;
     int count = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -64,6 +65,10 @@ public class CustomMenuOptionDialog extends Dialog {
         buttonLock(binding.btnMinus);
         initViews();
         initButtonListeners();
+    }
+
+    public void setDialogListener(CustomMenuOptionDialogListener dialogListener){
+        this.dialogListener = dialogListener;
     }
 
     public Long getFoodId(){
@@ -91,58 +96,11 @@ public class CustomMenuOptionDialog extends Dialog {
         binding.btnAddbasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    new Thread() {
-                        @SneakyThrows
-                        public void run() {
-                            String url = "http://www.ordering.ml/";
-                            int totalPrice = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
-                            int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
-                            BasketRequestDto basketDto = new BasketRequestDto(foodId, totalPrice, totalCount);
-                            Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl(url)
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build();
 
-                            RetrofitService service = retrofit.create(RetrofitService.class);
-                            Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(),Long.valueOf(MenuActivity.store), basketDto);
-
-                            call.enqueue(new Callback<ResultDto<Boolean>>() {
-                                @Override
-                                public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-
-                                    if (response.isSuccessful()) {
-                                        ResultDto<Boolean> result;
-                                        result = response.body();
-                                        if (result.getData()) {
-                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    UserInfo.addBasketCount(totalCount);
-//                                                    MenuActivity.setBasketCount(totalCount);
-                                                    MenuActivity.updateBasket(UserInfo.getBasketCount());
-                                                    Toast.makeText(mContext,"장바구니에 메뉴를 추가했습니다.",Toast.LENGTH_SHORT).show();
-                                                    dismiss();
-                                                }
-                                            });
-                                            Log.e("result.getData() ", Boolean.toString(result.getData()));
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-                                    Toast.makeText(mContext, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                                    Log.e("e = ", t.getMessage());
-                                }
-                            });
-                        }
-                    }.start();
-
-                } catch (Exception e) {
-                    Toast.makeText(mContext, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                    Log.e("e = ", e.getMessage());
-                }
+                int totalPrice = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
+                int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
+                dialogListener.onAddBasketButtonClicked(foodId, totalPrice, totalCount);
+                dismiss();
             }
         });
 
@@ -247,5 +205,17 @@ public class CustomMenuOptionDialog extends Dialog {
     private void buttonRelease(View view){
         view.setClickable(true);
         view.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.button_black)));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_addbasket:
+                int totalPrice = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
+                int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
+                dialogListener.onAddBasketButtonClicked(foodId, totalPrice, totalCount);
+                dismiss();
+                break;
+        }
     }
 }

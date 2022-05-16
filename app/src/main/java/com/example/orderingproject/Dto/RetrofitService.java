@@ -71,6 +71,10 @@ public interface RetrofitService {
 									   @Query(value = "restaurant_id") Long restaurantId,
 									   @Body BasketRequestDto basketRequestDto);
 
+	@DELETE("api/order/basket/{basketId}")
+	Call<ResultDto<Boolean>> deleteBasket(@Path("basketId") Long basketId,
+									   @Query(value = "customer_id") Long customerId);
+
 	// 장바구니 목록 불러오기
 	@POST("/api/customer/{customerId}/baskets")
 	Call<ResultDto<List<BasketResponseDto>>> getBasketList(@Path("customerId") Long customerId);

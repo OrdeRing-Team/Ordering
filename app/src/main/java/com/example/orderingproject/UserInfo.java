@@ -29,8 +29,9 @@ public class UserInfo {
     public static Long getCustomerId(){return customerId;}
 
     public static void addBasketCount(int count){basketCount += count;}
-    public static void minusBasketCount(){basketCount--;}
+    public static void minusBasketCount(int count){basketCount -= count;}
     public static int getBasketCount(){return basketCount;}
+    public static void setBasketCount(int count){ basketCount = count;}
 
     public static void setSignInId(String id){
         signInId = id;

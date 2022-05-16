@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +32,9 @@ public class BasketActivity extends BasicActivity {
     private ActivityBasketBinding binding;
 
     ArrayList<BasketData> basketList = new ArrayList<>();
-
+    static ImageView emptyImage;
+    static TextView emptyText;
+    static Button orderButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +57,23 @@ public class BasketActivity extends BasicActivity {
             // 주문하기 버튼
             @Override
             public void onClick(View view) {
-                MainActivity.showToast(BasketActivity.this, "주문하기 버튼 클릭");
+                basketList = BasketAdapter.getArrayBasketList();
+                basketList.forEach(list ->{
+                    Log.e("basketId", Long.toString(list.getBasketId()));
+                    Log.e("FoodName", list.getBasketFoodName());
+                    Log.e("Count", Integer.toString(list.getBasketCount()));
+                    Log.e("Price", Integer.toString(list.getBasketPrice()));
+                });
             }
         });
     }
 
     private void initData() {
+
+        emptyImage = binding.ivEmpty;
+        emptyText = binding.tvEmpty;
+        orderButton = binding.bottomLayout;
+
         try {
             new Thread() {
                 @SneakyThrows
@@ -82,18 +98,22 @@ public class BasketActivity extends BasicActivity {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            result.getData().forEach(basketResponseDto -> {
-                                                basketList.add(new BasketData(basketResponseDto.getBasketId(),
-                                                        basketResponseDto.getFoodName(),
-                                                        basketResponseDto.getImageUrl(),
-                                                        basketResponseDto.getPrice(),
-                                                        basketResponseDto.getCount()));
-                                                Log.e("장바구니 정보", "BasketId = " + basketResponseDto.getBasketId() + ", " +
-                                                        "FoodName = " + basketResponseDto.getFoodName() +
-                                                        ", image url = " + basketResponseDto.getImageUrl() +
-                                                        ", Price = " + basketResponseDto.getPrice() +
-                                                        ", count = " + basketResponseDto.getCount());
-                                            });
+                                            int totalCount = 0;
+                                            for(BasketResponseDto i : result.getData()){
+                                                basketList.add(new BasketData(i.getBasketId(),
+                                                        i.getFoodName(),
+                                                        i.getImageUrl(),
+                                                        i.getPrice(),
+                                                        i.getCount()));
+                                                totalCount += i.getCount();
+                                                Log.e("장바구니 정보", "BasketId = " + i.getBasketId() + ", " +
+                                                        "FoodName = " + i.getFoodName() +
+                                                        ", image url = " + i.getImageUrl() +
+                                                        ", Price = " + i.getPrice() +
+                                                        ", count = " + i.getCount());
+                                            }
+
+                                            UserInfo.setBasketCount(totalCount);
 
                                             RecyclerView recyclerView = binding.rvBasket;
                                             BasketAdapter basketAdapter = new BasketAdapter(basketList, BasketActivity.this);
@@ -120,5 +140,10 @@ public class BasketActivity extends BasicActivity {
             Log.e("e = ", e.getMessage());
         }
     }
+    public static void setEmptyView(){
+        emptyImage.setVisibility(View.VISIBLE);
+        emptyText.setVisibility(View.VISIBLE);
+        orderButton.setVisibility(View.GONE);
 
+    }
 }

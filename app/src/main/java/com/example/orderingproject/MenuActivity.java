@@ -36,6 +36,8 @@ public class MenuActivity extends BasicActivity {
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        BasketCountTextView = binding.tvBasketcount;
+
         initData();
         initView();
         initButtonListener();
@@ -72,8 +74,13 @@ public class MenuActivity extends BasicActivity {
         binding.btnBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
-                startActivity(intent);
+                if(UserInfo.getBasketCount() != 0) {
+                    Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(MenuActivity.this,"메뉴를 선택해주세요.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -84,7 +91,7 @@ public class MenuActivity extends BasicActivity {
         profileImageUrl = getIntent().getStringExtra("profileImageUrl");
         backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
 
-        BasketCountTextView = findViewById(R.id.tv_basket_count);
+        updateBasket();
 
         if(basketCount > 0){
             binding.tvBasketcount.setVisibility(View.VISIBLE);
@@ -110,33 +117,21 @@ public class MenuActivity extends BasicActivity {
         if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
     }
 
-//    public void setBasketCount(int basketCount){
-//        Log.e("setBasketCount","호출ㅣ");
-//        updateBasket(basketCount);
-////        if(basketCount != 0){
-////            BasketCountTextView.setText(basketCount);
-////        }
-////        else{
-////
-////            BasketCountTextView.setVisibility(View.GONE);
-////        }
-//    }
-    public static void updateBasket(int basketCount){
-        Log.e("asdasdasd",":asdasdasdasd");
-//        if(basketCount != 0){
-//            BasketCountTextView.setText(basketCount);
-//        }else{
-//            BasketCountTextView.setVisibility(View.GONE);
-//        }
+    public static void updateBasket(){
+        int basketCounts = UserInfo.getBasketCount();
+        if(basketCounts != 0){
+            if(BasketCountTextView.getVisibility() == View.GONE){
+                BasketCountTextView.setVisibility(View.VISIBLE);
+            }
+            BasketCountTextView.setText(Integer.toString(basketCounts));
+        }else{
+            BasketCountTextView.setVisibility(View.GONE);
+        }
     }
 
-//    @Override
-//    public void onDismiss(DialogInterface dialogInterface){
-////        int basketUpdate = UserInfo.getBasketCount();
-////        if(basketUpdate != 0){
-////            binding.tvBasketcount.setText(basketUpdate);
-////        }else{
-////            binding.tvBasketcount.setVisibility(View.GONE);
-////        }
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateBasket();
+    }
 }

@@ -1,10 +1,6 @@
-//package com.example.orderingproject.Dialog;
-//
-//interface CustomMenuOptionDialogListener{
-//    void onAddBasketButtonClicked();
-//}
-//
-//public void setDialogListener(CustomMenuOptionDialogListener customDialogListener){
-//    this.onAddBasketButtonClicked(); = customDialogListener;
-//}
-//
+package com.example.orderingproject.Dialog;
+
+public interface CustomMenuOptionDialogListener{
+    void onAddBasketButtonClicked(Long foodId, int totalPrice, int totalCount);
+}
+
