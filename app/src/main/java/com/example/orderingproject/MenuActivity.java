@@ -4,24 +4,31 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableResource;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends BasicActivity {
     private ActivityMenuBinding binding;
 
     public static String store, service, restaurantName,
                          profileImageUrl, backgroundImageUrl;
+    public static TextView BasketCountTextView;
+    public int basketCount = UserInfo.getBasketCount();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +72,8 @@ public class MenuActivity extends AppCompatActivity {
         binding.btnBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MenuActivity.this,"장바구니 버튼 클릭",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -76,9 +84,16 @@ public class MenuActivity extends AppCompatActivity {
         profileImageUrl = getIntent().getStringExtra("profileImageUrl");
         backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
 
+        BasketCountTextView = findViewById(R.id.tv_basket_count);
+
+        if(basketCount > 0){
+            binding.tvBasketcount.setVisibility(View.VISIBLE);
+            binding.tvBasketcount.setText(Integer.toString(basketCount));
+        }
         Log.e("store", store);
         Log.e("service", service);
         Log.e("restaurantName", restaurantName);
+        Log.e("basketCount", Integer.toString(basketCount));
         if(profileImageUrl != null) {
             Log.e("profileImageUrl", profileImageUrl);
         }
@@ -94,4 +109,34 @@ public class MenuActivity extends AppCompatActivity {
         if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
         if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
     }
+
+//    public void setBasketCount(int basketCount){
+//        Log.e("setBasketCount","호출ㅣ");
+//        updateBasket(basketCount);
+////        if(basketCount != 0){
+////            BasketCountTextView.setText(basketCount);
+////        }
+////        else{
+////
+////            BasketCountTextView.setVisibility(View.GONE);
+////        }
+//    }
+    public static void updateBasket(int basketCount){
+        Log.e("asdasdasd",":asdasdasdasd");
+//        if(basketCount != 0){
+//            BasketCountTextView.setText(basketCount);
+//        }else{
+//            BasketCountTextView.setVisibility(View.GONE);
+//        }
+    }
+
+//    @Override
+//    public void onDismiss(DialogInterface dialogInterface){
+////        int basketUpdate = UserInfo.getBasketCount();
+////        if(basketUpdate != 0){
+////            binding.tvBasketcount.setText(basketUpdate);
+////        }else{
+////            binding.tvBasketcount.setVisibility(View.GONE);
+////        }
+//    }
 }

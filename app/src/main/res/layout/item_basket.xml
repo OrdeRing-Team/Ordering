@@ -22,7 +22,7 @@
         android:background="@color/white">
 
         <TextView
-            android:id="@+id/tv_menuname"
+            android:id="@+id/tv_basket_menuname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,32 +33,32 @@
             android:textStyle="bold"/>
 
         <ImageView
-            android:id="@+id/iv_menuimage"
+            android:id="@+id/iv_basket_menuimage"
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_menuname"
+            app:layout_constraintTop_toBottomOf="@id/tv_basket_menuname"
             android:layout_marginTop="15dp"
             android:scaleType="centerCrop"
             android:backgroundTint="@color/black"
             android:background="@drawable/round_rectangle_background"/>
 
         <TextView
-            android:id="@+id/tv_menuprice"
+            android:id="@+id/tv_basket_menuprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/iv_menuimage"
-            app:layout_constraintTop_toTopOf="@id/iv_menuimage"
+            app:layout_constraintStart_toEndOf="@id/iv_basket_menuimage"
+            app:layout_constraintTop_toTopOf="@id/iv_basket_menuimage"
             android:text="○ 가격 : 3900원"
             android:textColor="@color/black"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"/>
         <TextView
-            android:id="@+id/tv_sumprice"
+            android:id="@+id/tv_basket_sumprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/iv_menuimage"
-            app:layout_constraintTop_toBottomOf="@id/tv_menuprice"
+            app:layout_constraintStart_toEndOf="@id/iv_basket_menuimage"
+            app:layout_constraintTop_toBottomOf="@id/tv_basket_menuprice"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/black"
@@ -95,7 +95,7 @@
             android:layout_marginEnd="10dp"/>
 
         <TextView
-            android:id="@+id/tv_count"
+            android:id="@+id/tv_basket_count"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"

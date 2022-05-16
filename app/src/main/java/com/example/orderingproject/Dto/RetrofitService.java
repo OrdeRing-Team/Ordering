@@ -8,6 +8,7 @@ import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
+import com.example.orderingproject.Dto.response.BasketResponseDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 
 import java.util.List;
@@ -69,6 +70,10 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> addBasket(@Query(value = "customer_id") Long customerId,
 									   @Query(value = "restaurant_id") Long restaurantId,
 									   @Body BasketRequestDto basketRequestDto);
+
+	// 장바구니 목록 불러오기
+	@POST("/api/customer/{customerId}/baskets")
+	Call<ResultDto<List<BasketResponseDto>>> getBasketList(@Path("customerId") Long customerId);
 
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")

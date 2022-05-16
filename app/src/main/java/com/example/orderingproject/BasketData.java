@@ -8,25 +8,25 @@ public class BasketData {
     private int price;
     private int count;
 
-    public BasketData(Long basketId, String foodName, String imageUrl, int price, int count) {
+    public BasketData(Long basketId, String basketFoodName, String basketImageUrl, int basketPrice, int basketCount) {
         this.basketId = basketId;
-        this.foodName = foodName;
-        this.imageUrl = imageUrl;
-        this.price = price;
-        this.count = count;
+        this.foodName = basketFoodName;
+        this.imageUrl = basketImageUrl;
+        this.price = basketPrice;
+        this.count = basketCount;
     }
 
     public Long getBasketId() {
         return basketId;
     }
 
-    public String getFoodName() { return foodName;}
+    public String getBasketFoodName() { return foodName;}
 
-    public String getImageUrl() { return imageUrl;}
+    public String getBasketImageUrl() { return imageUrl;}
 
-    public int getPrice() { return price;}
+    public int getBasketPrice() { return price;}
 
-    public int getCount() { return count;}
+    public int getBasketCount() { return count;}
 
 
 }

@@ -15,11 +15,15 @@ public class CustomerSignInResultDto {
 
     private Long customerId;
     private String nickname;
+    private int basketCount;
 
     public Long getCustomerId(){
         return customerId;
     }
     public String getNickname(){
         return nickname;
+    }
+    public int getBasketCount(){
+        return basketCount;
     }
 }

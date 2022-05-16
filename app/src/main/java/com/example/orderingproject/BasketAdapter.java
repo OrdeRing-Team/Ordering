@@ -1,5 +1,6 @@
 package com.example.orderingproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,34 +17,29 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomViewHolder> {
-    ArrayList<BasketData> arrayList;
+    ArrayList<BasketData> arrayBasketList;
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPrice, tvSumPrice, tvMenuName, tvCount;
-        ImageView ivMenuImage;
+        TextView tvBasketPrice, tvBasketSumPrice, tvBasketMenuName, tvBasketCount;
+        ImageView ivBasketMenuImage;
         Button btnDelete, btnPlus, btnMinus;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvPrice = itemView.findViewById(R.id.tv_menuprice);
-            tvSumPrice = itemView.findViewById(R.id.tv_sumprice);
-            tvMenuName = itemView.findViewById(R.id.tv_menuname);
-            ivMenuImage = itemView.findViewById(R.id.iv_menuimage);
-            tvCount = itemView.findViewById(R.id.tv_count);
+            tvBasketPrice = itemView.findViewById(R.id.tv_basket_menuprice);
+            tvBasketSumPrice = itemView.findViewById(R.id.tv_basket_sumprice);
+            tvBasketMenuName = itemView.findViewById(R.id.tv_basket_menuname);
+            ivBasketMenuImage = itemView.findViewById(R.id.iv_basket_menuimage);
+            tvBasketCount = itemView.findViewById(R.id.tv_basket_count);
             btnDelete = itemView.findViewById(R.id.btn_delete);
             btnPlus = itemView.findViewById(R.id.btn_plus);
             btnMinus = itemView.findViewById(R.id.btn_minus);
         }
     }
-
-    public BasketAdapter(ArrayList<BasketData> arrayList) {
-        this.arrayList = arrayList;
-    }
-
     public BasketAdapter(ArrayList<BasketData> arrayList, Context context) {
-        this.arrayList = arrayList;
+        this.arrayBasketList = arrayList;
         this.context = context;
     }
 
@@ -54,14 +50,15 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         return new CustomViewHolder(view);
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        holder.tvMenuName.setText(arrayList.get(position).getFoodName());
-        holder.tvPrice.setText(arrayList.get(position).getPrice());
-        holder.tvCount.setText(arrayList.get(position).getCount());
-        int sum = arrayList.get(position).getPrice() * arrayList.get(position).getCount();
-        holder.tvSumPrice.setText(sum);
-        Glide.with(holder.itemView.getContext()).load(arrayList.get(position).getImageUrl()).into(holder.ivMenuImage);
+        holder.tvBasketMenuName.setText(arrayBasketList.get(position).getBasketFoodName());
+        holder.tvBasketPrice.setText(String.format("○ 가격 : %d원",arrayBasketList.get(position).getBasketPrice()));
+        holder.tvBasketCount.setText(Integer.toString(arrayBasketList.get(position).getBasketCount()));
+        int sum = arrayBasketList.get(position).getBasketPrice() * arrayBasketList.get(position).getBasketCount();
+        holder.tvBasketSumPrice.setText(Integer.toString(sum));
+        Glide.with(holder.itemView.getContext()).load(arrayBasketList.get(position).getBasketImageUrl()).into(holder.ivBasketMenuImage);
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +84,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
 
     @Override
     public int getItemCount() {
-        return (arrayList != null ? arrayList.size() : 0);
+        return (arrayBasketList != null ? arrayBasketList.size() : 0);
     }
 
 }

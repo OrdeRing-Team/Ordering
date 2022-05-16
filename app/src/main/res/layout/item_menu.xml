@@ -9,7 +9,6 @@
     android:orientation="horizontal"
     android:weightSum="10"
     android:paddingBottom="1dp"
-    tools:context=".view.ManageFragment.StoreManageActivity"
     android:background="#E4E4E4">
 
 

@@ -54,7 +54,9 @@
         <activity
             android:name=".EventWebView"
             android:exported="true" />
-
+        <activity
+            android:name=".BasketActivity"
+            android:exported="true" />
         <activity
             android:name=".ScannerActivity"
             android:exported="true"

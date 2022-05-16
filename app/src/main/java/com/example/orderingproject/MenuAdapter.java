@@ -1,13 +1,17 @@
 package com.example.orderingproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +20,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
 import com.example.orderingproject.Dialog.CustomStoreDialog;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHolder> {
     ArrayList<MenuData> arrayList;
     Context context;
+    CustomMenuOptionDialog dialog;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
@@ -101,21 +116,23 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomMenuOptionDialog dialog = new CustomMenuOptionDialog(view.getContext(),
+                dialog = new CustomMenuOptionDialog(view.getContext(),
                         arrayList.get(position).getName(),
                         String.valueOf(arrayList.get(position).getIntro()),
                         imageURL,
                         String.valueOf(arrayList.get(position).getPrice()),
                         arrayList.get(position).getFoodId());
                 dialog.show();
+                // 메뉴 옵션 선택 다이얼로그에서 장바구니 담기 버튼 클릭후 Dismiss되면
+                // MenuActivity의 장바구니 플로팅 버튼에 text를 갱신시켜주기 위해 리스너 설정
+                //dialog.setOnDismissListener((DialogInterface.OnDismissListener) holder.itemView.getContext());
             }
         });
-    }
+
+    };
 
     @Override
     public int getItemCount() {
-    // getItemCount: return the size of the item list
-    // item list의 전체 데이터 개수 return
         return (arrayList != null ? arrayList.size() : 0);
     }
 
