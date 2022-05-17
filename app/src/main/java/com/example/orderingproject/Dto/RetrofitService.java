@@ -3,6 +3,7 @@ package com.example.orderingproject.Dto;
 import com.example.orderingproject.Dto.request.BasketRequestDto;
 import com.example.orderingproject.Dto.request.CouponSerialNumberDto;
 import com.example.orderingproject.Dto.request.CustomerSignUpDto;
+import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.request.PasswordChangeDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
@@ -64,6 +65,7 @@ public interface RetrofitService {
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
 	// 장바구니 메뉴 추가
+	// 쿼리가 포함된 주소는 아래와 같이 사용
 	// http://www.ordering.ml/api/order/basket?customer_id={customer_id}&restaurant_id={restaurant_id}
 	// 참고문서 : https://jaejong.tistory.com/38
 	@POST("api/order/basket")
@@ -71,6 +73,7 @@ public interface RetrofitService {
 									   @Query(value = "restaurant_id") Long restaurantId,
 									   @Body BasketRequestDto basketRequestDto);
 
+	// 장바구니 메뉴 삭제
 	@DELETE("api/order/basket/{basketId}")
 	Call<ResultDto<Boolean>> deleteBasket(@Path("basketId") Long basketId,
 									   @Query(value = "customer_id") Long customerId);
@@ -78,6 +81,10 @@ public interface RetrofitService {
 	// 장바구니 목록 불러오기
 	@POST("/api/customer/{customerId}/baskets")
 	Call<ResultDto<List<BasketResponseDto>>> getBasketList(@Path("customerId") Long customerId);
+
+	// 장바구니 주문 요청
+	@POST("api/order")
+	Call<ResultDto<Long>> orderRequest(@Query(value = "customer_id") Long customerId, @Body OrderDto orderDto);
 
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")

@@ -19,11 +19,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -34,6 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomViewHolder> {
     static ArrayList<BasketData> arrayBasketList;
+    static Map<Long, Integer> hm = new HashMap<>();
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +62,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
     public BasketAdapter(ArrayList<BasketData> arrayList, Context context) {
         this.arrayBasketList = arrayList;
         this.context = context;
+        hm.clear();
     }
 
     @NonNull
@@ -71,10 +76,19 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.tvBasketMenuName.setText(arrayBasketList.get(position).getBasketFoodName());
-        holder.tvBasketPrice.setText(String.format("○ 가격 : %d원", arrayBasketList.get(position).getBasketPrice()));
+        holder.tvBasketPrice
+                .setText("○ 가격 : " +
+                        CustomMenuOptionDialog.computePrice(
+                                arrayBasketList.get(position).getBasketPrice()
+                        )
+                        + "원");
         holder.tvBasketCount.setText(Integer.toString(arrayBasketList.get(position).getBasketCount()));
+
+        BasketActivity.orderCount += arrayBasketList.get(position).getBasketCount();
+        BasketActivity.setOrderCount();
+
         int sum = arrayBasketList.get(position).getBasketPrice() * arrayBasketList.get(position).getBasketCount();
-        holder.tvBasketSumPrice.setText(Integer.toString(sum));
+        holder.tvBasketSumPrice.setText(CustomMenuOptionDialog.computePrice(sum)+"원");
         Glide.with(holder.itemView.getContext()).load(arrayBasketList.get(position).getBasketImageUrl()).into(holder.ivBasketMenuImage);
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +126,8 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
                                                 public void run() {
                                                     Log.e("position", Integer.toString(newPosition));
                                                     UserInfo.minusBasketCount(arrayBasketList.get(newPosition).getBasketCount());
+                                                    BasketActivity.orderCount -= arrayBasketList.get(newPosition).getBasketCount();
+                                                    BasketActivity.setOrderCount();
                                                     arrayBasketList.remove(newPosition);
                                                     notifyItemRemoved(newPosition);
                                                     if(arrayBasketList.isEmpty()){
@@ -151,26 +167,31 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         holder.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int newPosition = holder.getAbsoluteAdapterPosition();
-                addCount(holder);
-                Log.e("position", Integer.toString(newPosition));
+                addCount(holder, holder.getAbsoluteAdapterPosition());
+                BasketActivity.orderCount++;
+                BasketActivity.setOrderCount();
             }
         });
 
         holder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                minusCount(holder);
+                minusCount(holder, holder.getAbsoluteAdapterPosition());
+                BasketActivity.orderCount--;
+                BasketActivity.setOrderCount();
             }
         });
         buttonCheck(holder);
     }
 
     @SuppressLint("SetTextI18n")
-    public void addCount(CustomViewHolder holder) {
+    public void addCount(CustomViewHolder holder, int position) {
         int currentCount = Integer.parseInt(holder.tvBasketCount.getText().toString());
 
         currentCount++;
+
+        updateHashMap(currentCount, position);
+        updatePrice(currentCount, position, holder);
 
         holder.tvBasketCount.setText(Integer.toString(currentCount));
 
@@ -178,14 +199,34 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
     }
 
     @SuppressLint("SetTextI18n")
-    public void minusCount(CustomViewHolder holder) {
+    public void minusCount(CustomViewHolder holder, int position) {
         int currentCount = Integer.parseInt(holder.tvBasketCount.getText().toString());
 
         currentCount--;
 
+        updateHashMap(currentCount, position);
+        updatePrice(currentCount, position, holder);
+
         holder.tvBasketCount.setText(Integer.toString(currentCount));
 
         buttonCheck(holder);
+    }
+
+    private void updateHashMap(int currentCount, int position){
+        String msg = "position : " + Integer.toString(position) + "  value : " + Integer.toString(currentCount);
+        if(currentCount != arrayBasketList.get(position).getBasketCount()){
+            hm.put(arrayBasketList.get(position).getFoodId(), currentCount);
+            Log.e("hashMap put", msg);
+        }else{
+            hm.remove(arrayBasketList.get(position).getFoodId());
+            Log.e("hashMap Removed", msg);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updatePrice(int currentCount, int position, CustomViewHolder holder){
+        int changedPrice = arrayBasketList.get(position).getBasketPrice() * currentCount;
+        holder.tvBasketSumPrice.setText(CustomMenuOptionDialog.computePrice(changedPrice) + "원");
     }
 
     private void buttonCheck(CustomViewHolder holder){
@@ -227,8 +268,8 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         return (arrayBasketList != null ? arrayBasketList.size() : 0);
     }
 
-    public static ArrayList<BasketData> getArrayBasketList(){
-        return arrayBasketList;
+    public static Map<Long, Integer> getHashMap(){
+        return hm;
     }
 }
 
