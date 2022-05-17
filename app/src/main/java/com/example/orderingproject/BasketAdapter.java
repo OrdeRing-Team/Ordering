@@ -126,7 +126,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
                                                 public void run() {
                                                     Log.e("position", Integer.toString(newPosition));
                                                     UserInfo.minusBasketCount(arrayBasketList.get(newPosition).getBasketCount());
-                                                    BasketActivity.orderCount -= arrayBasketList.get(newPosition).getBasketCount();
+                                                    BasketActivity.orderCount -= Integer.parseInt(holder.tvBasketCount.getText().toString());
                                                     BasketActivity.setOrderCount();
                                                     arrayBasketList.remove(newPosition);
                                                     notifyItemRemoved(newPosition);

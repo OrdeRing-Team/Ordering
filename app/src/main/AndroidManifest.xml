@@ -58,6 +58,9 @@
             android:name=".BasketActivity"
             android:exported="true" />
         <activity
+            android:name=".PaymentActivity"
+            android:exported="true" />
+        <activity
             android:name=".ScannerActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"

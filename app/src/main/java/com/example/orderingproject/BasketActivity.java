@@ -1,6 +1,7 @@
 package com.example.orderingproject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -63,62 +64,68 @@ public class BasketActivity extends BasicActivity {
             // 주문하기 버튼
             @Override
             public void onClick(View view) {
-                Map<Long, Integer> hm = BasketAdapter.getHashMap();
-                for (Map.Entry<Long, Integer> entrySet : hm.entrySet()) {
-                    Log.e("수량변경 HashMap ","key : " + entrySet.getKey() + "  value : " + entrySet.getValue());
-                }
 
-                try {
-                    new Thread() {
-                        @SneakyThrows
-                        public void run() {
-                            OrderDto orderDto = new OrderDto(null, OrderType.PACKING_ORDER, hm);
-                            Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl("http://www.ordering.ml/")
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build();
+                //주문 요청 로직
+//                Map<Long, Integer> hm = BasketAdapter.getHashMap();
+//                for (Map.Entry<Long, Integer> entrySet : hm.entrySet()) {
+//                    Log.e("수량변경 HashMap ","key : " + entrySet.getKey() + "  value : " + entrySet.getValue());
+//                }
+//
+//                try {
+//                    new Thread() {
+//                        @SneakyThrows
+//                        public void run() {
+//                            OrderDto orderDto = new OrderDto(null, OrderType.PACKING_ORDER, hm);
+//                            Retrofit retrofit = new Retrofit.Builder()
+//                                    .baseUrl("http://www.ordering.ml/")
+//                                    .addConverterFactory(GsonConverterFactory.create())
+//                                    .build();
+//
+//                            RetrofitService service = retrofit.create(RetrofitService.class);
+//                            Call<ResultDto<Long>> call = service.orderRequest(UserInfo.getCustomerId(), orderDto);
+//
+//                            call.enqueue(new Callback<ResultDto<Long>>() {
+//                                @Override
+//                                public void onResponse(Call<ResultDto<Long>> call, Response<ResultDto<Long>> response) {
+//
+//                                    if (response.isSuccessful()) {
+//                                        ResultDto<Long> result;
+//                                        result = response.body();
+//                                        if (result.getData() != null) {
+//                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                                @Override
+//                                                public void run() {
+//                                                    Toast.makeText(BasketActivity.this, "주문 요청됨",Toast.LENGTH_SHORT).show();
+//                                                    UserInfo.setBasketCount(0);
+//
+//                                                }
+//                                            });
+//                                        }else{
+//                                            Log.e("result","Null");
+//                                        }
+//                                    }
+//                                    else{
+//                                        Log.e("menuOrder","isFailed");
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+//                                    Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+//                                    Log.e("e = ", t.getMessage());
+//                                }
+//                            });
+//                        }
+//                    }.start();
+//
+//                } catch (Exception e) {
+//                    Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+//                    Log.e("e = ", e.getMessage());
+//                }
 
-                            RetrofitService service = retrofit.create(RetrofitService.class);
-                            Call<ResultDto<Long>> call = service.orderRequest(UserInfo.getCustomerId(), orderDto);
 
-                            call.enqueue(new Callback<ResultDto<Long>>() {
-                                @Override
-                                public void onResponse(Call<ResultDto<Long>> call, Response<ResultDto<Long>> response) {
-
-                                    if (response.isSuccessful()) {
-                                        ResultDto<Long> result;
-                                        result = response.body();
-                                        if (result.getData() != null) {
-                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Toast.makeText(BasketActivity.this, "주문 요청됨",Toast.LENGTH_SHORT).show();
-                                                    UserInfo.setBasketCount(0);
-
-                                                }
-                                            });
-                                        }else{
-                                            Log.e("result","Null");
-                                        }
-                                    }
-                                    else{
-                                        Log.e("menuOrder","isFailed");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
-                                    Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                                    Log.e("e = ", t.getMessage());
-                                }
-                            });
-                        }
-                    }.start();
-
-                } catch (Exception e) {
-                    Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                    Log.e("e = ", e.getMessage());
-                }
+                Intent intent = new Intent(BasketActivity.this, PaymentActivity.class);
+                startActivity(intent);
             }
         });
     }
