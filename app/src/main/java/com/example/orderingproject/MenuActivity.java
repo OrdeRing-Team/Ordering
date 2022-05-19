@@ -49,52 +49,7 @@ public class MenuActivity extends BasicActivity {
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
         ViewPagerAdapter adapter = new ViewPagerAdapter(this, 1,3);
         viewPager2.setAdapter(adapter);
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback(){
-            @Override
-            public void onPageSelected(int position){
-                super.onPageSelected(position);
-                // ViewPager 넘길때 마다 수행
-                switch (position){
-                    case 0 :
-                        Log.e("viewpager", "메뉴");
-                        Log.e("getHeight", Integer.toString(viewPager2.getChildAt(position).getHeight()));
-                        break;
-                    case 1 :
-                        Log.e("viewpager", "정보");
-                        break;
-                    case 2 :
-                        Log.e("viewpager", "리뷰");
-                        break;
 
-                }
-//                int wMeasureSpec = View.MeasureSpec.makeMeasureSpec(childView.getWidth(), View.MeasureSpec.EXACTLY);
-//                int hMeasureSpec = View.MeasureSpec.makeMeasureSpec(childView.getHeight(), View.MeasureSpec.UNSPECIFIED);
-//                childView.measure(wMeasureSpec, hMeasureSpec);
-//                if (viewPager2.getLayoutParams().height != childView.getMeasuredHeight()) {
-//                    ViewGroup.LayoutParams lp = viewPager2.getLayoutParams();
-//                    lp.height = childView.getMeasuredHeight();
-//                }
-
-
-//                View view = viewPager2.getChildAt(position); // this is a method i have in the adapter that returns the fragment's view, by calling fragment.getview()
-//                if (view != null) {
-//                    view.post(() -> {
-//                        int wMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY);
-//                        int hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-//                        view.measure(wMeasureSpec, hMeasureSpec);
-//                    });
-//
-//                    if (viewPager2.getLayoutParams().height != view.getMeasuredHeight()) {
-//                        ViewGroup.LayoutParams lp = viewPager2.getLayoutParams();
-//                        lp.height = view.getMeasuredHeight();
-//                        lp.width = view.getWidth();
-//                        viewPager2.setLayoutParams(lp);
-//
-//                        Log.e("asdasd","다름");
-//                    }
-//                }
-            }
-        });
         new TabLayoutMediator(tabLayout, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override

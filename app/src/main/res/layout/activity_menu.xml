@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:background="#FFFFFF">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -17,8 +17,8 @@ android:background="#FFFFFF">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="@color/main"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:expandedTitleTextColor="@color/fui_transparent"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:titleCollapseMode="fade">
             <!--fade: 툴바크기만큼만 줄어듦. scale: 툴바레이아웃 전체 크기만큼 줄어듦.-->
 
@@ -43,8 +43,8 @@ android:background="#FFFFFF">
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="184dp"
-                    android:elevation="10dp"
                     android:background="@drawable/menumanage1_custom"
+                    android:elevation="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.491"
                     app:layout_constraintStart_toStartOf="parent"
@@ -117,8 +117,8 @@ android:background="#FFFFFF">
                     android:id="@+id/btn_backToManageFrag"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_back_arrow"
-                    android:layout_marginLeft="15dp" />
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/ic_back_arrow" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -132,8 +132,8 @@ android:background="#FFFFFF">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabSelectedTextColor="@color/black"
             app:tabIndicatorColor="@color/main"
+            app:tabSelectedTextColor="@color/black"
             app:tabTextColor="#7A7A7A">
 
             <com.google.android.material.tabs.TabItem
@@ -155,72 +155,51 @@ android:background="#FFFFFF">
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_manage_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layoutDescription="@xml/activity_menu_scene">
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vp_manage_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tab_layout_menu"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    tools:ignore="NotSibling" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_layout_menu"
+        tools:ignore="NotSibling" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_basket"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
         android:background="@drawable/circle_button"
         android:backgroundTint="@color/main"
         android:clickable="true"
         android:elevation="20dp"
-        android:layout_margin="16dp"
-        android:layout_gravity="bottom|end"
         android:focusable="true">
+
         <ImageView
             android:id="@+id/iv_basket"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_basket"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/ic_basket"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_basketcount"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/circle_basket_count"
-            app:layout_constraintEnd_toEndOf="@id/iv_basket"
-            app:layout_constraintTop_toTopOf="@id/iv_basket"
             android:paddingTop="2dp"
             android:textAlignment="center"
             android:textColor="@color/main"
-            android:textStyle="bold"
             android:textSize="11sp"
-            android:visibility="gone"/>
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/iv_basket"
+            app:layout_constraintTop_toTopOf="@id/iv_basket" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
