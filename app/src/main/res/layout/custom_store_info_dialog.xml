@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="20dp"
+    android:paddingBottom="10dp"
     android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_store_top_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <View
         android:id="@+id/view_division2"
         android:layout_width="0dp"
@@ -65,20 +67,35 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_store_name"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/round_rectangle_background"
         android:backgroundTint="@color/main"
         android:text="메뉴 선택하기"
         android:textSize="12sp"
         android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_waiting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/round_rectangle_background"
+        android:backgroundTint="#EFA6A6"
+        android:text="원격 줄서기"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btn_select_menu"
+        app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
+
     <Button
         android:id="@+id/btn_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/round_rectangle_background"
-        app:layout_constraintEnd_toStartOf="@id/btn_select_menu"
-        app:layout_constraintTop_toTopOf="@id/btn_select_menu"
+        app:layout_constraintEnd_toStartOf="@id/btn_waiting"
+        app:layout_constraintTop_toTopOf="@id/btn_waiting"
         android:text="닫기"
         android:textSize="12sp"
         android:textColor="@color/black"

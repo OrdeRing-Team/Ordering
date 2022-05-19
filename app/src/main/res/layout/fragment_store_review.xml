@@ -188,6 +188,13 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_write_review"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="write"
+                android:layout_gravity="bottom"/>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -195,7 +202,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_review"

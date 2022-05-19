@@ -85,6 +85,13 @@ public class CustomStoreDialog extends Dialog {
                 dismiss();
             }
         });
+
+        binding.btnWaiting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("btn waiting", "is clicked.");
+            }
+        });
     }
 
     public CustomStoreDialog(@NonNull Context context,
