@@ -9,9 +9,9 @@
     <TextView
         android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="30dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:gravity="top"
         android:text="StoreInfoFrag" />
 
 </FrameLayout>
