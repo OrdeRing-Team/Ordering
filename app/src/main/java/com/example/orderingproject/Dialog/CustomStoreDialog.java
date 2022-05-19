@@ -1,5 +1,6 @@
 package com.example.orderingproject.Dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,24 +12,22 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
-import com.example.orderingproject.AuthActivity;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
-import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.MainActivity;
 import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
-import com.example.orderingproject.StartActivity;
+import com.example.orderingproject.UserInfo;
+import com.example.orderingproject.waiting.WaitingFragment;
 import com.example.orderingproject.databinding.CustomStoreInfoDialogBinding;
-import com.google.zxing.qrcode.encoder.QRCode;
+import com.example.orderingproject.waiting.WaitingInfoDialog;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -46,6 +45,9 @@ public class CustomStoreDialog extends Dialog {
     String backgroundImageUrl;
     String store;
     String service;
+
+    Byte waitingPeopleNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -87,9 +89,33 @@ public class CustomStoreDialog extends Dialog {
         });
 
         binding.btnWaiting.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
-                Log.e("btn waiting", "is clicked.");
+
+                Log.e("Customer Id", String.valueOf(UserInfo.getCustomerId()));
+                Log.e("Restaurant Id", String.valueOf(store));
+
+                // Bundle에 담아서 BottomSheetDialog로 보낸다.
+                Bundle waitingData = new Bundle();
+                waitingData.putString("storeIcon", store);
+                waitingData.putString("storeName", restaurantName);
+                if(profileImageUrl!= null) {
+                    waitingData.putString("profileImageUrl", profileImageUrl);
+                }
+                if(backgroundImageUrl != null) {
+                    waitingData.putString("backgroundImageUrl", backgroundImageUrl);
+                }
+
+                WaitingFragment waitingFragment = new WaitingFragment();
+                waitingFragment.setArguments(waitingData);
+
+
+                WaitingInfoDialog dialog = new WaitingInfoDialog(getContext());
+                dialog.show();
+                Window window = dialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                dismiss();
             }
         });
     }
@@ -171,5 +197,59 @@ public class CustomStoreDialog extends Dialog {
             dismiss();
         }
     }
+
+//    private void requestWaitingToServer(Long restaurantId, Long customerId) {
+//
+//        try {
+//            new Thread() {
+//                @SneakyThrows
+//                public void run() {
+//                    String url = "http://www.ordering.ml/";
+//
+//                    WaitingRegisterDto waitingRegisterDto = new WaitingRegisterDto(UserInfo.get);
+//                    Retrofit retrofit = new Retrofit.Builder()
+//                            .baseUrl(url)
+//                            .addConverterFactory(GsonConverterFactory.create())
+//                            .build();
+//
+//                    RetrofitService service = retrofit.create(RetrofitService.class);
+//                    Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(), Long.valueOf(MenuActivity.store), basketDto);
+//
+//                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+//                        @Override
+//                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+//
+//                            if (response.isSuccessful()) {
+//                                ResultDto<Boolean> result;
+//                                result = response.body();
+//                                if (result.getData()) {
+//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            UserInfo.addBasketCount(totalCount);
+//                                            // MenuActivity.setBasketCount(totalCount);
+//                                            MenuActivity.updateBasket();
+//                                            Toast.makeText(holder.itemView.getContext(), "장바구니에 메뉴를 추가했습니다.", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                    Log.e("result.getData() ", Boolean.toString(result.getData()));
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+//                            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+//                            Log.e("e = ", t.getMessage());
+//                        }
+//                    });
+//                }
+//            }.start();
+//
+//        } catch (Exception e) {
+//            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+//            Log.e("e = ", e.getMessage());
+//        }
+//    }
 
 }

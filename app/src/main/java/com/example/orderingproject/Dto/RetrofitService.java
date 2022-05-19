@@ -64,6 +64,11 @@ public interface RetrofitService {
 	@POST("/api/restaurant/{restaurantId}/foods")
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
+	// 웨이팅 요청
+	// http://www.ordering.ml/api/waiting?restaurant_id={restaurant_id}&customer_id={customer_id}
+	@POST("api/waiting")
+	Call<ResultDto<Boolean>> requestWaiting(@Query(value = "restaurant_id") Long restaurantId, @Query(value = "customer_id") Long customerId);
+
 	// 장바구니 메뉴 추가
 	// 쿼리가 포함된 주소는 아래와 같이 사용
 	// http://www.ordering.ml/api/order/basket?customer_id={customer_id}&restaurant_id={restaurant_id}

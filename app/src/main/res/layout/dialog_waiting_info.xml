@@ -8,26 +8,28 @@
     android:padding="30dp">
 
     <ImageView
-        android:id="@+id/iv_menuimage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:id="@+id/iv_storeIcon"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/round_rectangle_background"
-        android:backgroundTint="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="#C1C1C1"
+        android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="center"/>
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/ll_menuinfo"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="vertical"
         android:foregroundGravity="left"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_menuimage">
+        app:layout_constraintTop_toBottomOf="@+id/iv_storeIcon">
 
         <TextView
             android:id="@+id/tv_menuname"
@@ -58,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/menuDialogCount"
+        android:text="인원 수"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/ll_menuinfo"
         android:textSize="18sp"
@@ -78,8 +80,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/ic_minus"
             android:backgroundTint="@color/light_gray"
             android:layout_marginStart="10dp"/>
@@ -89,8 +91,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/ic_add"
             android:backgroundTint="@color/button_black"
             android:layout_marginEnd="10dp"/>
@@ -137,11 +139,11 @@
 
 
         <Button
-            android:id="@+id/btn_addbasket"
+            android:id="@+id/btn_ask_waiting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
-            android:text="장바구니에 담기"
+            android:text="원격 줄서기 신청"
             android:textStyle="bold"
             android:textSize="14sp"
             android:layout_marginStart="5dp"
