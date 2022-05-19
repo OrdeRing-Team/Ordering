@@ -9,11 +9,11 @@
     android:orientation="horizontal"
     android:weightSum="10"
     android:paddingBottom="1dp"
-    tools:context=".view.ManageFragment.StoreManageActivity"
     android:background="#E4E4E4">
 
 
     <LinearLayout
+        android:id="@+id/ll_baseLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"

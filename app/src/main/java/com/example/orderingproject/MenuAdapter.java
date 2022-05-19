@@ -1,27 +1,50 @@
 package com.example.orderingproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Outline;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
+import com.example.orderingproject.Dialog.CustomMenuOptionDialogListener;
 import com.example.orderingproject.Dialog.CustomStoreDialog;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHolder> {
     ArrayList<MenuData> arrayList;
     Context context;
+    public CustomMenuOptionDialog dialog;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
@@ -29,6 +52,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
         //        findViewById & 각종 event 작업
         TextView tvName, tvPrice, tvIntro, tvSoldout;
         ImageView ivMenu;
+        LinearLayout llBaseLayout;
 
 
         public CustomViewHolder(@NonNull View itemView) {
@@ -40,6 +64,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
             tvIntro = itemView.findViewById(R.id.item_intro);
             ivMenu = itemView.findViewById(R.id.item_image);
             tvSoldout = itemView.findViewById(R.id.item_soldout);
+            llBaseLayout = itemView.findViewById(R.id.ll_baseLayout);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,31 +116,102 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
         String imageURL = String.valueOf(arrayList.get(position).getIv_menu());
         Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.ivMenu);
 
-        // 품절 정보 불러와서 true이면 리사이클러뷰에 "품절" 출력하기
-        boolean soldout = arrayList.get(position).getSoldout();
-        if (soldout == true) {
-            holder.tvSoldout.setVisibility(View.VISIBLE);
-            holder.tvSoldout.setText("품절");
+        // 둥근 모서리 이미지뷰에서는 scaleType 변경 시 둥근 모서리가 해제됨. 따라서 코드상에서 다시 설정 해준다.
+        // 아래 메서드는 API 21 이상부터 사용 가능
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            holder.ivMenu.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0,0,view.getWidth(),view.getHeight(),40);
+                }
+            });
+
+            holder.ivMenu.setClipToOutline(true);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomMenuOptionDialog dialog = new CustomMenuOptionDialog(view.getContext(),
-                        arrayList.get(position).getName(),
-                        String.valueOf(arrayList.get(position).getIntro()),
-                        imageURL,
-                        String.valueOf(arrayList.get(position).getPrice()),
-                        arrayList.get(position).getFoodId());
-                dialog.show();
-            }
-        });
-    }
+        // 품절 정보 불러와서 true이면 리사이클러뷰에 "품절" 출력하기
+        boolean soldout = arrayList.get(position).getSoldout();
+        if (soldout) {
+            holder.tvSoldout.setVisibility(View.VISIBLE);
+            holder.tvSoldout.setText("품절");
+            holder.itemView.setClickable(false);
+            holder.llBaseLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.light_gray));
+        }
+        if(holder.itemView.isClickable()) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog = new CustomMenuOptionDialog(view.getContext(),
+                            arrayList.get(position).getName(),
+                            String.valueOf(arrayList.get(position).getIntro()),
+                            imageURL,
+                            String.valueOf(arrayList.get(position).getPrice()),
+                            arrayList.get(position).getFoodId());
+                    dialog.setDialogListener(new CustomMenuOptionDialogListener() {
+                        @Override
+                        public void onAddBasketButtonClicked(Long foodId, int totalPrice, int totalCount) {
+                            try {
+                                new Thread() {
+                                    @SneakyThrows
+                                    public void run() {
+                                        String url = "http://www.ordering.ml/";
+
+                                        BasketRequestDto basketDto = new BasketRequestDto(foodId, totalPrice, totalCount);
+                                        Retrofit retrofit = new Retrofit.Builder()
+                                                .baseUrl(url)
+                                                .addConverterFactory(GsonConverterFactory.create())
+                                                .build();
+
+                                        RetrofitService service = retrofit.create(RetrofitService.class);
+                                        Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(), Long.valueOf(MenuActivity.store), basketDto);
+
+                                        call.enqueue(new Callback<ResultDto<Boolean>>() {
+                                            @Override
+                                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                                if (response.isSuccessful()) {
+                                                    ResultDto<Boolean> result;
+                                                    result = response.body();
+                                                    if (result.getData()) {
+                                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                UserInfo.addBasketCount(totalCount);
+                                                                // MenuActivity.setBasketCount(totalCount);
+                                                                MenuActivity.updateBasket();
+                                                                Toast.makeText(holder.itemView.getContext(), "장바구니에 메뉴를 추가했습니다.", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                                        Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                                Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                                Log.e("e = ", t.getMessage());
+                                            }
+                                        });
+                                    }
+                                }.start();
+
+                            } catch (Exception e) {
+                                Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                Log.e("e = ", e.getMessage());
+                            }
+                        }
+                    });
+                    dialog.show();
+
+                }
+            });
+        }
+
+    };
 
     @Override
     public int getItemCount() {
-    // getItemCount: return the size of the item list
-    // item list의 전체 데이터 개수 return
         return (arrayList != null ? arrayList.size() : 0);
     }
 

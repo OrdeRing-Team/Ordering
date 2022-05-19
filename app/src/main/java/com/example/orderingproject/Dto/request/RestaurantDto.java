@@ -1,5 +1,8 @@
 package com.example.orderingproject.Dto.request;
 
+import com.example.orderingproject.ENUM_CLASS.FoodCategory;
+import com.example.orderingproject.ENUM_CLASS.RestaurantType;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

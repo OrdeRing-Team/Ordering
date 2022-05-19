@@ -16,15 +16,22 @@ public class UserInfo {
     private static Long customerId;
     private static String signInId;
     private static String nickname;
+    private static int basketCount;
 
     public static void setUserInfo(CustomerSignInResultDto dto, String mSignInId) {
         customerId = dto.getCustomerId();
         nickname = dto.getNickname();
+        basketCount = dto.getBasketCount();
         signInId = mSignInId;
     }
 
     public static void setCustomerId(Long id){customerId = id;}
     public static Long getCustomerId(){return customerId;}
+
+    public static void addBasketCount(int count){basketCount += count;}
+    public static void minusBasketCount(int count){basketCount -= count;}
+    public static int getBasketCount(){return basketCount;}
+    public static void setBasketCount(int count){ basketCount = count;}
 
     public static void setSignInId(String id){
         signInId = id;

@@ -33,4 +33,7 @@
     <string name="EventViewPagerDescript">%1$d / %2$d</string>
     <string name="menuDialogCount">수량</string>
     <string name="basket_title">장바구니</string>
+    <string name="BasketEmptyText">장바구니가 비었어요</string>
+    <string name="title_payment">주문정보 확인</string>
+    <string name="PaymentTotalPriceText">총 결제금액</string>
 </resources>
