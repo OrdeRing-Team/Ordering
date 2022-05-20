@@ -16,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dto.ResultDto;
@@ -98,23 +100,17 @@ public class CustomStoreDialog extends Dialog {
 
                 // Bundle에 담아서 BottomSheetDialog로 보낸다.
                 Bundle waitingData = new Bundle();
-                waitingData.putString("storeIcon", store);
+                waitingData.putString("storeId", store);
                 waitingData.putString("storeName", restaurantName);
                 if(profileImageUrl!= null) {
                     waitingData.putString("profileImageUrl", profileImageUrl);
                 }
-                if(backgroundImageUrl != null) {
-                    waitingData.putString("backgroundImageUrl", backgroundImageUrl);
-                }
 
-                WaitingFragment waitingFragment = new WaitingFragment();
-                waitingFragment.setArguments(waitingData);
+                // Bundle에 담아서 BottomSheetDialog로 보낸다.
+                WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
+                waitingInfoDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"bottomSheet");
+                waitingInfoDialog.setArguments(waitingData);
 
-
-                WaitingInfoDialog dialog = new WaitingInfoDialog(getContext());
-                dialog.show();
-                Window window = dialog.getWindow();
-                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
                 dismiss();
             }
         });
@@ -198,58 +194,6 @@ public class CustomStoreDialog extends Dialog {
         }
     }
 
-//    private void requestWaitingToServer(Long restaurantId, Long customerId) {
-//
-//        try {
-//            new Thread() {
-//                @SneakyThrows
-//                public void run() {
-//                    String url = "http://www.ordering.ml/";
-//
-//                    WaitingRegisterDto waitingRegisterDto = new WaitingRegisterDto(UserInfo.get);
-//                    Retrofit retrofit = new Retrofit.Builder()
-//                            .baseUrl(url)
-//                            .addConverterFactory(GsonConverterFactory.create())
-//                            .build();
-//
-//                    RetrofitService service = retrofit.create(RetrofitService.class);
-//                    Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(), Long.valueOf(MenuActivity.store), basketDto);
-//
-//                    call.enqueue(new Callback<ResultDto<Boolean>>() {
-//                        @Override
-//                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-//
-//                            if (response.isSuccessful()) {
-//                                ResultDto<Boolean> result;
-//                                result = response.body();
-//                                if (result.getData()) {
-//                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            UserInfo.addBasketCount(totalCount);
-//                                            // MenuActivity.setBasketCount(totalCount);
-//                                            MenuActivity.updateBasket();
-//                                            Toast.makeText(holder.itemView.getContext(), "장바구니에 메뉴를 추가했습니다.", Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    });
-//                                    Log.e("result.getData() ", Boolean.toString(result.getData()));
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-//                            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-//                            Log.e("e = ", t.getMessage());
-//                        }
-//                    });
-//                }
-//            }.start();
-//
-//        } catch (Exception e) {
-//            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-//            Log.e("e = ", e.getMessage());
-//        }
-//    }
+
 
 }

@@ -9,6 +9,7 @@ import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
+import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BasketResponseDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 
@@ -67,7 +68,9 @@ public interface RetrofitService {
 	// 웨이팅 요청
 	// http://www.ordering.ml/api/waiting?restaurant_id={restaurant_id}&customer_id={customer_id}
 	@POST("api/waiting")
-	Call<ResultDto<Boolean>> requestWaiting(@Query(value = "restaurant_id") Long restaurantId, @Query(value = "customer_id") Long customerId);
+	Call<ResultDto<Boolean>> requestWaiting(@Query(value = "restaurant_id") Long restaurantId,
+											@Query(value = "customer_id") Long customerId,
+											@Body WaitingRegisterDto waitingRegisterDto);
 
 	// 장바구니 메뉴 추가
 	// 쿼리가 포함된 주소는 아래와 같이 사용

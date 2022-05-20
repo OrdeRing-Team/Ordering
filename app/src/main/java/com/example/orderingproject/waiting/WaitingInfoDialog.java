@@ -3,72 +3,72 @@ package com.example.orderingproject.waiting;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.KeyboardShortcutGroup;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
-import com.example.orderingproject.Dialog.CustomMenuOptionDialogListener;
+
+import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.R;
-import com.example.orderingproject.databinding.CustomStoreInfoDialogBinding;
+import com.example.orderingproject.UserInfo;
 import com.example.orderingproject.databinding.DialogWaitingInfoBinding;
 
 import java.util.List;
 import java.util.zip.Inflater;
 
-public class WaitingInfoDialog extends Dialog implements View.OnClickListener {
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
+public class WaitingInfoDialog extends DialogFragment {
+
+    public static WaitingInfoDialog getInstance() { return new WaitingInfoDialog(); }
+
+    private View view;
     private DialogWaitingInfoBinding binding;
-    private CustomWaitingTeamNumDialogListener dialogListener;
 
+    Long waitingId;
+    private Long restaurantId;
+    int count = 1;
+
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        binding = DialogWaitingInfoBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
 
-        binding = DialogWaitingInfoBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        getStoreData();
+        initButtonListeners();
 
-    }
-
-    public WaitingInfoDialog(@NonNull Context context) {
-        super(context);
-    }
-
-//    public WaitingInfoDialog(@NonNull Context context, int themeResId) {
-//        super(context, themeResId);
-//    }
-//
-//    protected WaitingInfoDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-//        super(context, cancelable, cancelListener);
-//    }
-
-    @Override
-    public void onClick(View view) {
+        return view;
 
     }
 
-    @Override
-    public void onProvideKeyboardShortcuts(List<KeyboardShortcutGroup> data, @Nullable Menu menu, int deviceId) {
-        super.onProvideKeyboardShortcuts(data, menu, deviceId);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
-    }
-
-    public void initButtonListeners(){
+    public void initButtonListeners() {
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,51 +76,123 @@ public class WaitingInfoDialog extends Dialog implements View.OnClickListener {
             }
         });
 
-//        binding.btnAskWaiting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                int totalPrice = Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString());
-//                int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
-//                dialogListener.onAddBasketButtonClicked(foodId, totalPrice, totalCount);
-//                dismiss();
-//            }
-//        });
-//
-//        binding.btnPlus.setOnClickListener(new View.OnClickListener(){
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onClick(View view){
-//                count += 1;
-//                if(count == 2){
-//                    buttonRelease(binding.btnMinus);
-//                }
-//                binding.tvCount.setText(Integer.toString(count));
-//                if(count == 10){
-//                    buttonLock(binding.btnPlus);
-//                }
-//                // 장바구니 담기 버튼 텍스트 설정
-//                finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
-//                binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
-//            }
-//        });
-//
-//        binding.btnMinus.setOnClickListener(new View.OnClickListener(){
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onClick(View view){
-//                if(count != 1) {
-//                    count -= 1;
-//                    if(count == 1) buttonLock(binding.btnMinus);
-//                    binding.tvCount.setText(Integer.toString(count));
-//                    if (!binding.btnPlus.isClickable()) {
-//                        buttonRelease(binding.btnPlus);
-//                    }
-//                    // 장바구니 담기 버튼 텍스트 설정
-//                    finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
-//                    binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
-//                }
-//            }
-//        });
+        binding.btnAskWaiting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
+                //dialogListener.onAddWaitingNumButtonClicked(waitingId, totalCount);
+                Log.e("totalCount", String.valueOf(totalCount));
+                requestWaitingToServer(totalCount);
+
+
+                dismiss();
+            }
+        });
+
+        binding.btnPlus.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View view) {
+                count += 1;
+                if (count == 2) {
+                    buttonRelease(binding.btnMinus);
+                }
+                binding.tvCount.setText(Integer.toString(count));
+                if (count == 20) {
+                    buttonLock(binding.btnPlus);
+                }
+            }
+        });
+
+        binding.btnMinus.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View view) {
+                if (count != 1) {
+                    count -= 1;
+                    if (count == 1) buttonLock(binding.btnMinus);
+                    binding.tvCount.setText(Integer.toString(count));
+                    if (!binding.btnPlus.isClickable()) {
+                        buttonRelease(binding.btnPlus);
+                    }
+                }
+            }
+        });
     }
+
+    private void buttonLock (View view){
+        view.setClickable(false);
+        view.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.light_gray)));
+    }
+    private void buttonRelease (View view){
+        view.setClickable(true);
+        view.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.button_black)));
+    }
+
+    private void getStoreData() {
+        Bundle waitingData = getArguments();
+
+        String storeIcon = waitingData.getString("profileImageUrl");
+        Glide.with(getContext()).load(storeIcon).into(binding.ivStoreIcon);
+
+        String storeName = waitingData.getString("storeName");
+        binding.tvStoreName.setText(storeName);
+
+        String storeId = waitingData.getString("storeId");
+        restaurantId = Long.valueOf(storeId);
+    }
+
+
+    private void requestWaitingToServer(int count) {
+
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    String url = "http://www.ordering.ml/";
+
+                    WaitingRegisterDto waitingRegisterDto = new WaitingRegisterDto(Byte.valueOf(String.valueOf(count)));
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<Boolean>> call = service.requestWaiting(UserInfo.getCustomerId(), restaurantId, waitingRegisterDto);
+
+                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<Boolean> result;
+                                result = response.body();
+                                if (result.getData()) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.e("웨이팅 정보", "업로드 완료" + String.valueOf(count));
+                                        }
+                                    });
+                                    Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                            Toast.makeText(getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+    }
+
 }

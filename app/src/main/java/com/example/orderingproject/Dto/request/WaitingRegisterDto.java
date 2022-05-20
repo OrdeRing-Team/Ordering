@@ -12,6 +12,5 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access =PROTECTED)
 public class WaitingRegisterDto {
 
-    private Byte peopleNumber;
-
+    private Byte numOfTeamMembers;
 }
