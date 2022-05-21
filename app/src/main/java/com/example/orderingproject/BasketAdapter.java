@@ -189,6 +189,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         int currentCount = Integer.parseInt(holder.tvBasketCount.getText().toString());
 
         currentCount++;
+        BasketActivity.totalCount++;
 
         updateHashMap(currentCount, position);
         updatePrice(currentCount, position, holder);
@@ -203,6 +204,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         int currentCount = Integer.parseInt(holder.tvBasketCount.getText().toString());
 
         currentCount--;
+        BasketActivity.totalCount--;
 
         updateHashMap(currentCount, position);
         updatePrice(currentCount, position, holder);
@@ -268,7 +270,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         return (arrayBasketList != null ? arrayBasketList.size() : 0);
     }
 
-    public static Map<Long, Integer> getHashMap(){
+    public static Map<Long, Integer> getCountChangedHashMap(){
         return hm;
     }
 }
