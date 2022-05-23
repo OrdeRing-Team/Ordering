@@ -42,7 +42,6 @@ public class MenuActivity extends BasicActivity {
         BasketCountTextView = binding.tvBasketcount;
 
         initData();
-        initView();
         initButtonListener();
         //뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
@@ -79,6 +78,9 @@ public class MenuActivity extends BasicActivity {
             public void onClick(View view) {
                 if(UserInfo.getBasketCount() != 0) {
                     Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
+                    intent.putExtra("store", store);
+                    intent.putExtra("service", service);
+                    intent.putExtra("restaurantName", restaurantName);
                     startActivity(intent);
                 }
                 else{
@@ -88,27 +90,30 @@ public class MenuActivity extends BasicActivity {
         });
     }
     private void initData(){
-        store = getIntent().getStringExtra("store");
-        service = getIntent().getStringExtra("service");
-        restaurantName = getIntent().getStringExtra("restaurantName");
-        profileImageUrl = getIntent().getStringExtra("profileImageUrl");
-        backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
+        if(getIntent() != null) {
+            store = getIntent().getStringExtra("store");
+            service = getIntent().getStringExtra("service");
+            restaurantName = getIntent().getStringExtra("restaurantName");
+            profileImageUrl = getIntent().getStringExtra("profileImageUrl");
+            backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
+            Log.e("store", store);
+            Log.e("service", service);
+            Log.e("restaurantName", restaurantName);
+            Log.e("basketCount", Integer.toString(basketCount));
+            if(profileImageUrl != null) {
+                Log.e("profileImageUrl", profileImageUrl);
+            }
+            if(backgroundImageUrl != null) {
+                Log.e("backgroundImageUrl", backgroundImageUrl);
+            }
 
+            initView();
+        }
         updateBasket();
 
         if(basketCount > 0){
             binding.tvBasketcount.setVisibility(View.VISIBLE);
             binding.tvBasketcount.setText(Integer.toString(basketCount));
-        }
-        Log.e("store", store);
-        Log.e("service", service);
-        Log.e("restaurantName", restaurantName);
-        Log.e("basketCount", Integer.toString(basketCount));
-        if(profileImageUrl != null) {
-            Log.e("profileImageUrl", profileImageUrl);
-        }
-        if(backgroundImageUrl != null) {
-            Log.e("backgroundImageUrl", backgroundImageUrl);
         }
     }
 

@@ -121,7 +121,7 @@ public class HomeFragment extends Fragment {
         binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "takeout");
+                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "table31");
                 dialog.show();
                 Window window = dialog.getWindow();
                 window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);

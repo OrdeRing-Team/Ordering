@@ -168,6 +168,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
             @Override
             public void onClick(View view) {
                 addCount(holder, holder.getAbsoluteAdapterPosition());
+                UserInfo.addBasketCount(1);
                 BasketActivity.orderCount++;
                 BasketActivity.setOrderCount();
             }
@@ -177,6 +178,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
             @Override
             public void onClick(View view) {
                 minusCount(holder, holder.getAbsoluteAdapterPosition());
+                UserInfo.minusBasketCount(1);
                 BasketActivity.orderCount--;
                 BasketActivity.setOrderCount();
             }
@@ -217,10 +219,10 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
     private void updateHashMap(int currentCount, int position){
         String msg = "position : " + Integer.toString(position) + "  value : " + Integer.toString(currentCount);
         if(currentCount != arrayBasketList.get(position).getBasketCount()){
-            hm.put(arrayBasketList.get(position).getFoodId(), currentCount);
+            hm.put(arrayBasketList.get(position).getBasketId(), currentCount);
             Log.e("hashMap put", msg);
         }else{
-            hm.remove(arrayBasketList.get(position).getFoodId());
+            hm.remove(arrayBasketList.get(position).getBasketId());
             Log.e("hashMap Removed", msg);
         }
     }

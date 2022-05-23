@@ -61,7 +61,7 @@ public class BasketActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 if(!BasketAdapter.hm.isEmpty()) {
-                    modifyBasketCount();
+                    modifyBasketCount(null);
                 }
                 else{
                     FinishWithAnim();
@@ -72,7 +72,16 @@ public class BasketActivity extends BasicActivity {
             // 주문하기 버튼
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(BasketActivity.this, PaymentActivity.class);
+                intent.putExtra("store", getIntent().getStringExtra("store"));
+                intent.putExtra("service", getIntent().getStringExtra("service"));
+                intent.putExtra("restaurantName", getIntent().getStringExtra("restaurantName"));
 
+                if(!BasketAdapter.hm.isEmpty()) {
+                    modifyBasketCount(intent);
+                }else{
+                    startActivity(intent);
+                }
                 //주문 요청 로직
 //                Map<Long, Integer> hm = BasketAdapter.getHashMap();
 //                for (Map.Entry<Long, Integer> entrySet : hm.entrySet()) {
@@ -132,13 +141,11 @@ public class BasketActivity extends BasicActivity {
 //                }
 
 
-                Intent intent = new Intent(BasketActivity.this, PaymentActivity.class);
-                startActivity(intent);
             }
         });
     }
 
-    private void modifyBasketCount(){
+    private void modifyBasketCount(Intent intent){
         // HashMap에 담긴 음식 수량 변경 내용을 ArrayList로 변환
         Map<Long, Integer> countChangedMap = BasketAdapter.getCountChangedHashMap();
         List<BasketPutDto> countCahngedList = new ArrayList<>();
@@ -173,8 +180,12 @@ public class BasketActivity extends BasicActivity {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            UserInfo.setBasketCount(totalCount);
-                                            FinishWithAnim();
+//                                            UserInfo.setBasketCount(totalCount);
+                                            if(intent == null) {
+                                                FinishWithAnim();
+                                            }else{
+                                                startActivity(intent);
+                                            }
                                         }
                                     });
                                     Log.e("result.getData() ", Boolean.toString(result.getData()));
