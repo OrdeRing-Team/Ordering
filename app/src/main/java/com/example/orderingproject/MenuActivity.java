@@ -41,6 +41,8 @@ public class MenuActivity extends BasicActivity {
 
         BasketCountTextView = binding.tvBasketcount;
 
+        startProgress(this);
+
         initData();
         initButtonListener();
         //뷰페이저 세팅
@@ -123,6 +125,7 @@ public class MenuActivity extends BasicActivity {
         binding.tvStoreName.setText(restaurantName);
         if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
         if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+        stopProgress();
     }
 
     public static void updateBasket(){

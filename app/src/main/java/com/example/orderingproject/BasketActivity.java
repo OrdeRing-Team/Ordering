@@ -209,6 +209,7 @@ public class BasketActivity extends BasicActivity {
     }
 
     private void initData() {
+        startProgress(this);
 
         emptyImage = binding.ivEmpty;
         emptyText = binding.tvEmpty;
@@ -264,6 +265,7 @@ public class BasketActivity extends BasicActivity {
                                             recyclerView.setAdapter(basketAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
+                                            stopProgress();
                                         }
                                     });
                                 }
@@ -274,6 +276,7 @@ public class BasketActivity extends BasicActivity {
                         public void onFailure(Call<ResultDto<List<BasketResponseDto>>> call, Throwable t) {
                             Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
+                            stopProgress();
                         }
                     });
                 }
@@ -282,6 +285,7 @@ public class BasketActivity extends BasicActivity {
         } catch (Exception e) {
             Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
+            stopProgress();
         }
     }
     public static void setEmptyView(){
