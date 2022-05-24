@@ -32,11 +32,6 @@ public class MainActivity extends BasicActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        if(user == null){
-//            startActivity(new Intent(MainActivity.this, StartActivity.class));
-//            finish();
-//        }
-
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
         progressBar = binding.progressBar;

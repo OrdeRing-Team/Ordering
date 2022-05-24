@@ -174,15 +174,18 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_couponbox"
                     android:layout_width="177dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:background="@drawable/background_custom"
                     android:orientation="vertical">
 
-                    <ImageButton
+                    <ImageView
                         android:layout_width="40dp"
                         android:layout_height="38dp"
                         android:layout_gravity="center"
@@ -192,7 +195,7 @@
                         android:src="@drawable/ic_baseline_folder_24"
                         app:tint="@color/blue" />
 
-                    <Button
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="37dp"
                         android:layout_gravity="center"

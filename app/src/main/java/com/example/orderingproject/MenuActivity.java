@@ -2,7 +2,6 @@ package com.example.orderingproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -42,11 +41,10 @@ public class MenuActivity extends BasicActivity {
 
         BasketCountTextView = binding.tvBasketcount;
 
+        startProgress(this);
+
         initData();
-        initView();
         initButtonListener();
-
-
         //뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
@@ -82,6 +80,9 @@ public class MenuActivity extends BasicActivity {
             public void onClick(View view) {
                 if(UserInfo.getBasketCount() != 0) {
                     Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
+                    intent.putExtra("store", store);
+                    intent.putExtra("service", service);
+                    intent.putExtra("restaurantName", restaurantName);
                     startActivity(intent);
                 }
                 else{
@@ -91,32 +92,31 @@ public class MenuActivity extends BasicActivity {
         });
     }
     private void initData(){
-        store = getIntent().getStringExtra("store");
-        service = getIntent().getStringExtra("service");
-        restaurantName = getIntent().getStringExtra("restaurantName");
-        profileImageUrl = getIntent().getStringExtra("profileImageUrl");
-        backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
+        if(getIntent() != null) {
+            store = getIntent().getStringExtra("store");
+            service = getIntent().getStringExtra("service");
+            restaurantName = getIntent().getStringExtra("restaurantName");
+            profileImageUrl = getIntent().getStringExtra("profileImageUrl");
+            backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
+            Log.e("store", store);
+            Log.e("service", service);
+            Log.e("restaurantName", restaurantName);
+            Log.e("basketCount", Integer.toString(basketCount));
+            if(profileImageUrl != null) {
+                Log.e("profileImageUrl", profileImageUrl);
+            }
+            if(backgroundImageUrl != null) {
+                Log.e("backgroundImageUrl", backgroundImageUrl);
+            }
 
+            initView();
+        }
         updateBasket();
 
         if(basketCount > 0){
             binding.tvBasketcount.setVisibility(View.VISIBLE);
             binding.tvBasketcount.setText(Integer.toString(basketCount));
         }
-        Log.e("store", store);
-        Log.e("service", service);
-        Log.e("restaurantName", restaurantName);
-        Log.e("basketCount", Integer.toString(basketCount));
-        if(profileImageUrl != null) {
-            Log.e("profileImageUrl", profileImageUrl);
-        }
-        if(backgroundImageUrl != null) {
-            Log.e("backgroundImageUrl", backgroundImageUrl);
-        }
-
-        //툴바 타이틀 설정
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(restaurantName);
     }
 
     private void initView(){
@@ -125,6 +125,7 @@ public class MenuActivity extends BasicActivity {
         binding.tvStoreName.setText(restaurantName);
         if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
         if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+        stopProgress();
     }
 
     public static void updateBasket(){

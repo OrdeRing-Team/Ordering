@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,12 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.BasketPutDto;
 import com.example.orderingproject.Dto.request.BasketRequestDto;
 import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.response.BasketResponseDto;
 import com.example.orderingproject.ENUM_CLASS.OrderType;
 import com.example.orderingproject.databinding.ActivityBasketBinding;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +44,7 @@ public class BasketActivity extends BasicActivity {
     static TextView emptyText;
     static Button orderButton;
     static int orderCount;
+    static int totalCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +60,28 @@ public class BasketActivity extends BasicActivity {
         binding.btnBackToManageFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                finish();
+                if(!BasketAdapter.hm.isEmpty()) {
+                    modifyBasketCount(null);
+                }
+                else{
+                    FinishWithAnim();
+                }
             }
         });
         binding.bottomLayout.setOnClickListener(new View.OnClickListener() {
             // 주문하기 버튼
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(BasketActivity.this, PaymentActivity.class);
+                intent.putExtra("store", getIntent().getStringExtra("store"));
+                intent.putExtra("service", getIntent().getStringExtra("service"));
+                intent.putExtra("restaurantName", getIntent().getStringExtra("restaurantName"));
 
+                if(!BasketAdapter.hm.isEmpty()) {
+                    modifyBasketCount(intent);
+                }else{
+                    startActivity(intent);
+                }
                 //주문 요청 로직
 //                Map<Long, Integer> hm = BasketAdapter.getHashMap();
 //                for (Map.Entry<Long, Integer> entrySet : hm.entrySet()) {
@@ -124,13 +141,75 @@ public class BasketActivity extends BasicActivity {
 //                }
 
 
-                Intent intent = new Intent(BasketActivity.this, PaymentActivity.class);
-                startActivity(intent);
             }
         });
     }
 
+    private void modifyBasketCount(Intent intent){
+        // HashMap에 담긴 음식 수량 변경 내용을 ArrayList로 변환
+        Map<Long, Integer> countChangedMap = BasketAdapter.getCountChangedHashMap();
+        List<BasketPutDto> countCahngedList = new ArrayList<>();
+        for(Map.Entry<Long, Integer> entrySet : countChangedMap.entrySet()){
+            countCahngedList.add(new BasketPutDto(entrySet.getKey(), entrySet.getValue()));
+        }
+        for(BasketPutDto b : countCahngedList){
+            Log.e("list###","foodId : " + b.getBasketId() + "\tcount : " + b.getCount());
+        }
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    String url = "http://www.ordering.ml/";
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<Boolean>> call = service.modifyBasketCount(UserInfo.getCustomerId(), countCahngedList);
+
+                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<Boolean> result;
+                                result = response.body();
+                                if (result.getData()) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+//                                            UserInfo.setBasketCount(totalCount);
+                                            if(intent == null) {
+                                                FinishWithAnim();
+                                            }else{
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    });
+                                    Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                            MainActivity.showToast(BasketActivity.this, "변경된 수량을 저장하는데 실패했습니다.");
+                            FinishWithAnim();
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            MainActivity.showToast(BasketActivity.this, "변경된 수량을 저장하는데 실패했습니다.");
+            FinishWithAnim();
+        }
+    }
+
     private void initData() {
+        startProgress(this);
 
         emptyImage = binding.ivEmpty;
         emptyText = binding.tvEmpty;
@@ -161,7 +240,7 @@ public class BasketActivity extends BasicActivity {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            int totalCount = 0;
+                                            totalCount = 0;
                                             for(BasketResponseDto i : result.getData()){
                                                 basketList.add(new BasketData(i.getBasketId(),
                                                         i.getFoodId(),
@@ -186,6 +265,7 @@ public class BasketActivity extends BasicActivity {
                                             recyclerView.setAdapter(basketAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
+                                            stopProgress();
                                         }
                                     });
                                 }
@@ -196,6 +276,7 @@ public class BasketActivity extends BasicActivity {
                         public void onFailure(Call<ResultDto<List<BasketResponseDto>>> call, Throwable t) {
                             Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
+                            stopProgress();
                         }
                     });
                 }
@@ -204,6 +285,7 @@ public class BasketActivity extends BasicActivity {
         } catch (Exception e) {
             Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
+            stopProgress();
         }
     }
     public static void setEmptyView(){
@@ -214,6 +296,6 @@ public class BasketActivity extends BasicActivity {
 
     @SuppressLint("SetTextI18n")
     public static void setOrderCount(){
-        orderButton.setText(orderCount + "개 메뉴 주문하기");
+        orderButton.setText(UserInfo.getBasketCount() + "개 메뉴 주문하기");
     }
 }

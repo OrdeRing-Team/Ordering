@@ -117,11 +117,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        binding.llCouponbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CouponActivity.class);
+                intent.putExtra("from", "HomeFragment");
+                startActivity(intent);
+            }
+        });
+
         /** 임시 버튼 나중에 삭제 할 것 **/
         binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "takeout");
+                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "table31");
                 dialog.show();
                 Window window = dialog.getWindow();
                 window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
