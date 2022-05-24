@@ -15,11 +15,9 @@ public class OrderDto {
 
     private Integer tableNumber;
     private OrderType orderType;
-    private Map<Long, Integer> putBaskets; // key: foodId, value: count
 
-    public OrderDto(Integer tableNumber, OrderType orderType, Map<Long, Integer> putBaskets) {
+    public OrderDto(Integer tableNumber, OrderType orderType) {
         this.tableNumber = tableNumber;
         this.orderType = orderType;
-        this.putBaskets = putBaskets;
     }
 }

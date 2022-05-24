@@ -106,60 +106,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CustomView
                     Log.e("couponId",arrayCouponList.get(position).getCouponId() + " // 선택 적용됨");
                     CouponActivity.hideProgress();
                     ((Activity) context).finish();
-//                    try {
-//                        new Thread() {
-//                            @SneakyThrows
-//                            public void run() {
-//                                String url = "http://www.ordering.ml/api/customer/coupon/" + arrayCouponList.get(position).getCouponId() + "/";
-//
-//                                Retrofit retrofit = new Retrofit.Builder()
-//                                        .baseUrl(url)
-//                                        .addConverterFactory(GsonConverterFactory.create())
-//                                        .build();
-//
-//                                RetrofitService service = retrofit.create(RetrofitService.class);
-//                                Call<ResultDto<Boolean>> call = service.useCoupon(arrayCouponList.get(position).getCouponId());
-//
-//                                call.enqueue(new Callback<ResultDto<Boolean>>() {
-//                                    @Override
-//                                    public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-//
-//                                        if (response.isSuccessful()) {
-//                                            ResultDto<Boolean> result;
-//                                            result = response.body();
-//                                            if (result.getData()) {
-//                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                                    @Override
-//                                                    public void run() {
-//                                                        Intent intent = new Intent(context, PaymentActivity.class);
-//                                                        intent.putExtra("couponId", couponId);
-//                                                        intent.putExtra("couponValue", couponValue);
-//
-//                                                        ((Activity) context).setResult(RESULT_OK, intent);;
-//                                                        CouponActivity.hideProgress();
-//                                                        Log.e("couponId",arrayCouponList.get(position).getCouponId() + " // 사용 처리됨");
-//                                                    }
-//                                                });
-//                                                Log.e("result.getData() ", Boolean.toString(result.getData()));
-//                                            }
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-//                                        CouponActivity.hideProgress();
-//                                        Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-//                                        Log.e("e = ", t.getMessage());
-//                                    }
-//                                });
-//                            }
-//                        }.start();
-//
-//                    } catch (Exception e) {
-//                        CouponActivity.hideProgress();
-//                        Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-//                        Log.e("e = ", e.getMessage());
-//                    }
+
                 }
             });
         }
