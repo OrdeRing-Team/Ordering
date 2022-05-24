@@ -1,5 +1,6 @@
 package com.example.orderingproject.Dto;
 
+import com.example.orderingproject.Dto.request.BasketPutDto;
 import com.example.orderingproject.Dto.request.BasketRequestDto;
 import com.example.orderingproject.Dto.request.CouponSerialNumberDto;
 import com.example.orderingproject.Dto.request.CustomerSignUpDto;
@@ -94,6 +95,11 @@ public interface RetrofitService {
 	// 장바구니 주문 요청
 	@POST("api/order")
 	Call<ResultDto<Long>> orderRequest(@Query(value = "customer_id") Long customerId, @Body OrderDto orderDto);
+
+	// 장바구니 수량 변경
+	@PUT("/api/order/baskets")
+	Call<ResultDto<Boolean>> modifyBasketCount(@Query(value = "customer_id") Long customerId,
+											   @Body List<BasketPutDto> countChangedList);
 
 	// 웨이팅 정보 불러오기
 	@POST("/api/customer/{customer_id}/waiting")
