@@ -14,7 +14,4 @@ public class CouponSerialNumberDto {
 
     private String serialNumber;
 
-    public CouponSerialNumberDto(String serialNumber){
-        this.serialNumber = serialNumber;
-    }
 }

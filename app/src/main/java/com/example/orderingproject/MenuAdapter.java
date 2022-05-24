@@ -109,7 +109,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
     // position에 해당하는 data, viewHolder의 itemView에 표시함
 
         holder.tvName.setText(arrayList.get(position).getName());
-        holder.tvPrice.setText(CustomMenuOptionDialog.computePrice(Integer.parseInt(arrayList.get(position).getPrice())));
+        holder.tvPrice.setText(Utillity.computePrice(Integer.parseInt(arrayList.get(position).getPrice())));
         holder.tvIntro.setText(String.valueOf(arrayList.get(position).getIntro()));
 
         // arrayList에 저장된 메뉴 이미지 url을 imageURL변수에 저장하고 Glide로 iv에 set

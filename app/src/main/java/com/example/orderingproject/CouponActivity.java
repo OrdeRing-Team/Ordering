@@ -1,10 +1,15 @@
 package com.example.orderingproject;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.orderingproject.Dialog.CustomProgressBar;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.response.CouponDto;
@@ -93,7 +99,7 @@ public class CouponActivity extends BasicActivity {
                                             if (result.getData().size() != 0) {
                                                 for (CouponDto i : result.getData()) {
                                                     couponList.add(new CouponData(i.getSerialNumber(),
-                                                            i.getValue()));
+                                                            i.getValue(), i.getCouponId()));
 
                                                     Log.e("쿠폰 ", "SerialNumber = " + i.getSerialNumber() + ", " +
                                                             "Value = " + i.getValue());
@@ -136,4 +142,36 @@ public class CouponActivity extends BasicActivity {
     public void setEmptyView() {
         emptyCouponText.setVisibility(View.VISIBLE);
     }
+
+    public static void showProgress(Activity activity) {
+
+        if (activity == null || activity.isFinishing()) {
+            return;
+        }
+
+        if (progressDialog == null || !progressDialog.isShowing()) {
+            progressDialog = new CustomProgressBar(activity);
+            progressDialog.setCancelable(false);
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            progressDialog.setContentView(R.layout.progress_custom_loading);
+            progressDialog.show();
+        }
+
+
+        final ImageView img_loading_frame = (ImageView) progressDialog.findViewById(R.id.iv_frame_loading);
+        final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
+        img_loading_frame.post(new Runnable() {
+            @Override
+            public void run() {
+                frameAnimation.start();
+            }
+        });
+    }
+
+    public static void hideProgress() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
 }

@@ -68,7 +68,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.CustomVi
         holder.tvPaymentMenuName.setText(arrayPaymentList.get(position).getBasketFoodName());
         holder.tvPaymentSumPrice
                 .setText(
-                        CustomMenuOptionDialog.computePrice(
+                        Utillity.computePrice(
                                 arrayPaymentList.get(position).getBasketPrice() *
                                         arrayPaymentList.get(position).getBasketCount()
                         )
