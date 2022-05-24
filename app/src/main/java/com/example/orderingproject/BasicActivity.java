@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import com.example.orderingproject.Dialog.CustomProgressBar;
 
 public class BasicActivity extends AppCompatActivity {
-    CustomProgressBar progressDialog;
+    static CustomProgressBar progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -409,6 +409,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_coupon_value"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
@@ -416,10 +417,10 @@
                         android:paddingTop="5dp"
                         android:paddingEnd="5dp"
                         android:paddingBottom="5dp"
-                        android:text="10,000원"
+                        android:text="적용하기"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

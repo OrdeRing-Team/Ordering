@@ -78,7 +78,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         holder.tvBasketMenuName.setText(arrayBasketList.get(position).getBasketFoodName());
         holder.tvBasketPrice
                 .setText("○ 가격 : " +
-                        CustomMenuOptionDialog.computePrice(
+                        Utillity.computePrice(
                                 arrayBasketList.get(position).getBasketPrice()
                         )
                         + "원");
@@ -88,7 +88,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
         BasketActivity.setOrderCount();
 
         int sum = arrayBasketList.get(position).getBasketPrice() * arrayBasketList.get(position).getBasketCount();
-        holder.tvBasketSumPrice.setText(CustomMenuOptionDialog.computePrice(sum)+"원");
+        holder.tvBasketSumPrice.setText(Utillity.computePrice(sum)+"원");
         Glide.with(holder.itemView.getContext()).load(arrayBasketList.get(position).getBasketImageUrl()).into(holder.ivBasketMenuImage);
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +230,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
     @SuppressLint("SetTextI18n")
     private void updatePrice(int currentCount, int position, CustomViewHolder holder){
         int changedPrice = arrayBasketList.get(position).getBasketPrice() * currentCount;
-        holder.tvBasketSumPrice.setText(CustomMenuOptionDialog.computePrice(changedPrice) + "원");
+        holder.tvBasketSumPrice.setText(Utillity.computePrice(changedPrice) + "원");
     }
 
     private void buttonCheck(CustomViewHolder holder){

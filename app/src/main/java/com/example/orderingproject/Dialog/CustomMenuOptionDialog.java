@@ -28,6 +28,7 @@ import com.example.orderingproject.Dto.request.BasketRequestDto;
 import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
 import com.example.orderingproject.UserInfo;
+import com.example.orderingproject.Utillity;
 import com.example.orderingproject.databinding.CustomDialogMenuOptionBinding;
 import com.firebase.ui.auth.data.model.User;
 
@@ -117,7 +118,7 @@ public class CustomMenuOptionDialog extends Dialog implements View.OnClickListen
                     buttonLock(binding.btnPlus);
                 }
                 // 장바구니 담기 버튼 텍스트 설정
-                finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
+                finalPrice = Utillity.computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
                 binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
             }
         });
@@ -134,7 +135,7 @@ public class CustomMenuOptionDialog extends Dialog implements View.OnClickListen
                         buttonRelease(binding.btnPlus);
                     }
                     // 장바구니 담기 버튼 텍스트 설정
-                    finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
+                    finalPrice = Utillity.computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
                     binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
                 }
             }
@@ -180,22 +181,9 @@ public class CustomMenuOptionDialog extends Dialog implements View.OnClickListen
         binding.tvMenuinfo.setText(menuInfo);
 
         // 장바구니 담기 버튼 텍스트 설정
-        finalPrice = computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
+        finalPrice = Utillity.computePrice(Integer.parseInt(price) * Integer.parseInt(binding.tvCount.getText().toString()));
         binding.btnAddbasket.setText(finalPrice + "원 장바구니에 담기");
 
-    }
-
-    public static String computePrice(int resultInt){
-        StringBuilder sb = new StringBuilder();
-        String resultStr = Integer.toString(resultInt);
-        int length = resultStr.length();
-        // 7654321  ->  7,654,321
-        for(int i = 0; i < length; i++){
-            sb.append(resultStr.charAt(i));
-            if((length - (i + 1)) % 3 == 0 && i != length - 1) sb.append(",");
-        }
-        Log.e("sb = ", sb.toString());
-        return sb.toString();
     }
 
     private void buttonLock(View view){

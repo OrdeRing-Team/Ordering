@@ -54,6 +54,10 @@ public interface RetrofitService {
 	@POST("/api/customer/{customer_Id}/my_coupons")
 	Call<ResultDto<List<CouponDto>>> getCouponList(@Path("customer_Id") Long customerId);
 
+	// 쿠폰 사용(삭제)
+	@DELETE("/api/customer/coupon/{couponId}")
+	Call<ResultDto<Boolean>> useCoupon(@Path("couponId") Long couponId);
+
 	// 매장 다이얼로그 호출
 	@POST("/api/restaurant/{restaurant_id}/preview")
 	Call<ResultDto<RestaurantPreviewDto>> storePreview(@Path("restaurant_id") Long restaurantId);

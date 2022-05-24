@@ -1,6 +1,7 @@
 package com.example.orderingproject;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +37,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PaymentActivity extends BasicActivity {
     private ActivityPaymentBinding binding;
+
+    public static final int COUPONESELECT_CODE = 7777;
+
+    int totalPrice = 0;
+
+    boolean possibleToOrder = false;
     String store, service, restaurantName;
     ArrayList<BasketData> basketList = new ArrayList<>();
     @Override
@@ -83,7 +94,7 @@ public class PaymentActivity extends BasicActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PaymentActivity.this ,CouponActivity.class);
                 intent.putExtra("from","PaymentActivity");
-                startActivity(intent);
+                startActivityResult.launch(intent);
             }
         });
     }
@@ -92,16 +103,20 @@ public class PaymentActivity extends BasicActivity {
         binding.clPay1.setBackgroundResource(R.drawable.background_payment_selected);
         binding.clPay2.setBackgroundResource(R.drawable.background_payment_unselected);
         binding.clPay3.setBackgroundResource(R.drawable.background_payment_unselected);
-        binding.bottomLayoutPayment.setText("지금은 쿠폰 또는 직접 결제만 가능해요");
-        ButtonLock();
+        if(!possibleToOrder) {
+            binding.bottomLayoutPayment.setText("지금은 쿠폰 또는 직접 결제만 가능해요");
+            ButtonLock();
+        }
     }
 
     private void activatePayKakaoPay(){
         binding.clPay1.setBackgroundResource(R.drawable.background_payment_unselected);
         binding.clPay2.setBackgroundResource(R.drawable.background_payment_selected);
         binding.clPay3.setBackgroundResource(R.drawable.background_payment_unselected);
-        binding.bottomLayoutPayment.setText("지금은 쿠폰 또는 직접 결제만 가능해요");
-        ButtonLock();
+        if(!possibleToOrder) {
+            binding.bottomLayoutPayment.setText("지금은 쿠폰 또는 직접 결제만 가능해요");
+            ButtonLock();
+        }
     }
 
     private void activatePayCash(){
@@ -163,7 +178,6 @@ public class PaymentActivity extends BasicActivity {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            int totalPrice = 0;
                                             for(BasketResponseDto i : result.getData()){
                                                 basketList.add(new BasketData(i.getBasketId(),
                                                         i.getFoodId(),
@@ -186,7 +200,7 @@ public class PaymentActivity extends BasicActivity {
                                             recyclerView.setAdapter(paymentAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
-                                            String firstPrice = CustomMenuOptionDialog.computePrice(totalPrice) + "원";
+                                            String firstPrice = Utillity.computePrice(totalPrice) + "원";
                                             binding.tvTotalPrice.setText(firstPrice);
                                             binding.tvSubtitleTotalOrderPrice.setText(firstPrice);
                                             binding.tvSubtitleTotalPrice.setText(firstPrice);
@@ -225,4 +239,38 @@ public class PaymentActivity extends BasicActivity {
         binding.bottomLayoutPayment.setBackgroundColor(Color.parseColor("#E35555"));
         binding.bottomLayoutPayment.setEnabled(true);
     }
+
+    ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+
+                        if(intent != null) {
+                            int resultValue = intent.getIntExtra("couponValue", -1);
+
+                            Log.e("resultCouponId", Long.toString(intent.getLongExtra("couponId", -1)));
+                            Log.e("resultValue", Integer.toString(resultValue));
+
+                            String resultValueText = Utillity.computePrice(resultValue)+ "원";
+                            binding.clTotalCoupon.setVisibility(View.VISIBLE);
+                            binding.tvSubtitleTotalCoupon.setText(String.format("-%s",resultValueText));
+                            binding.tvCouponValue.setText(resultValueText);
+                            binding.tvCouponValue.setTextSize(16);
+
+                            int finalPrice = totalPrice - resultValue;
+                            if(finalPrice < 0){
+                                binding.tvSubtitleTotalPrice.setText("0원");
+                                binding.bottomLayoutPayment.setText("결제하기");
+                                ButtonRelease();
+                                possibleToOrder = true;
+                            }else {
+                                binding.tvSubtitleTotalPrice.setText(String.format("%s원",Utillity.computePrice(finalPrice)));
+                            }
+                        }
+                    }
+                }
+            });
 }
