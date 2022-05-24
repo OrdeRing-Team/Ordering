@@ -98,7 +98,7 @@ public class CustomStoreDialog extends Dialog {
                 Log.e("Customer Id", String.valueOf(UserInfo.getCustomerId()));
                 Log.e("Restaurant Id", String.valueOf(store));
 
-                // Bundle에 담아서 BottomSheetDialog로 보낸다.
+                // Bundle에 담아서 WaitingInfoDialog로 보낸다.
                 Bundle waitingData = new Bundle();
                 waitingData.putString("storeId", String.valueOf(store));
                 waitingData.putString("storeName", restaurantName);
@@ -106,9 +106,8 @@ public class CustomStoreDialog extends Dialog {
                     waitingData.putString("profileImageUrl", profileImageUrl);
                 }
 
-                // Bundle에 담아서 BottomSheetDialog로 보낸다.
                 WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
-                waitingInfoDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"bottomSheet");
+                waitingInfoDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"waitingInfoDialog");
                 waitingInfoDialog.setArguments(waitingData);
 
                 dismiss();

@@ -84,9 +84,10 @@ public class WaitingFragment extends Fragment {
                     @Override
                     public void run() {
                         if (result.getData() == null) {
-                            Log.e("myWaitingNumer", "is null");
+                            Log.e("myWaitingNumber", "is null");
                             binding.viewWaitingNone.setVisibility(View.VISIBLE);
                             binding.viewWaiting.setVisibility(View.GONE);
+                            //UserInfo.setWaitingId(null);
 
                         }
 

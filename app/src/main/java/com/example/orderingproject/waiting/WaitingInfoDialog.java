@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
+import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
 import com.example.orderingproject.R;
 import com.example.orderingproject.UserInfo;
 import com.example.orderingproject.databinding.DialogWaitingInfoBinding;
@@ -86,13 +87,9 @@ public class WaitingInfoDialog extends DialogFragment {
             public void onClick(View view) {
 
                 int totalCount = Integer.parseInt(binding.tvCount.getText().toString());
-                //dialogListener.onAddWaitingNumButtonClicked(waitingId, totalCount);
                 Log.e("totalCount", String.valueOf(totalCount));
-                requestWaitingToServer(totalCount);
-                String restaurantName = String.valueOf(binding.tvStoreName.getText());
-                UserInfo.setWaitingRestaurantName(restaurantName);
-                Toast.makeText(getActivity(), "인원 수 " + String.valueOf(totalCount) + "명으로 웨이팅이 신청되었습니다.", Toast.LENGTH_LONG).show();
-                dismiss();
+
+                checkWaitingInfo(totalCount);
             }
         });
 
@@ -155,6 +152,7 @@ public class WaitingInfoDialog extends DialogFragment {
     }
 
 
+    //웨이팅 요청하기
     private void requestWaitingToServer(int count) {
         try {
             new Thread() {
@@ -207,5 +205,53 @@ public class WaitingInfoDialog extends DialogFragment {
             Log.e("e = ", e.getMessage());
         }
     }
+
+
+    // 웨이팅 정보 확인 -> 존재한다면 이미 신청했다는 메시지 출력, 존재하지 않으면 웨이팅 요청 함수 실행
+    private void checkWaitingInfo(int totalCount){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.ordering.ml/api/customer/" + UserInfo.getCustomerId() + "/waiting/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // RequestBody 객체 생성
+        RetrofitService retrofitService = retrofit.create(RetrofitService.class);
+        Call<ResultDto<MyWaitingInfoDto>> call = retrofitService.getWaitingInfo(UserInfo.getCustomerId());
+
+        call.enqueue(new Callback<ResultDto<MyWaitingInfoDto>>() {
+            @Override
+            public void onResponse(Call<ResultDto<MyWaitingInfoDto>> call, Response<ResultDto<MyWaitingInfoDto>> response) {
+                ResultDto<MyWaitingInfoDto> result = response.body();
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result.getData() == null) {
+                            Log.e("myWaitingNumber", "is null");
+                            requestWaitingToServer(totalCount);
+                            String restaurantName = String.valueOf(binding.tvStoreName.getText());
+                            UserInfo.setWaitingRestaurantName(restaurantName);
+                            Toast.makeText(getActivity(), "인원 수 " + String.valueOf(totalCount) + "명으로 웨이팅이 신청되었습니다.", Toast.LENGTH_SHORT).show();
+                            dismiss();
+
+                        }
+
+                        else {
+                            Toast.makeText(getActivity(), "이미 웨이팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResultDto<MyWaitingInfoDto>> call, Throwable t) {
+                Toast.makeText(getActivity(), "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("e = " , t.getMessage());
+            }
+        });
+
+    }
+
 
 }
