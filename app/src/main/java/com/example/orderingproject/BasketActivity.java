@@ -212,7 +212,7 @@ public class BasketActivity extends BasicActivity {
                                             if(totalCount == 0){
                                                 emptyImage.setVisibility(View.VISIBLE);
                                                 emptyText.setVisibility(View.VISIBLE);
-                                                orderButton.setVisibility(View.VISIBLE);
+                                                orderButton.setVisibility(View.GONE);
                                                 binding.rvBasket.setVisibility(View.GONE);
                                             }
                                             UserInfo.setBasketCount(totalCount);
