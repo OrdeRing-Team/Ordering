@@ -10,9 +10,11 @@ import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
+import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BasketResponseDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
+import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
 
 import java.util.List;
 
@@ -100,6 +102,21 @@ public interface RetrofitService {
 	@PUT("/api/order/baskets")
 	Call<ResultDto<Boolean>> modifyBasketCount(@Query(value = "customer_id") Long customerId,
 											   @Body List<BasketPutDto> countChangedList);
+
+	// 웨이팅 요청
+	// http://www.ordering.ml/api/waiting?restaurant_id={restaurant_id}&customer_id={customer_id}
+	@POST("api/waiting")
+	Call<ResultDto<Boolean>> requestWaiting(@Query(value = "restaurant_id") Long restaurantId,
+											@Query(value = "customer_id") Long customerId,
+											@Body WaitingRegisterDto waitingRegisterDto);
+
+	// 웨이팅 정보 불러오기
+	@POST("/api/customer/{customer_id}/waiting")
+	Call<ResultDto<MyWaitingInfoDto>> getWaitingInfo(@Path("customer_id") Long customer_id);
+
+	// 웨이팅 취소
+	@DELETE("/api/waiting/{waiting_id}")
+	Call<ResultDto<Boolean>> deleteWaiting(@Path("waiting_id") Long waiting_id);
 
 //	// 서버 내 데이터 삭제
 //	@DELETE("/api/restaurant/food/{foodId}")
