@@ -35,6 +35,8 @@
     <string name="basket_title">장바구니</string>
     <string name="BasketEmptyText">장바구니가 비었어요</string>
     <string name="title_payment">주문정보 확인</string>
-    <string name="PaymentTotalPriceText">총 결제금액</string>
+    <string name="PaymentTotalPriceText">총 주문금액</string>
     <string name="payment_guide">* 결제 후 입력하신 내용으로 매장에 주문이 요청됩니다.\n* 매장 사정에 따라 주문이 취소될 수 있습니다.\n* 주문이 접수되기 전까지 주문취소가 가능합니다.\n* 직접 결제 선택 시 카운터에서 결제를 진행해 주세요.</string>
+    <string name="CouponTitleText">쿠폰함</string>
+    <string name="CoponEmptyText">보유 중인 쿠폰이 없습니다.</string>
 </resources>

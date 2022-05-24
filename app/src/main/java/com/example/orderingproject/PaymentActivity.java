@@ -1,6 +1,7 @@
 package com.example.orderingproject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,6 +75,15 @@ public class PaymentActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 activatePayCash();
+            }
+        });
+
+        binding.clCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PaymentActivity.this ,CouponActivity.class);
+                intent.putExtra("from","PaymentActivity");
+                startActivity(intent);
             }
         });
     }
@@ -176,7 +186,10 @@ public class PaymentActivity extends BasicActivity {
                                             recyclerView.setAdapter(paymentAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
-                                            binding.tvTotalPrice.setText( CustomMenuOptionDialog.computePrice(totalPrice) + "원");
+                                            String firstPrice = CustomMenuOptionDialog.computePrice(totalPrice) + "원";
+                                            binding.tvTotalPrice.setText(firstPrice);
+                                            binding.tvSubtitleTotalOrderPrice.setText(firstPrice);
+                                            binding.tvSubtitleTotalPrice.setText(firstPrice);
 
                                             binding.progressBar.setVisibility(View.GONE);
                                         }

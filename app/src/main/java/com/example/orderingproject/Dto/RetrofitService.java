@@ -11,6 +11,7 @@ import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.response.BasketResponseDto;
+import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 
 import java.util.List;
@@ -48,6 +49,10 @@ public interface RetrofitService {
 	// 쿠폰 발급
 	@POST("/api/customer/{customer_Id}/coupon")
 	Call<ResultDto<Boolean>> couponIssue(@Path("customer_Id") Long customerId, @Body CouponSerialNumberDto couponSerialNumberDto);
+
+	// 쿠폰 목록 불러오기
+	@POST("/api/customer/{customer_Id}/my_coupons")
+	Call<ResultDto<List<CouponDto>>> getCouponList(@Path("customer_Id") Long customerId);
 
 	// 매장 다이얼로그 호출
 	@POST("/api/restaurant/{restaurant_id}/preview")
