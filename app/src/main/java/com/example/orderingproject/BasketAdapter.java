@@ -118,6 +118,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
                                 public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
 
                                     if (response.isSuccessful()) {
+
                                         ResultDto<Boolean> result;
                                         result = response.body();
                                         if (result.getData()) {
@@ -129,7 +130,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
                                                     BasketActivity.orderCount -= Integer.parseInt(holder.tvBasketCount.getText().toString());
                                                     BasketActivity.setOrderCount();
                                                     arrayBasketList.remove(newPosition);
-                                                    notifyItemRemoved(newPosition);
+                                                    notifyItemRemoved(newPosition); // 삭제를 알림.
                                                     if(arrayBasketList.isEmpty()){
                                                         BasketActivity.setEmptyView();
                                                     }

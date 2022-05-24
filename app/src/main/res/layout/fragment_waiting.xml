@@ -48,7 +48,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="60dp"
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -94,9 +94,9 @@
                     tools:layout_editor_absoluteY="290dp" />
 
                 <TextView
+                    android:id="@+id/tv_waitingNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:textStyle="bold"
@@ -109,6 +109,7 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/btn_cancel_waiting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="웨이팅 취소"
@@ -127,7 +128,7 @@
                 android:layout_marginTop="20dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_gravity="center"
@@ -144,7 +145,7 @@
                         android:src="@mipmap/ic_launcher" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_gravity="center">
@@ -153,26 +154,59 @@
                             android:id="@+id/tv_storeName"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
                             android:text="매장명 >"
                             android:background="@color/fui_transparent"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
 
-                        <TextView
-                            android:layout_width="200dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="남은 시간 : "
-                            android:layout_marginLeft="15dp"
-                            android:textColor="@color/et_hint"
-                            android:textSize="15sp" />
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="200dp"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="남은 시간 : "
+                                android:layout_marginLeft="15dp"
+                                android:textColor="@color/et_hint"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_estimatedWaitingTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="남은 대기 팀 : "
-                            android:layout_marginLeft="15dp"
-                            android:textColor="@color/et_hint"
-                            android:textSize="15sp" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="남은 대기 팀 : "
+                                android:layout_marginLeft="15dp"
+                                android:textColor="@color/et_hint"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_numInFrontOfMe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+
+                        </LinearLayout>
 
                     </LinearLayout>
 

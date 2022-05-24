@@ -11,7 +11,7 @@
 
                     <stroke
                         android:width="0.7dp"
-                        android:color="@color/main" />
+                        android:color="@color/button_gray" />
                 </shape>
             </item>
 

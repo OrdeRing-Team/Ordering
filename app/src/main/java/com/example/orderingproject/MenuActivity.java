@@ -2,6 +2,7 @@ package com.example.orderingproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -44,6 +45,8 @@ public class MenuActivity extends BasicActivity {
         initData();
         initView();
         initButtonListener();
+
+
         //뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
@@ -110,6 +113,10 @@ public class MenuActivity extends BasicActivity {
         if(backgroundImageUrl != null) {
             Log.e("backgroundImageUrl", backgroundImageUrl);
         }
+
+        //툴바 타이틀 설정
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(restaurantName);
     }
 
     private void initView(){

@@ -1,5 +1,7 @@
 package com.example.orderingproject.waiting;
 
+import static android.graphics.Color.TRANSPARENT;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -49,7 +51,6 @@ public class WaitingInfoDialog extends DialogFragment {
     private View view;
     private DialogWaitingInfoBinding binding;
 
-    Long waitingId;
     private Long restaurantId;
     int count = 1;
 
@@ -61,12 +62,16 @@ public class WaitingInfoDialog extends DialogFragment {
         binding = DialogWaitingInfoBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        //Custom Dialog 배경 투명하게 -> 모서리 둥글게 커스텀했더니 각진 DialogFragment의 뒷 배경이 보이기 때문
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
+
         getStoreData();
+        Log.e("매장아이디", String.valueOf(restaurantId));
         initButtonListeners();
 
         return view;
-
     }
+
 
     public void initButtonListeners() {
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +89,9 @@ public class WaitingInfoDialog extends DialogFragment {
                 //dialogListener.onAddWaitingNumButtonClicked(waitingId, totalCount);
                 Log.e("totalCount", String.valueOf(totalCount));
                 requestWaitingToServer(totalCount);
-
-
+                String restaurantName = String.valueOf(binding.tvStoreName.getText());
+                UserInfo.setWaitingRestaurantName(restaurantName);
+                Toast.makeText(getActivity(), "인원 수 " + String.valueOf(totalCount) + "명으로 웨이팅이 신청되었습니다.", Toast.LENGTH_LONG).show();
                 dismiss();
             }
         });
@@ -98,7 +104,8 @@ public class WaitingInfoDialog extends DialogFragment {
                 if (count == 2) {
                     buttonRelease(binding.btnMinus);
                 }
-                binding.tvCount.setText(Integer.toString(count));
+                binding.tvCount.setText(String.valueOf(count));
+
                 if (count == 20) {
                     buttonLock(binding.btnPlus);
                 }
@@ -112,7 +119,9 @@ public class WaitingInfoDialog extends DialogFragment {
                 if (count != 1) {
                     count -= 1;
                     if (count == 1) buttonLock(binding.btnMinus);
-                    binding.tvCount.setText(Integer.toString(count));
+
+                    binding.tvCount.setText(String.valueOf(count));
+
                     if (!binding.btnPlus.isClickable()) {
                         buttonRelease(binding.btnPlus);
                     }
@@ -130,11 +139,13 @@ public class WaitingInfoDialog extends DialogFragment {
         view.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.button_black)));
     }
 
+
     private void getStoreData() {
         Bundle waitingData = getArguments();
 
         String storeIcon = waitingData.getString("profileImageUrl");
-        Glide.with(getContext()).load(storeIcon).into(binding.ivStoreIcon);
+        if (storeIcon == null) Glide.with(getContext()).load(R.drawable.icon).into(binding.ivStoreIcon);
+        else Glide.with(getContext()).load(storeIcon).into(binding.ivStoreIcon);
 
         String storeName = waitingData.getString("storeName");
         binding.tvStoreName.setText(storeName);
@@ -145,7 +156,6 @@ public class WaitingInfoDialog extends DialogFragment {
 
 
     private void requestWaitingToServer(int count) {
-
         try {
             new Thread() {
                 @SneakyThrows
@@ -159,20 +169,23 @@ public class WaitingInfoDialog extends DialogFragment {
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<Boolean>> call = service.requestWaiting(UserInfo.getCustomerId(), restaurantId, waitingRegisterDto);
+                    Call<ResultDto<Boolean>> call = service.requestWaiting(restaurantId, UserInfo.getCustomerId(), waitingRegisterDto);
 
                     call.enqueue(new Callback<ResultDto<Boolean>>() {
                         @Override
                         public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
 
                             if (response.isSuccessful()) {
+
                                 ResultDto<Boolean> result;
                                 result = response.body();
                                 if (result.getData()) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Log.e("웨이팅 정보", "업로드 완료" + String.valueOf(count));
+                                            Log.e("웨이팅 정보", "매장 아이디 : " + String.valueOf(restaurantId));
+                                            Log.e("웨이팅 정보", "업로드 완료. 인원 수 : " + String.valueOf(count) + "명");
+
                                         }
                                     });
                                     Log.e("result.getData() ", Boolean.toString(result.getData()));

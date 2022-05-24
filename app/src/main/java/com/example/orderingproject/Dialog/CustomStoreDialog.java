@@ -100,7 +100,7 @@ public class CustomStoreDialog extends Dialog {
 
                 // Bundle에 담아서 BottomSheetDialog로 보낸다.
                 Bundle waitingData = new Bundle();
-                waitingData.putString("storeId", store);
+                waitingData.putString("storeId", String.valueOf(store));
                 waitingData.putString("storeName", restaurantName);
                 if(profileImageUrl!= null) {
                     waitingData.putString("profileImageUrl", profileImageUrl);

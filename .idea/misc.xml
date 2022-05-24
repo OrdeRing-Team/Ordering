@@ -31,15 +31,16 @@
         <entry key="app/src/main/res/drawable-v24/ic_baseline_close_24_sizeup.xml" value="0.188" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_error_outline_24.xml" value="0.147" />
         <entry key="app/src/main/res/drawable-v24/menumanage1_custom.xml" value="0.1495" />
-        <entry key="app/src/main/res/drawable-v24/round_rectangle_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/round_rectangle_background.xml" value="0.5435684204101563" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_black_light_radius.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_main_light_radius.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_locked.xml" value="0.156" />
         <entry key="app/src/main/res/drawable-v24/top_round_rectangle_background.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/background_custom.xml" value="0.147" />
+        <entry key="app/src/main/res/drawable/background_custom.xml" value="0.7009779663085938" />
         <entry key="app/src/main/res/drawable/background_custom_gray.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/background_custom_waiting.xml" value="0.163" />
+        <entry key="app/src/main/res/drawable/background_custom_waiting_grayline.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/background_intro_title.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/circle_basket_count.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/circle_button.xml" value="0.188" />
