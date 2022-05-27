@@ -11,7 +11,7 @@ import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
-import com.example.orderingproject.Dto.response.BasketResponseDto;
+import com.example.orderingproject.Dto.response.BasketFoodDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
@@ -92,7 +92,7 @@ public interface RetrofitService {
 
 	// 장바구니 목록 불러오기
 	@POST("/api/customer/{customerId}/baskets")
-	Call<ResultDto<List<BasketResponseDto>>> getBasketList(@Path("customerId") Long customerId);
+	Call<ResultDto<List<BasketFoodDto>>> getBasketList(@Path("customerId") Long customerId);
 
 	// 장바구니 주문 요청
 	@POST("api/order")

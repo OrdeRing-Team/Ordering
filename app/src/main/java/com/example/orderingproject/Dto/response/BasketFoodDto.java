@@ -10,7 +10,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access =PROTECTED)
-public class BasketResponseDto {
+public class BasketFoodDto {
 
     private Long basketId;
     private Long foodId;
