@@ -97,8 +97,8 @@ public class WaitingFragment extends Fragment {
                             binding.viewWaitingNone.setVisibility(View.GONE);
                             binding.viewWaiting.setVisibility(View.VISIBLE);
                             binding.tvWaitingNum.setText(String.valueOf(result.getData().getMyWaitingNumber()));
-                            binding.tvEstimatedWaitingTime.setText(String.valueOf(result.getData().getEstimatedWaitingTime()));
-                            binding.tvNumInFrontOfMe.setText(String.valueOf(result.getData().getNumInFrontOfMe()));
+                            binding.tvEstimatedWaitingTime.setText(String.valueOf(result.getData().getEstimatedWaitingTime()) + " 분");
+                            binding.tvNumInFrontOfMe.setText(String.valueOf(result.getData().getNumInFrontOfMe()) + " 팀");
                             binding.tvStoreName.setText(String.valueOf(result.getData().getRestaurantName()) + " >");
                             String storeIcon = result.getData().getProfileImageUrl();
                             if (storeIcon == null) Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);

@@ -1,6 +1,7 @@
 package com.example.orderingproject;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.databinding.ActivityMainBinding;
 import com.example.orderingproject.waiting.WaitingFragment;
+import com.example.orderingproject.waiting.WaitingInfoDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -129,10 +131,27 @@ public class MainActivity extends BasicActivity {
                     showLongToast(this, "오더링 매장의 QR코드가 아닙니다. 다시 확인해 주세요.");
                 }
                 else {
-                    CustomStoreDialog dialog = new CustomStoreDialog(MainActivity.this, url[3], url[4]);
-                    dialog.show();
-                    Window window = dialog.getWindow();
-                    window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+                    if (url[4].equals("waiting")) {
+
+                        Log.e("Customer Id", String.valueOf(UserInfo.getCustomerId()));
+                        Log.e("Restaurant Id", url[3]);
+
+                        // Bundle에 담아서 WaitingInfoDialog로 보낸다.
+                        Bundle waitingData = new Bundle();
+                        waitingData.putString("storeId", url[3]);
+
+                        WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
+                        waitingInfoDialog.show(this.getSupportFragmentManager(),"waitingInfoDialog");
+                        waitingInfoDialog.setArguments(waitingData);
+                    }
+
+                    else {
+                        CustomStoreDialog dialog = new CustomStoreDialog(MainActivity.this, url[3], url[4]);
+                        dialog.show();
+                        Window window = dialog.getWindow();
+                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                    }
                 }
             }
         }

@@ -36,7 +36,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/icon"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteX="-38dp" />
+                    tools:layout_editor_absoluteX="0dp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"
@@ -50,27 +50,59 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_storeIcon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="44dp"
-                        android:src="@mipmap/ic_launcher"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                    <ImageButton
+                        android:id="@+id/btn_like_empty"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/ic_baseline_favorite_border_24"
+                        android:backgroundTint="#A3A3A3"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.957"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/btn_like_full"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/ic_baseline_favorite_24"
+                        android:backgroundTint="@color/main"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.957"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/iv_storeIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="32dp"
+                        app:civ_border="false"
+                        app:civ_shadow="true"
+                        app:civ_shadow_color="#C1C1C1"
+                        app:civ_shadow_radius="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.652" />
 
                     <TextView
                         android:id="@+id/tv_storeName"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="50dp"
                         android:text="매장명"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.297"
+                        app:layout_constraintHorizontal_bias="0.202"
                         app:layout_constraintStart_toEndOf="@+id/iv_storeIcon"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,12 +111,12 @@
                         style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="10dp"
                         android:theme="@style/RatingBar"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_storeIcon"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.636" />
+                        app:layout_constraintVertical_bias="0.736" />
 
                     <TextView
                         android:id="@+id/tv_score"
@@ -115,8 +147,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_backToManageFrag"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginLeft="15dp"
                     android:background="@drawable/ic_back_arrow" />
 

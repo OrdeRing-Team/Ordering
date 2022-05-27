@@ -29,8 +29,10 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
+import com.example.orderingproject.MainActivity;
 import com.example.orderingproject.R;
 import com.example.orderingproject.UserInfo;
 import com.example.orderingproject.databinding.DialogWaitingInfoBinding;
@@ -52,7 +54,7 @@ public class WaitingInfoDialog extends DialogFragment {
     private View view;
     private DialogWaitingInfoBinding binding;
 
-    private Long restaurantId;
+    private String storeId;
     int count = 1;
 
 
@@ -66,8 +68,11 @@ public class WaitingInfoDialog extends DialogFragment {
         //Custom Dialog 배경 투명하게 -> 모서리 둥글게 커스텀했더니 각진 DialogFragment의 뒷 배경이 보이기 때문
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
 
-        getStoreData();
-        Log.e("매장아이디", String.valueOf(restaurantId));
+        Bundle waitingData = getArguments();
+        storeId = waitingData.getString("storeId");
+
+        getStoreDataFromServer(storeId);
+
         initButtonListeners();
 
         return view;
@@ -138,21 +143,6 @@ public class WaitingInfoDialog extends DialogFragment {
     }
 
 
-    private void getStoreData() {
-        Bundle waitingData = getArguments();
-
-        String storeIcon = waitingData.getString("profileImageUrl");
-        if (storeIcon == null) Glide.with(getContext()).load(R.drawable.icon).into(binding.ivStoreIcon);
-        else Glide.with(getContext()).load(storeIcon).into(binding.ivStoreIcon);
-
-        String storeName = waitingData.getString("storeName");
-        binding.tvStoreName.setText(storeName);
-
-        String storeId = waitingData.getString("storeId");
-        restaurantId = Long.valueOf(storeId);
-    }
-
-
     //웨이팅 요청하기
     private void requestWaitingToServer(int count) {
         try {
@@ -168,7 +158,7 @@ public class WaitingInfoDialog extends DialogFragment {
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<Boolean>> call = service.requestWaiting(restaurantId, UserInfo.getCustomerId(), waitingRegisterDto);
+                    Call<ResultDto<Boolean>> call = service.requestWaiting(Long.valueOf(storeId), UserInfo.getCustomerId(), waitingRegisterDto);
 
                     call.enqueue(new Callback<ResultDto<Boolean>>() {
                         @Override
@@ -185,7 +175,7 @@ public class WaitingInfoDialog extends DialogFragment {
                                         @Override
                                         public void run() {
                                             Log.e("result.getData() ", Boolean.toString(result.getData()));
-                                            Log.e("웨이팅 정보", "매장 아이디 : " + String.valueOf(restaurantId));
+                                            Log.e("웨이팅 정보", "매장 아이디 : " + String.valueOf(storeId));
                                             Log.e("웨이팅 정보", "업로드 완료. 인원 수 : " + String.valueOf(count) + "명");
                                         }
                                     });
@@ -215,6 +205,67 @@ public class WaitingInfoDialog extends DialogFragment {
         } catch (Exception e) {
             Toast.makeText(getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
+        }
+    }
+
+    private void getStoreDataFromServer(String restaurantId){
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+restaurantId+"/preview/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantPreviewDto>> call = service.storePreview(Long.parseLong(restaurantId));
+
+                    call.enqueue(new Callback<ResultDto<RestaurantPreviewDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantPreviewDto>> call, Response<ResultDto<RestaurantPreviewDto>> response) {
+
+                            ResultDto<RestaurantPreviewDto> result = response.body();
+                            if (response.isSuccessful()) {
+                                if(result.getData() != null){
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            binding.tvStoreName.setText(String.valueOf(result.getData().getRestaurantName()));
+                                            String storeIcon = String.valueOf(result.getData().getProfileImageUrl());
+                                            if(storeIcon == null){
+                                                Glide.with(getContext()).load(R.drawable.icon).into(binding.ivStoreIcon);
+                                            }else {
+                                                Glide.with(getContext()).load(storeIcon).into(binding.ivStoreIcon);
+                                            }
+
+                                        }
+                                    });
+                                }
+                                else{
+                                    Toast.makeText(getContext(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                                    dismiss();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantPreviewDto>> call, Throwable t) {
+                            Toast.makeText(getContext(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                            Log.e("e = " , t.getMessage());
+
+                            dismiss();
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+            Log.e("e = " , e.getMessage());
+
+            dismiss();
         }
     }
 

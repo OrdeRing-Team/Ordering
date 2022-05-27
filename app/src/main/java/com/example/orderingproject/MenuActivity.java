@@ -2,6 +2,7 @@ package com.example.orderingproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -30,8 +31,12 @@ public class MenuActivity extends BasicActivity {
 
     public static String store, service, restaurantName,
                          profileImageUrl, backgroundImageUrl;
+
     public static TextView BasketCountTextView;
+
     public int basketCount = UserInfo.getBasketCount();
+
+    private boolean likeState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,84 @@ public class MenuActivity extends BasicActivity {
         startProgress(this);
 
         initData();
+        initView();
         initButtonListener();
+
+
+
+    }
+    private void initButtonListener(){
+        binding.btnBackToManageFrag.setOnClickListener(view -> finish());
+
+        binding.btnBasket.setOnClickListener(view -> {
+            if(UserInfo.getBasketCount() != 0) {
+                Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
+                intent.putExtra("store", store);
+                intent.putExtra("service", service);
+                intent.putExtra("restaurantName", restaurantName);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(MenuActivity.this,"메뉴를 선택해주세요.",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 좋아요 버튼 이벤트
+        binding.btnLikeEmpty.setOnClickListener(view -> {
+            likeState = !likeState;
+            binding.btnLikeEmpty.setVisibility(View.GONE);
+            binding.btnLikeFull.setVisibility(View.VISIBLE);
+        });
+
+        binding.btnLikeFull.setOnClickListener(view -> {
+            likeState = !likeState;
+            binding.btnLikeEmpty.setVisibility(View.VISIBLE);
+            binding.btnLikeFull.setVisibility(View.GONE);
+        });
+    }
+
+
+    private void initData(){
+        if(getIntent() != null) {
+            store = getIntent().getStringExtra("store");
+            service = getIntent().getStringExtra("service");
+            restaurantName = getIntent().getStringExtra("restaurantName");
+            profileImageUrl = getIntent().getStringExtra("profileImageUrl");
+            backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
+            Log.e("store", store);
+            Log.e("service", service);
+            Log.e("restaurantName", restaurantName);
+            Log.e("basketCount", Integer.toString(basketCount));
+            if(profileImageUrl != null) {
+                Log.e("profileImageUrl", profileImageUrl);
+            }
+            if(backgroundImageUrl != null) {
+                Log.e("backgroundImageUrl", backgroundImageUrl);
+            }
+
+            Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+            Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
+            binding.tvStoreName.setText(restaurantName);
+            if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+            if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+            stopProgress();
+
+        }
+        updateBasket();
+
+        if(basketCount > 0){
+            binding.tvBasketcount.setVisibility(View.VISIBLE);
+            binding.tvBasketcount.setText(Integer.toString(basketCount));
+        }
+    }
+
+
+    private void initView(){
+
+        //툴바 타이틀 설정
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(restaurantName);
+
         //뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
@@ -67,65 +149,7 @@ public class MenuActivity extends BasicActivity {
                         }
                     }
                 }).attach();
-    }
-    private void initButtonListener(){
-        binding.btnBackToManageFrag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        binding.btnBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(UserInfo.getBasketCount() != 0) {
-                    Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
-                    intent.putExtra("store", store);
-                    intent.putExtra("service", service);
-                    intent.putExtra("restaurantName", restaurantName);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(MenuActivity.this,"메뉴를 선택해주세요.",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-    private void initData(){
-        if(getIntent() != null) {
-            store = getIntent().getStringExtra("store");
-            service = getIntent().getStringExtra("service");
-            restaurantName = getIntent().getStringExtra("restaurantName");
-            profileImageUrl = getIntent().getStringExtra("profileImageUrl");
-            backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
-            Log.e("store", store);
-            Log.e("service", service);
-            Log.e("restaurantName", restaurantName);
-            Log.e("basketCount", Integer.toString(basketCount));
-            if(profileImageUrl != null) {
-                Log.e("profileImageUrl", profileImageUrl);
-            }
-            if(backgroundImageUrl != null) {
-                Log.e("backgroundImageUrl", backgroundImageUrl);
-            }
 
-            initView();
-        }
-        updateBasket();
-
-        if(basketCount > 0){
-            binding.tvBasketcount.setVisibility(View.VISIBLE);
-            binding.tvBasketcount.setText(Integer.toString(basketCount));
-        }
-    }
-
-    private void initView(){
-        Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
-        Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
-        binding.tvStoreName.setText(restaurantName);
-        if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
-        if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
-        stopProgress();
     }
 
     public static void updateBasket(){

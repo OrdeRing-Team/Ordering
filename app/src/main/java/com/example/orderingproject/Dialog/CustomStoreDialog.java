@@ -90,6 +90,7 @@ public class CustomStoreDialog extends Dialog {
             }
         });
 
+        /** 임시 버튼 **/
         binding.btnWaiting.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
