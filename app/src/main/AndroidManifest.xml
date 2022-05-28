@@ -22,13 +22,14 @@
         android:theme="@style/Theme.Design.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".favoriteStores.FavStoreListActivity"
+            android:exported="false" />
+        <activity
             android:name=".StoresActivity"
             android:exported="true" />
-
         <activity
             android:name=".MenuActivity"
             android:exported="true" />
-
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -67,8 +68,8 @@
             android:name=".ScannerActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"
-            tools:replace="android:screenOrientation"
-            android:stateNotNeeded="true"/>
+            android:stateNotNeeded="true"
+            tools:replace="android:screenOrientation" />
     </application>
 
 </manifest>

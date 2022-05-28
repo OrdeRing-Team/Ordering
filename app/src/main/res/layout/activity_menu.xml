@@ -83,7 +83,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="28dp"
                         app:civ_border="false"
                         app:civ_shadow="true"
                         app:civ_shadow_color="#C1C1C1"

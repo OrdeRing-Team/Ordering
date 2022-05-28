@@ -23,15 +23,6 @@ public class StoreReviewFragment extends Fragment {
         binding = FragmentStoreReviewBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
-
-        binding.btnWriteReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), WriteReviewActivity.class));
-                getActivity().finish();
-            }
-        });
-
         return view;
     }
 }

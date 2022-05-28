@@ -233,7 +233,7 @@ public class WaitingInfoDialog extends DialogFragment {
                                         public void run() {
 
                                             binding.tvStoreName.setText(String.valueOf(result.getData().getRestaurantName()));
-                                            String storeIcon = String.valueOf(result.getData().getProfileImageUrl());
+                                            String storeIcon = result.getData().getProfileImageUrl();
                                             if(storeIcon == null){
                                                 Glide.with(getContext()).load(R.drawable.icon).into(binding.ivStoreIcon);
                                             }else {

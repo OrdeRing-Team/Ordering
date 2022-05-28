@@ -1,8 +1,10 @@
 package com.example.orderingproject.waiting;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,7 +24,9 @@ import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
+import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
+import com.example.orderingproject.StartActivity;
 import com.example.orderingproject.UserInfo;
 import com.example.orderingproject.databinding.FragmentWaitingBinding;
 import com.firebase.ui.auth.data.model.User;
@@ -48,19 +53,23 @@ public class WaitingFragment extends Fragment {
         binding = FragmentWaitingBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
-        Log.e("id", String.valueOf(UserInfo.getCustomerId()));
+        Log.e("CustomerId", String.valueOf(UserInfo.getCustomerId()));
         getWaitingInfo();
 
-        binding.btnCancelWaiting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 로딩화면 띄워주자.
-                deleteData();
-                ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new WaitingFragment()).commit();
-            }
-        });
+        btnClickFuntion();
 
         return view;
+    }
+
+    private void btnClickFuntion() {
+        binding.btnCancelWaiting.setOnClickListener(view -> {
+            deleteDialog();
+        });
+
+        binding.tvStoreName.setOnClickListener(view -> {
+            //startActivity(new Intent(getActivity(), MenuActivity.class));
+            Log.e("btnStoreName", "is clicked.");
+        });
     }
 
 
@@ -151,5 +160,27 @@ public class WaitingFragment extends Fragment {
                 Log.e("e = " , t.getMessage());
             }
         });
+    }
+
+    public void deleteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.WaitingCancelDialogStyle);
+        builder.setMessage("웨이팅을 취소하시겠습니까?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteData();
+                ((AppCompatActivity)getContext()).getSupportFragmentManager().beginTransaction().add(R.id.main_frame, new WaitingFragment()).commit();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

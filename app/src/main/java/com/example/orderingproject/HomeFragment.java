@@ -29,6 +29,7 @@ import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.databinding.BottomSheetDialogNoticeBinding;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
+import com.example.orderingproject.favoriteStores.FavStoreListActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -125,6 +126,11 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        binding.llFavStores.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), FavStoreListActivity.class));
+        });
+
 
         /** 임시 버튼 나중에 삭제 할 것 **/
         binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {

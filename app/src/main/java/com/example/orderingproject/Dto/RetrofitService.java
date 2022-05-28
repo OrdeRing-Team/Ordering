@@ -12,6 +12,7 @@ import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BasketFoodDto;
+import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
@@ -21,6 +22,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -103,6 +105,8 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> modifyBasketCount(@Query(value = "customer_id") Long customerId,
 											   @Body List<BasketPutDto> countChangedList);
 
+
+	/** 웨이팅 관련 함수 **/
 	// 웨이팅 요청
 	// http://www.ordering.ml/api/waiting?restaurant_id={restaurant_id}&customer_id={customer_id}
 	@POST("api/waiting")
@@ -118,7 +122,19 @@ public interface RetrofitService {
 	@DELETE("/api/waiting/{waiting_id}")
 	Call<ResultDto<Boolean>> deleteWaiting(@Path("waiting_id") Long waiting_id);
 
-//	// 서버 내 데이터 삭제
-//	@DELETE("/api/restaurant/food/{foodId}")
-//	Call<ResultDto<Boolean>> deleteFood(@Path("foodId") Long foodId);
+
+	/** 찜 관련 함수 **/
+	// 매장 찜하기
+	// http://www.ordering.ml/api/customer/{customerId}/bookmark?restaurant_id={restaurant_id}
+	@POST("/api/customer/{customerId}/bookmark")
+	Call<ResultDto<Long>> setFavStore(@Path("customerId") Long customerId, @Query(value = "restaurant_id") Long restaurant_id);
+
+	// 매장 찜 취소
+	@DELETE("/api/customer/bookmark/{bookmarkId}")
+	Call<ResultDto<Boolean>> deleteFavStore(@Path("bookmarkId") Long bookmarkId);
+
+	// 찜한 매장 리스트 불러오기
+	@GET("/api/customer/{customerId}/bookmarks")
+	Call<ResultDto<List<BookmarkPreviewDto>>> getFavStoreList(@Path("customerId") Long customerId);
+
 }
