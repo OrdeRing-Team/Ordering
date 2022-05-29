@@ -275,7 +275,6 @@ public class MenuActivity extends BasicActivity {
                             @Override
                             public void run() {
                                 result.getData().forEach(bookmarkPreviewDto ->{
-                                    //favStoreList.add(0, new FavStoreData(restaurantPreviewDto.getProfileImageUrl(), restaurantPreviewDto.getRestaurantName(), restaurantPreviewDto.getRepresentativeMenus()));
                                     if (store.equals(String.valueOf(bookmarkPreviewDto.getRestaurantId()))) {
                                         // 찜 매장 리스트에서 매장아이디가 현재 메뉴엑티비티의 매장아이디와 같은 경우에 찜 버튼을 채워진 하트로 변경.
                                         // 즉, 찜 매장 리스트에 해당 매장아이디가 존재한다면 채워진 하트 VISIBLE.
