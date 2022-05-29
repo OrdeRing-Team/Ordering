@@ -5,6 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.orderingproject.stores.AsianWesternFoodFragment;
+import com.example.orderingproject.stores.CafeFragment;
+import com.example.orderingproject.stores.ChickenFragment;
+import com.example.orderingproject.stores.ChineseFoodFragment;
+import com.example.orderingproject.stores.FastFoodFragment;
+import com.example.orderingproject.stores.JapaneseFoodFragment;
+import com.example.orderingproject.stores.JokbalBossamFragment;
+import com.example.orderingproject.stores.KoreanFoodFragment;
+import com.example.orderingproject.stores.PizzaFragment;
+import com.example.orderingproject.stores.SnackBarFragment;
+import com.example.orderingproject.stores.SoupFragment;
+
 public class  ViewPagerAdapter extends FragmentStateAdapter {
     int num, count;
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, int num, int count) {

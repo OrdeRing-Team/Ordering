@@ -1,4 +1,4 @@
-package com.example.orderingproject;
+package com.example.orderingproject.stores;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.orderingproject.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChineseFoodFragment#newInstance} factory method to
+ * Use the {@link JokbalBossamFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChineseFoodFragment extends Fragment {
+public class JokbalBossamFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class ChineseFoodFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ChineseFoodFragment() {
+    public JokbalBossamFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class ChineseFoodFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChineseFoodFragment.
+     * @return A new instance of fragment JokbalBossamFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChineseFoodFragment newInstance(String param1, String param2) {
-        ChineseFoodFragment fragment = new ChineseFoodFragment();
+    public static JokbalBossamFragment newInstance(String param1, String param2) {
+        JokbalBossamFragment fragment = new JokbalBossamFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class ChineseFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chinese_food, container, false);
+        return inflater.inflate(R.layout.fragment_jokbal_bossam, container, false);
     }
 }

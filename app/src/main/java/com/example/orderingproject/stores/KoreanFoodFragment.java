@@ -1,24 +1,19 @@
-package com.example.orderingproject;
+package com.example.orderingproject.stores;
 
-import android.content.Context;
-import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.orderingproject.databinding.FragmentKoreanFoodBinding;
+import com.example.orderingproject.R;
+import com.example.orderingproject.stores.StoreRecyclerAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nullable;
 

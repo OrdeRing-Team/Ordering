@@ -25,7 +25,7 @@
             android:name=".favoriteStores.FavStoreListActivity"
             android:exported="false" />
         <activity
-            android:name=".StoresActivity"
+            android:name=".stores.StoresActivity"
             android:exported="true" />
         <activity
             android:name=".MenuActivity"

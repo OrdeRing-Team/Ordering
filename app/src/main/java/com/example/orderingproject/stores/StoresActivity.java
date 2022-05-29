@@ -1,35 +1,15 @@
-package com.example.orderingproject;
+package com.example.orderingproject.stores;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TabWidget;
-import android.widget.Toast;
 
-import com.example.orderingproject.databinding.ActivitySignupBinding;
-import com.example.orderingproject.databinding.ActivityStoresBinding;
-import com.example.orderingproject.databinding.FragmentHomeBinding;
+import com.example.orderingproject.R;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
 
 public class StoresActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.orderingproject;
+package com.example.orderingproject.stores;
 
 import android.os.Bundle;
 
@@ -8,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class JapaneseFoodFragment extends Fragment {
+import com.example.orderingproject.R;
+
+public class SnackBarFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_japanese_food, container, false);
+                R.layout.fragment_snack_bar, container, false);
 
         return rootView;
     }

@@ -1,4 +1,4 @@
-package com.example.orderingproject;
+package com.example.orderingproject.stores;
 
 public class StoreData {
     int image;

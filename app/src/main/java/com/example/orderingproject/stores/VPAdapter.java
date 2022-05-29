@@ -1,9 +1,21 @@
-package com.example.orderingproject;
+package com.example.orderingproject.stores;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.orderingproject.stores.AsianWesternFoodFragment;
+import com.example.orderingproject.stores.CafeFragment;
+import com.example.orderingproject.stores.ChickenFragment;
+import com.example.orderingproject.stores.ChineseFoodFragment;
+import com.example.orderingproject.stores.FastFoodFragment;
+import com.example.orderingproject.stores.JapaneseFoodFragment;
+import com.example.orderingproject.stores.JokbalBossamFragment;
+import com.example.orderingproject.stores.KoreanFoodFragment;
+import com.example.orderingproject.stores.PizzaFragment;
+import com.example.orderingproject.stores.SnackBarFragment;
+import com.example.orderingproject.stores.SoupFragment;
 
 import java.util.ArrayList;
 

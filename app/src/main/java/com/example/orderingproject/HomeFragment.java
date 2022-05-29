@@ -1,59 +1,28 @@
 package com.example.orderingproject;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dialog.CustomStoreDialog;
-import com.example.orderingproject.Dto.EventsDto;
-import com.example.orderingproject.Dto.ResultDto;
-import com.example.orderingproject.Dto.RetrofitService;
-import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
-import com.example.orderingproject.databinding.BottomSheetDialogNoticeBinding;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.example.orderingproject.favoriteStores.FavStoreListActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.gson.JsonObject;
+import com.example.orderingproject.stores.StoresActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import lombok.SneakyThrows;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
