@@ -52,119 +52,109 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <HorizontalScrollView
-            android:id="@+id/store_scroll"
+<!--        <HorizontalScrollView-->
+<!--            android:id="@+id/store_scroll"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            tools:layout_editor_absoluteY="255dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/toolbar"-->
+<!--            >-->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteY="255dp"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            >
+            android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="scrollable"
+            app:tabTextColor="@color/black"
+            app:tabIndicatorColor="@color/main">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tabIndicatorColor="@color/main"
-                app:tabSelectedTextColor="@color/black"
-                app:tabTextColor="#7A7A7A"
-                app:tabMode="scrollable">
+                android:text="Tab1"/>
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="한식" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab2" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="분식" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab3" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab1" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab2" />
 
-                    android:text="카페·디저트" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab3" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab2" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="돈까스·회·초밥" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab3" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab1" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="치킨" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab2" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="피자" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_Item11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tab3" />
+        </com.google.android.material.tabs.TabLayout>
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="아시안·양식" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="중식" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="족발·보쌈" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="찜·탕" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="패스트푸드" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-        </HorizontalScrollView>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_manage"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+
+        </LinearLayout>
+
+    <!--     메뉴선택화면으로 가는 임시 버튼입니다. -->
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_go_select_menu"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="메뉴 선택하러 가기 (리사이클러뷰로 바뀔 예정)"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.498"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
     </LinearLayout>
-
-            <!-- 리사이클러뷰로 매장 정렬 -->
-
-
-
-
-<!--     메뉴선택화면으로 가는 임시 버튼입니다. -->
-<!--    <Button-->
-<!--        android:id="@+id/btn_go_select_menu"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="메뉴 선택하러 가기 (리사이클러뷰로 바뀔 예정)"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
 </LinearLayout>

@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.4'
     implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
 
+
     //뷰페이저2
     implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha04'
     //noinspection GradleCompatible
@@ -100,4 +101,8 @@ dependencies {
     //Zxing 라이브러리(QR관련)
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'com.google.zxing:core:3.4.1'
+
+
+
+
 }
