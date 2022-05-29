@@ -21,4 +21,6 @@
     <color name="yellow">#FFEB3B</color>
     <color name="button_black">#2E2E2E</color>
     <color name="button_gray">#9F9F9F</color>
+    <color name="item_represent">#93632E</color>
+    <color name="light_main">#F8EFEE</color>
 </resources>
