@@ -75,6 +75,7 @@ public class CustomStoreDialog extends Dialog {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getContext(), MenuActivity.class);
+                intent.putExtra("activity", "fromQR");
                 intent.putExtra("store",store);
                 intent.putExtra("service",service);
                 intent.putExtra("restaurantName",restaurantName);

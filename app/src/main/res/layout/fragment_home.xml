@@ -123,10 +123,10 @@
                 app:layout_constraintBottom_toBottomOf="@id/vp_event"
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:background="@drawable/round_background"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout

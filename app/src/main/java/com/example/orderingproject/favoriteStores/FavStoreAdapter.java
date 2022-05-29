@@ -1,6 +1,7 @@
 package com.example.orderingproject.favoriteStores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -48,6 +50,20 @@ public class FavStoreAdapter extends RecyclerView.Adapter<FavStoreAdapter.Custom
                 public void onClick(View view) {
                     position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
+                        Intent intent = new Intent(context, MenuActivity.class);
+                        intent.putExtra("activity", "favActivity");
+                        intent.putExtra("storeId", String.valueOf(arrayList.get(position).getRestaurantId()));
+                        intent.putExtra("storeName", arrayList.get(position).getStoreName());
+                        String profileImageUrl = arrayList.get(position).getStoreIcon();
+                        String backgroundImageUrl = arrayList.get(position).getStoreSigMenu();
+                        if(profileImageUrl!= null) {
+                            intent.putExtra("profileImageUrlfromFav", profileImageUrl);
+                        }
+                        if(backgroundImageUrl != null) {
+                            intent.putExtra("backgroundImageUrlfromFav", backgroundImageUrl);
+                        }
+
+                        context.startActivity(intent);
 
                     }
                 }
