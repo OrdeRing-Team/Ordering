@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.llCouponbox.setOnClickListener(new View.OnClickListener() {
+        binding.btnCouponBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CouponActivity.class);
@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.llFavStores.setOnClickListener(view -> {
+        binding.btnFavStores.setOnClickListener(view -> {
             startActivity(new Intent(getActivity(), FavStoreListActivity.class));
         });
 

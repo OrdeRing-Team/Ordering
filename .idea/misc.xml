@@ -42,15 +42,22 @@
         <entry key="app/src/main/res/drawable-v24/round_rectangle_locked.xml" value="0.156" />
         <entry key="app/src/main/res/drawable-v24/top_round_rectangle_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_custom.xml" value="0.147" />
+        <entry key="app/src/main/res/drawable/background_custom_btn_clicked.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/background_custom_gray.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable/background_custom_image_btn_clicked.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/background_custom_waiting.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/background_custom_waiting_grayline.xml" value="0.13" />
+        <entry key="app/src/main/res/drawable/background_custom_white.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/background_intro_title.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/background_payment_selected.xml" value="0.107" />
+        <entry key="app/src/main/res/drawable/btn_anim.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/cardview_background.xml" value="0.101" />
         <entry key="app/src/main/res/drawable/circle_basket_count.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable/circle_button.xml" value="0.188" />
+        <entry key="app/src/main/res/drawable/coupon_button.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/custom_loading.xml" value="0.107" />
+        <entry key="app/src/main/res/drawable/fav_store_button.xml" value="0.13" />
+        <entry key="app/src/main/res/drawable/fav_stores_button_click_anim.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.147" />
@@ -58,6 +65,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/ic_close_black.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.156" />
+        <entry key="app/src/main/res/drawable/image_button_click_anim.xml" value="0.13" />
         <entry key="app/src/main/res/drawable/menu_selector_color.xml" value="0.1905" />
         <entry key="app/src/main/res/drawable/progress_custom_loading.xml" value="0.107" />
         <entry key="app/src/main/res/drawable/rectangle_button.xml" value="0.1735" />

@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "498165494362-8ij2l48q8bcv2jqolgp12550d4lorklg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.orderingmanager",
+            "certificate_hash": "490d0c7a8523bc338d2177a7cddb1648f82c18fc"
+          }
+        },
+        {
           "client_id": "498165494362-j24dsa98alj32p0ki51dujdtjoqb9j35.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -64,6 +72,14 @@
           "android_info": {
             "package_name": "com.example.orderingproject",
             "certificate_hash": "00cdf3fc5189e798068f77b669a7e8dfcfc2e97d"
+          }
+        },
+        {
+          "client_id": "498165494362-i8c06g739b8i87rj131tpso976qhhhpv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.orderingproject",
+            "certificate_hash": "490d0c7a8523bc338d2177a7cddb1648f82c18fc"
           }
         },
         {
