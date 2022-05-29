@@ -21,6 +21,7 @@ import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -108,58 +109,75 @@ public class SplashActivity extends Activity {
 
     private void autoLogin() {
         try {
-            SignInDto signInDto = new SignInDto(memberId, password);
-
-            new Thread() {
-                @SneakyThrows
-                public void run() {
-                    // login
-
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/customer/signin/")
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-
-                    RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<CustomerSignInResultDto>> call = service.customerSignIn(signInDto);
-
-                    call.enqueue(new Callback<ResultDto<CustomerSignInResultDto>>() {
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
-                        public void onResponse(Call<ResultDto<CustomerSignInResultDto>> call, Response<ResultDto<CustomerSignInResultDto>> response) {
-
-                            ResultDto<CustomerSignInResultDto> result = response.body();
-                            if(result.getData() != null){
-                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        UserInfo.setUserInfo(result.getData(), memberId);
-                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-                                        finish();
-                                    }
-                                });
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                Log.e("토큰 조회", "Fetching FCM registration token failed", task.getException());
+                                return;
                             }
-                            else{
-                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
-                                        Toast.makeText(getApplicationContext(), "로그인 정보가 바뀌어서 자동로그인이 해제 되었습니다.",Toast.LENGTH_SHORT).show();
-                                        startLoginActivity();
-                                    }
-                                });
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(Call<ResultDto<CustomerSignInResultDto>> call, Throwable t) {
-                            Log.e("e = " , t.getMessage());
-                            clearSharedPreferences();
-                            startLoginActivity();
+                            // Get new FCM registration token
+                            String token = task.getResult();
+                            Log.e("token ", token);
+                            SignInDto signInDto = new SignInDto(memberId, password, token);
+                            new Thread() {
+                                @SneakyThrows
+                                public void run() {
+                                    // login
+
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl("http://www.ordering.ml/api/customer/signin/")
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+
+                                    RetrofitService service = retrofit.create(RetrofitService.class);
+                                    Call<ResultDto<CustomerSignInResultDto>> call = service.customerSignIn(signInDto);
+
+                                    call.enqueue(new Callback<ResultDto<CustomerSignInResultDto>>() {
+                                        @Override
+                                        public void onResponse(Call<ResultDto<CustomerSignInResultDto>> call, Response<ResultDto<CustomerSignInResultDto>> response) {
+
+                                            ResultDto<CustomerSignInResultDto> result = response.body();
+                                            if(result.getData() != null){
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        UserInfo.setUserInfo(result.getData(), memberId);
+                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                                                        finish();
+                                                    }
+                                                });
+                                            }
+                                            else{
+                                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+                                                        Toast.makeText(getApplicationContext(), "로그인 정보가 바뀌어서 자동로그인이 해제 되었습니다.",Toast.LENGTH_SHORT).show();
+                                                        startLoginActivity();
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ResultDto<CustomerSignInResultDto>> call, Throwable t) {
+                                            Log.e("e = " , t.getMessage());
+                                            clearSharedPreferences();
+                                            startLoginActivity();
+                                        }
+                                    });
+                                }
+                            }.start();
+
+                            String msg = getString(R.string.msg_token_fmt, token);
+                            Log.e("token Log", msg);
                         }
                     });
-                }
-            }.start();
+
 
         } catch (Exception e) {
             Log.e("e = " , e.getMessage());

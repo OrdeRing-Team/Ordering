@@ -24,6 +24,7 @@ import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.response.BasketFoodDto;
 import com.example.orderingproject.ENUM_CLASS.OrderType;
+import com.example.orderingproject.Exception.FcmErrorException;
 import com.example.orderingproject.databinding.ActivityPaymentBinding;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class PaymentActivity extends BasicActivity {
 
                     /** 주문 방식 (PACKING_ORDER) 새롭게 처리할 것 **/
 
-                    OrderDto orderDto = new OrderDto(null, OrderType.PACKING_ORDER);
+                    OrderDto orderDto = new OrderDto(null, OrderType.PACKING);
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://www.ordering.ml/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -155,16 +156,21 @@ public class PaymentActivity extends BasicActivity {
                                         }
                                     });
                                 }else{
+                                    stopProgress();
+                                    Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                                     Log.e("result","Null");
                                 }
                             }
                             else{
+                                stopProgress();
+                                Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                                 Log.e("menuOrder","isFailed");
                             }
                         }
 
                         @Override
                         public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+                            stopProgress();
                             Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                         }
@@ -172,7 +178,14 @@ public class PaymentActivity extends BasicActivity {
                 }
             }.start();
 
-        } catch (Exception e) {
+        }
+        catch(FcmErrorException e){
+            /** FCM 알림 실패 **/
+            stopProgress();
+            MainActivity.showToast(PaymentActivity.this,"FCM Error Exception");
+        }
+        catch (Exception e) {
+            stopProgress();
             Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
         }
