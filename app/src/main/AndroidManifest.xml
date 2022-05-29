@@ -70,6 +70,14 @@
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             tools:replace="android:screenOrientation" />
+
+        <service
+            android:name=".FCM_Service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -260,6 +260,7 @@ public class BasketActivity extends BasicActivity {
 
                             if(resultValue) {
                                 initData();
+                                finish();
                             }
                             else{
                                 MainActivity.showToast(BasketActivity.this,"주문 접수에 실패하였습니다.");
