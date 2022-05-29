@@ -16,6 +16,7 @@ import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
+import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
 
 import java.util.List;
 
@@ -77,6 +78,10 @@ public interface RetrofitService {
 	// 매장 모든 음식 불러오기
 	@POST("/api/restaurant/{restaurantId}/foods")
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
+
+	// 대표메뉴 리스트 가져오기
+	@GET("/api/restaurant/{restaurant_id}/representatives")
+	Call<ResultDto<List<RepresentativeMenuDto>>> getRepresentList(@Path("restaurant_id") Long restaurantId);
 
 	// 장바구니 메뉴 추가
 	// 쿼리가 포함된 주소는 아래와 같이 사용
