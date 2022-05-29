@@ -1,48 +1,161 @@
 package com.example.orderingproject;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.databinding.ActivityQrscannerBinding;
-import com.google.zxing.integration.android.IntentIntegrator;
+import com.journeyapps.barcodescanner.CaptureManager;
 
-public class ScannerActivity extends BasicActivity {
+import java.security.Permission;
+import java.util.Timer;
+import java.util.TimerTask;
 
-    private static final String TAG = "ScannerActivity_TAG";
-
-    IntentIntegrator integrator;
+public class ScannerActivity extends BasicActivity{
 
     private ActivityQrscannerBinding binding;
 
+    CaptureManager captureManager;
+    boolean flashStatus = false;
+    Drawable lightOn;
+    Drawable lightOff;
+    Drawable lightOnButton;
+    Drawable lightOffButton;
+
+    Animation hintAnimAppear;
+    Animation hintAnimDisappear;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         binding = ActivityQrscannerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        initData();
+        initViews();
+        initData(savedInstanceState);
+        initClickListeners();
+        delayHint();
     }
 
-    private void initData(){
-        integrator = new IntentIntegrator(this);
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void initData(Bundle savedInstanceState){
+        captureManager = new CaptureManager(this,binding.scanBox);
+        captureManager.initializeFromIntent(this.getIntent(), savedInstanceState);
+        captureManager.decode();
 
-        // QR코드 포맷만 스캔하도록 설정
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        lightOn = getDrawable(R.drawable.light_on);
+        lightOff = getDrawable(R.drawable.light_off);
+        lightOnButton = getDrawable(R.drawable.circle_button_light_on);
+        lightOffButton = getDrawable(R.drawable.circle_button);
 
-        // 바코드 인식시 소리 여부
-        integrator.setBeepEnabled(false);
-
-        // 0 = 후면카메라, 1 = 전면카메라
-        integrator.setCameraId(0);
-
-        // true일때는 onActivityResult에서 QR코드 스캔한 결과값만 받는것이 아닌
-        // QR코드 이미지도 비트맵 형식으로 전달 받을 수 있다.
-        integrator.setBarcodeImageEnabled(true);
-        integrator.setCaptureActivity(ScannerBackgroundActivity.class); //바코드 스캐너 시작
-        integrator.setOrientationLocked(true);
-
-        integrator.initiateScan();
-
+        hintAnimAppear = AnimationUtils.loadAnimation(this, R.anim.anim_slide_in_right);
+        hintAnimDisappear = AnimationUtils.loadAnimation(this, R.anim.anim_slide_out_right);
     }
 
+    private void initViews(){
+        Glide.with(this).load(R.drawable.qr_scan_animation_white).into(binding.ivScanAnim);
+    }
+
+    private void initClickListeners(){
+        binding.btnFlash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!flashStatus){
+                    binding.scanBox.setTorchOn();
+                    binding.ivFlash.setImageDrawable(lightOn);
+                    binding.btnFlash.setBackground(lightOnButton);
+                    MainActivity.showToast(ScannerActivity.this, "라이트 On");
+                    flashStatus = true;
+                }
+                else{
+                    binding.scanBox.setTorchOff();
+                    binding.ivFlash.setImageDrawable(lightOff);
+                    binding.btnFlash.setBackground(lightOffButton);
+                    binding.btnFlash.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.circle_button));
+                    MainActivity.showToast(ScannerActivity.this, "라이트 Off");
+                    flashStatus = false;
+                }
+            }
+        });
+
+        binding.btnClose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                finish();
+            }
+        });
+    }
+
+    private void delayHint() {
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                showHint();
+            }
+        }, 5000);
+    }
+
+    private void showHint(){
+        binding.tvHint.setVisibility(View.VISIBLE);
+        binding.tvHint.startAnimation(hintAnimAppear);
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                binding.tvHint.startAnimation(hintAnimDisappear);
+                binding.tvHint.setVisibility(View.GONE);
+                delayHint();
+            }
+        }, 3000);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        captureManager.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        captureManager.onPause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        captureManager.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        captureManager.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        captureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

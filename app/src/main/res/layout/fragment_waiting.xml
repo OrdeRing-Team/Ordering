@@ -4,79 +4,237 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".WaitingFragment"
+    tools:context=".waiting.WaitingFragment"
     android:background="@color/white">
 
-    <TextView
-        android:id="@+id/tv_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="임시 UI"
-        android:textStyle="bold"
-        android:textSize="34sp"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/main"/>
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_top"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="고객님의 예상 대기 시간은..."
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="50dp"
-        />
     <ImageView
-        android:id="@+id/iv_timer"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:background="@drawable/ic_timer"
-        app:layout_constraintStart_toStartOf="@id/tv_remain_time"
-        app:layout_constraintEnd_toEndOf="@id/tv_remain_time"
-        app:layout_constraintTop_toTopOf="@id/tv_remain_time"
-        app:layout_constraintBottom_toBottomOf="@id/tv_remain_time"/>
-
+        android:id="@+id/mainLogo"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="75dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_remain_time"
+        android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        android:text="14분"
-        android:textSize="60sp"
-        android:textStyle="bold"
+        android:text="OrdeRing"
         android:textColor="@color/main"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="150dp"/>
-
-    <TextView
-        android:id="@+id/tv_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_timer"
-        android:text="현재 고객님 앞에 5 팀이 대기 중입니다."
-        android:fontFamily="@font/baeminjua"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="24sp"/>
+        app:layout_constraintTop_toBottomOf="@+id/mainLogo" />
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="웨이팅 취소하기"
-        android:background="@drawable/rectangle_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_info"
-        android:layout_marginTop="70dp"/>
-        
+        android:layout_height="285dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/background_custom_waiting"
+        app:layout_constraintTop_toBottomOf="@+id/mainText"
+        tools:layout_editor_absoluteX="0dp">
+
+        <!--웨이팅 없을 경우-->
+        <LinearLayout
+            android:id="@+id/view_waiting_none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_baseline_table_bar_24"
+                app:tint="@color/et_hint" />
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재 대기 중인 매장이 없습니다."
+                android:textColor="@color/et_hint"
+                android:textSize="17dp" />
+
+        </LinearLayout>
+
+
+
+        <!--웨이팅 존재할 경우-->
+        <LinearLayout
+            android:id="@+id/view_waiting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="대기번호 : "
+                    android:textColor="@color/black"
+                    android:textSize="19dp"
+                    tools:layout_editor_absoluteX="49dp"
+                    tools:layout_editor_absoluteY="290dp" />
+
+                <TextView
+                    android:id="@+id/tv_waitingNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="49dp"
+                    tools:layout_editor_absoluteY="290dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/btn_cancel_waiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="웨이팅 취소"
+                    android:textColor="@color/et_hint"
+                    android:textSize="14dp"
+                    android:layout_gravity="center"
+                    tools:layout_editor_absoluteX="49dp"
+                    tools:layout_editor_absoluteY="290dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="15dp">
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/iv_storeIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_vertical"
+                        app:civ_shadow="true"
+                        app:civ_shadow_radius="3dp"
+                        app:civ_shadow_color="#C1C1C1"
+                        app:civ_border="false"
+                        android:layout_margin="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
+                        <Button
+                            android:id="@+id/tv_storeName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/fui_transparent"
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="남은 시간 : "
+                                android:layout_marginLeft="15dp"
+                                android:textColor="@color/et_hint"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_estimatedWaitingTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="남은 대기 팀 : "
+                                android:layout_marginLeft="15dp"
+                                android:textColor="@color/et_hint"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_numInFrontOfMe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/black"
+                                android:textSize="15sp" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressbar_waiting"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="300dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:max="160"
+                    android:progressBackgroundTint="#EAEAEA"
+                    android:progressBackgroundTintMode="src_over"
+                    android:progressDrawable="@drawable/background_custom_gray"
+                    android:progressTint="@color/main" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

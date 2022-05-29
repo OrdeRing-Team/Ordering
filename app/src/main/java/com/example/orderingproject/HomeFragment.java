@@ -10,24 +10,34 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.Dto.EventsDto;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.databinding.BottomSheetDialogNoticeBinding;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
+import com.example.orderingproject.favoriteStores.FavStoreListActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.JsonObject;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +47,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
@@ -79,8 +96,65 @@ public class HomeFragment extends Fragment {
         binding.btnQrCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ScannerActivity.class);
+                IntentIntegrator integrator = new IntentIntegrator(getActivity());
+
+                // QR코드 포맷만 스캔하도록 설정
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+
+                // 바코드 인식시 소리 여부
+                integrator.setBeepEnabled(false);
+
+                // 0 = 후면카메라, 1 = 전면카메라
+                integrator.setCameraId(0);
+
+                // true일때는 onActivityResult에서 QR코드 스캔한 결과값만 받는것이 아닌
+                // QR코드 촬영한 이미지도 비트맵 형식으로 전달 받을 수 있다.
+                integrator.setBarcodeImageEnabled(false);
+
+                integrator.setCaptureActivity(ScannerActivity.class); //바코드 스캐너 시작
+                integrator.setOrientationLocked(true);
+
+                integrator.initiateScan();
+            }
+        });
+
+        binding.llCouponbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CouponActivity.class);
+                intent.putExtra("from", "HomeFragment");
                 startActivity(intent);
+            }
+        });
+
+        binding.llFavStores.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), FavStoreListActivity.class));
+        });
+
+
+        /** 임시 버튼 나중에 삭제 할 것 **/
+        binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "table31");
+                dialog.show();
+                Window window = dialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            }
+        });
+        binding.btnMinju.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "3", "takeout");
+                dialog.show();
+                Window window = dialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            }
+        });
+        binding.btnJeonghyun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.showToast(getActivity(),"더미데이터 들어가면 추가할 예정!!!");
             }
         });
     }
@@ -167,4 +241,7 @@ public class HomeFragment extends Fragment {
             }
         }, DELAY_MS, PERIOD_MS);
     }
+
+
+
 }

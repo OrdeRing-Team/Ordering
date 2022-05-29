@@ -4,33 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.orderingproject.Dto.EventsDto;
+import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.orderingproject.waiting.WaitingFragment;
+import com.example.orderingproject.waiting.WaitingInfoDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends BasicActivity {
 
@@ -43,11 +33,6 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        if(user == null){
-//            startActivity(new Intent(MainActivity.this, StartActivity.class));
-//            finish();
-//        }
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
 
@@ -115,5 +100,63 @@ public class MainActivity extends BasicActivity {
 
     public static void showLongToast(Activity activity, String msg){
         Toast.makeText(activity, msg,Toast.LENGTH_LONG).show();
+    }
+
+    // ZXING 스캔처리 후 호출됨
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult result = IntentIntegrator.parseActivityResult(
+                requestCode,
+                resultCode,
+                intent);
+        Log.e("onActivityResult","실행");
+        if (result != null) {
+            if (result.getContents() == null) {
+                // 스캔 취소시
+                Log.e("ZXING", "스캔 취소됨");
+            } else {
+                showLongToast(this, result.getContents());
+                String url[] = result.getContents().split("/");
+                StringBuilder sb = new StringBuilder();
+                int a = 0;
+                for(String i : url){
+                    sb.append("url["+a+"] = "+ i +"\n");
+                    a++;
+                }
+                Log.e("asdasd", sb.toString());
+                // url[]: url[0] : http:  url[1] :   url[2] : ordering.ml  url[3] : 6  url[4] : table36
+                // url[3] = restaurantId, url[4] 포장/웨이팅/테이블
+
+                if(!url[2].equals("www.ordering.ml")){
+                    showLongToast(this, "오더링 매장의 QR코드가 아닙니다. 다시 확인해 주세요.");
+                }
+                else {
+
+                    if (url[4].equals("waiting")) {
+
+                        Log.e("Customer Id", String.valueOf(UserInfo.getCustomerId()));
+                        Log.e("Restaurant Id", url[3]);
+
+                        // Bundle에 담아서 WaitingInfoDialog로 보낸다.
+                        Bundle waitingData = new Bundle();
+                        waitingData.putString("storeId", url[3]);
+
+                        WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
+                        waitingInfoDialog.show(this.getSupportFragmentManager(),"waitingInfoDialog");
+                        waitingInfoDialog.setArguments(waitingData);
+                    }
+
+                    else {
+                        CustomStoreDialog dialog = new CustomStoreDialog(MainActivity.this, url[3], url[4]);
+                        dialog.show();
+                        Window window = dialog.getWindow();
+                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                    }
+                }
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, intent);
+        }
     }
 }

@@ -247,6 +247,7 @@ public class AuthActivity extends BasicActivity {
                             binding.tvTimer.setVisibility(View.GONE);
                             binding.tvTimerLeft.setVisibility(View.GONE);
 
+                            binding.tvResend.setVisibility(View.GONE);
                             binding.tvTimerSec.setText("(시간초과) 처음부터 다시 시작해주세요.");
                             binding.tvTimerSec.setTextColor(Color.parseColor("#FF0000"));
                             binding.etVerifyCode.setEnabled(false);

@@ -1,24 +1,17 @@
 package com.example.orderingproject;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.example.orderingproject.Dialog.CustomDialogOneType;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.CouponSerialNumberDto;
-import com.example.orderingproject.Dto.request.SignInDto;
-import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
-import com.firebase.ui.auth.data.model.User;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -68,12 +61,12 @@ public class WebViewInterface {
                 @SneakyThrows
                 public void run() {
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/customer/" + UserInfo.getCusetomerId() + "/coupon/")
+                            .baseUrl("http://www.ordering.ml/api/customer/" + UserInfo.getCustomerId() + "/coupon/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<Boolean>> call = service.couponIssue(UserInfo.getCusetomerId(), couponSerialNumberDto);
+                    Call<ResultDto<Boolean>> call = service.couponIssue(UserInfo.getCustomerId(), couponSerialNumberDto);
 
                     call.enqueue(new Callback<ResultDto<Boolean>>() {
                         @Override

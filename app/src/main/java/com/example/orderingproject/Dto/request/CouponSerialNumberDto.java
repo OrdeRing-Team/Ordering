@@ -13,4 +13,5 @@ import lombok.Setter;
 public class CouponSerialNumberDto {
 
     private String serialNumber;
+
 }
