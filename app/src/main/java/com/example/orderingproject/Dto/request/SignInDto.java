@@ -10,5 +10,5 @@ public class SignInDto {
 
     private String signInId;
     private String password;
-용    private String firebaseToken;
+    private String firebaseToken;
 }
