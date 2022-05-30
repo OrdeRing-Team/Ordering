@@ -158,7 +158,6 @@ public class MenuActivity extends BasicActivity {
                     stopProgress();
 
                     binding.btnBasket.setVisibility(View.GONE);
-
                     break;
                     
                 default:
@@ -178,6 +177,7 @@ public class MenuActivity extends BasicActivity {
                     stopProgress();
 
                     binding.btnBasket.setVisibility(View.GONE);
+                    break;
             }
 
         }
