@@ -146,6 +146,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
             holder.itemView.setClickable(false);
             holder.clBaseLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.light_gray));
         }
+
+        // MenuActivity에서 전역변수 fromTo에 저장된 값이 fav, waiting일 경우 해당 뷰에서 이동되었으므로 아이템 클릭 불가하도록 설정.
+        if (MenuActivity.fromTo.equals("favActivity") || MenuActivity.fromTo.equals("waitingFrag")) {
+            holder.itemView.setClickable(false);
+        }
+
+
         if(holder.itemView.isClickable()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

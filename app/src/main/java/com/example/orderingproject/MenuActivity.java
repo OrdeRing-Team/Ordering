@@ -49,7 +49,7 @@ public class MenuActivity extends BasicActivity {
     private ActivityMenuBinding binding;
 
     public static String store, service, restaurantName,
-                         profileImageUrl, backgroundImageUrl;
+                         profileImageUrl, backgroundImageUrl, fromTo;
 
     public static TextView BasketCountTextView;
 
@@ -109,6 +109,7 @@ public class MenuActivity extends BasicActivity {
         if(getIntent() != null) {
             switch (getIntent().getStringExtra("activity")) {
                 case "fromQR":
+                    fromTo = "QR";
                     store = getIntent().getStringExtra("store");
                     service = getIntent().getStringExtra("service");
                     restaurantName = getIntent().getStringExtra("restaurantName");
@@ -138,13 +139,16 @@ public class MenuActivity extends BasicActivity {
                         binding.tvBasketcount.setVisibility(View.VISIBLE);
                         binding.tvBasketcount.setText(Integer.toString(basketCount));
                     }
+                    break;
 
                 case "favActivity":
                     Log.e("this Intent", "came from favActivity");
+                    fromTo = "favActivity";
                     store = getIntent().getStringExtra("storeId");
                     restaurantName = getIntent().getStringExtra("storeName");
                     profileImageUrl = getIntent().getStringExtra("profileImageUrlfromFav");
                     backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrlfromFav");
+                    service = "takeout";
 
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
@@ -152,6 +156,28 @@ public class MenuActivity extends BasicActivity {
                     if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
                     if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
+
+                    binding.btnBasket.setVisibility(View.GONE);
+
+                    break;
+                    
+                default:
+                    Log.e("this Intent", "came from waitingFrag");
+                    fromTo = "waitingFrag";
+                    store = getIntent().getStringExtra("storeId");
+                    restaurantName = getIntent().getStringExtra("storeName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrlfromFav");
+                    backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrlfromFav");
+                    service = "takeout";
+
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
+                    binding.tvStoreName.setText(restaurantName);
+                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+
+                    binding.btnBasket.setVisibility(View.GONE);
             }
 
         }

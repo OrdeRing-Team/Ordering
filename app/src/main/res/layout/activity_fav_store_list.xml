@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="찜 목록"
+            android:text="찜한 매장"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="찜한 매장이 없어요  :("
+        android:text="즐겨 찾는 매장을 등록해주세요  :)"
         android:textSize="18sp"
         android:visibility="gone"
         android:textColor="@color/et_hint"/>

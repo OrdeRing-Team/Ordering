@@ -46,11 +46,13 @@ public class FavStoreListActivity extends BasicActivity {
 
     }
 
+
     private void initButtonFunction() {
         binding.btnBack.setOnClickListener(view -> {
             FinishWithAnim();
         });
     }
+
 
     // 찜 목록 불러오기
     private void getFavStoreListFromServer() {
@@ -102,5 +104,13 @@ public class FavStoreListActivity extends BasicActivity {
                 Log.e("e = ", t.getMessage());
             }
         });
+    }
+
+
+    // 즉시 갱신 ( MenuActivity에서 찜 상태 변경 시 )
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFavStoreListFromServer();
     }
 }

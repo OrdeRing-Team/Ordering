@@ -46,6 +46,8 @@ public class WaitingFragment extends Fragment {
     private View view;
     private FragmentWaitingBinding binding;
 
+    String restaurantId, restaurantName, profileImgUrl, backgroundImgUrl;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,8 +69,22 @@ public class WaitingFragment extends Fragment {
         });
 
         binding.tvStoreName.setOnClickListener(view -> {
-            //startActivity(new Intent(getActivity(), MenuActivity.class));
             Log.e("btnStoreName", "is clicked.");
+            Intent intent = new Intent(getActivity(), MenuActivity.class);
+            intent.putExtra("activity", "waitingFrag");
+            intent.putExtra("storeId", restaurantId);
+            intent.putExtra("storeName", restaurantName);
+            String profileImageUrl = profileImgUrl;
+            String backgroundImageUrl = backgroundImgUrl;
+            if(profileImageUrl!= null) {
+                intent.putExtra("profileImageUrlfromFav", profileImageUrl);
+            }
+            if(backgroundImageUrl != null) {
+                intent.putExtra("backgroundImageUrlfromFav", backgroundImageUrl);
+            }
+
+            getActivity().startActivity(intent);
+
         });
     }
 
@@ -112,6 +128,12 @@ public class WaitingFragment extends Fragment {
                             String storeIcon = result.getData().getProfileImageUrl();
                             if (storeIcon == null) Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
                             else Glide.with(getActivity()).load(storeIcon).into(binding.ivStoreIcon);
+
+                            // MenuActivity에 넘겨주기 위한 값 저장
+                            restaurantId = String.valueOf(result.getData().getRestaurantId());
+                            restaurantName = result.getData().getRestaurantName();
+                            profileImgUrl = result.getData().getProfileImageUrl();
+                            backgroundImgUrl = result.getData().getBackgroundImageUrl();
 
                         }
 

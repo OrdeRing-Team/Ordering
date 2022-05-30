@@ -35,6 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MenuListFragment extends Fragment {
     private View view;
 
+
     //viewbinding
     private FragmentMenuListBinding binding;
 
