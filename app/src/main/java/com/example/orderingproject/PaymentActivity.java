@@ -43,10 +43,11 @@ public class PaymentActivity extends BasicActivity {
 
     int totalPrice = 0;
     Long selectedCouponId;
-
+    OrderType orderType;
     boolean possibleToOrder = false;
     boolean cashButtonClicked = false;
     String store, service, restaurantName;
+    String[] serviceSplitArr;
     ArrayList<BasketData> basketList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +119,11 @@ public class PaymentActivity extends BasicActivity {
             new Thread() {
                 @SneakyThrows
                 public void run() {
+                    OrderDto orderDto = new OrderDto(null, OrderType.PACKING);;
 
-                    /** 주문 방식 (PACKING_ORDER) 새롭게 처리할 것 **/
-
-                    OrderDto orderDto = new OrderDto(null, OrderType.PACKING);
+                    if(orderType == OrderType.TABLE){
+                        orderDto = new OrderDto(Integer.parseInt(serviceSplitArr[1]), OrderType.TABLE);
+                    }
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://www.ordering.ml/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -237,15 +239,17 @@ public class PaymentActivity extends BasicActivity {
 
         binding.tvSubtitleStoreName.setText(restaurantName);
 
-        String[] serviceSplitArr = service.split("e");
+        serviceSplitArr = service.split("e");
         if(serviceSplitArr[0].equals("tabl")){
             binding.tvSubtitleTableNum.setText(serviceSplitArr[1] + "번");
+            orderType = OrderType.TABLE;
         }else{
             binding.tvSubtitleTableNum.setVisibility(View.GONE);
             binding.tvSubtitleTwo.setVisibility(View.GONE);
         }
         if(service.equals("takeout")){
             binding.tvService.setText("포장");
+            orderType = OrderType.PACKING;
         }
     }
 

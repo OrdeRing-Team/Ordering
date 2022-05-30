@@ -138,6 +138,7 @@ public class MenuActivity extends BasicActivity {
                         binding.tvBasketcount.setVisibility(View.VISIBLE);
                         binding.tvBasketcount.setText(Integer.toString(basketCount));
                     }
+                    break;
 
                 case "favActivity":
                     Log.e("this Intent", "came from favActivity");
@@ -152,6 +153,7 @@ public class MenuActivity extends BasicActivity {
                     if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
                     if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
+                    break;
             }
 
         }
