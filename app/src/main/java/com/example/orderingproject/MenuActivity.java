@@ -168,7 +168,7 @@ public class MenuActivity extends BasicActivity {
                     restaurantName = getIntent().getStringExtra("storeName");
                     profileImageUrl = getIntent().getStringExtra("profileImageUrlfromFav");
                     backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrlfromFav");
-                    service = "takeout";
+                    service = "waiting";
 
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
