@@ -50,13 +50,16 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
     View.OnClickListener positiveButton;
     View.OnClickListener negativeButton;
 
+    ConstraintLayout emptyTexts;
+
     int position;
 
     CustomDialog dialog;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_order_in_day, tv_order_in_type, tv_order_in_store_name, tv_order_in_menu, tv_order_in_status, tv_order_in_order_number;
+        TextView tv_order_in_day, tv_order_in_type, tv_order_in_store_name,
+                tv_order_in_menu, tv_order_in_status, tv_order_in_order_number, tv_order_in_price;
         Button btn_order_in_detail, btn_order_in_cancel;
         ImageView iv_order_in_menu_image;
         public CustomViewHolder(@NonNull View itemView) {
@@ -68,6 +71,7 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
             tv_order_in_menu = itemView.findViewById(R.id.tv_order_in_menu);
             tv_order_in_status = itemView.findViewById(R.id.tv_order_in_status);
             tv_order_in_order_number = itemView.findViewById(R.id.tv_order_in_order_number);
+            tv_order_in_price = itemView.findViewById(R.id.tv_order_in_price);
 
             btn_order_in_detail = itemView.findViewById(R.id.btn_order_in_detail);
             btn_order_in_cancel = itemView.findViewById(R.id.btn_order_in_cancel);
@@ -89,11 +93,12 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
     }
 
 
-    public OrderlistAdapter(List<PreviousHistoryDto> arrayList, Context context) {
+    public OrderlistAdapter(List<PreviousHistoryDto> arrayList, Context context, ConstraintLayout emptyTexts) {
         // adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
         this.activity = (Activity)context;
+        this.emptyTexts = emptyTexts;
     }
 
 
@@ -134,11 +139,19 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
         Log.e("    주문 정보  /",arrayList.get(position).getOrderSummary());
         Log.e("//==========//","//====================================================//");
 
-        holder.tv_order_in_menu.setText(String.valueOf(arrayList.get(position).getOrderSummary()));
+        String[] orderSummarySplitArr = arrayList.get(position).getOrderSummary().split(",");
+        String[] orderSummaryFirstMenuSplitArr = orderSummarySplitArr[0].split(":");
+        int orderSummaryOtherMenuCount = orderSummarySplitArr.length-2;
+        if(orderSummarySplitArr.length == 2) {
+            holder.tv_order_in_menu.setText(orderSummarySplitArr[0]);
+            holder.tv_order_in_price.setText(orderSummarySplitArr[1]);
+        }else{
+            holder.tv_order_in_menu.setText(String.format("%s 외 %d개", orderSummaryFirstMenuSplitArr[0],orderSummaryOtherMenuCount));
+            holder.tv_order_in_price.setText(orderSummarySplitArr[orderSummarySplitArr.length -1]);
+        }
         holder.tv_order_in_order_number.setText(String.format("주문번호 : %d번", arrayList.get(position).getOrderId()));
         holder.tv_order_in_type.setText(arrayList.get(position).getOrderType() == TABLE ?
-                (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") :
-                "포장");
+                (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") : "포장");
         holder.tv_order_in_day.setText(arrayList.get(position).getReceivedTime());
         Glide.with(activity).load(arrayList.get(position).getProfileUrl()).into(holder.iv_order_in_menu_image);
 
@@ -209,6 +222,9 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
                                                 Log.e("position###", Integer.toString(absolutePosition));
                                                 arrayList.remove(absolutePosition);
                                                 notifyItemRemoved(absolutePosition);
+                                                if(arrayList.isEmpty()){
+                                                    emptyTexts.setVisibility(View.VISIBLE);
+                                                }
                                                 Log.e("주문취소", "성공");
 //                                                    updateProcessedRecyclerView(result.getData(),false);
 //                                                    arrayList.remove(canceledPosition);

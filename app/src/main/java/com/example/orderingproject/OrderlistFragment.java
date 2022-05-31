@@ -91,13 +91,13 @@ public class OrderlistFragment extends Fragment implements CardStackView.ItemExp
                                         public void run() {
 
                                             if (result.getData().size() == 0) {
-                                                binding.tvEmptyOrderInProgress.setVisibility(View.VISIBLE);
+                                                binding.clEmptyOrderInProgress.setVisibility(View.VISIBLE);
                                                 binding.rvOrderInProgress.setVisibility(View.GONE);
                                             } else {
-                                                binding.tvEmptyOrderInProgress.setVisibility(View.GONE);
+                                                binding.clEmptyOrderInProgress.setVisibility(View.GONE);
 
                                                 RecyclerView recyclerView = binding.rvOrderInProgress;
-                                                OrderlistAdapter orderlistAdapter = new OrderlistAdapter(result.getData(), getContext());
+                                                OrderlistAdapter orderlistAdapter = new OrderlistAdapter(result.getData(), getContext(), binding.clEmptyOrderInProgress);
                                                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                                                 recyclerView.setAdapter(orderlistAdapter);
                                                 recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), 1));
