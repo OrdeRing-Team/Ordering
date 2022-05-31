@@ -16,6 +16,8 @@ import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
+import com.example.orderingproject.Dto.response.OrderPreviewDto;
+import com.example.orderingproject.Dto.response.PreviousHistoryDto;
 import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
 
 import java.util.List;
@@ -110,6 +112,13 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> modifyBasketCount(@Query(value = "customer_id") Long customerId,
 											   @Body List<BasketPutDto> countChangedList);
 
+	// 고객 주문 취소
+	@POST("/api/order/{order_id}/cancel")
+	Call<ResultDto<OrderPreviewDto>> orderCancel(@Path("order_id") Long orderId);
+
+	// 내 주문 내역(진행 중) 리스트 가져오기
+	@GET("/api/customer/{customerId}/orders/ongoing")
+	Call<ResultDto<List<PreviousHistoryDto>>> getOrderInList(@Path("customerId") Long customerId);
 
 	/** 웨이팅 관련 함수 **/
 	// 웨이팅 요청

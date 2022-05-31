@@ -55,7 +55,7 @@ public class BasicActivity extends AppCompatActivity {
         }
     }
 
-    public void startProgress(Activity activity) {
+    public static void startProgress(Activity activity) {
 
         if (activity == null || activity.isFinishing()) {
             return;
@@ -80,7 +80,7 @@ public class BasicActivity extends AppCompatActivity {
         });
     }
 
-    public void stopProgress() {
+    public static void stopProgress() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }

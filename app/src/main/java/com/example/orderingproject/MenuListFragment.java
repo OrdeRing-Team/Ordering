@@ -49,6 +49,8 @@ public class MenuListFragment extends Fragment {
         binding = FragmentMenuListBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        MainActivity.startProgress(getActivity());
+
         getMenuFromServer();
         return view;
     }
@@ -96,6 +98,7 @@ public class MenuListFragment extends Fragment {
                         public void onFailure(Call<ResultDto<List<FoodDto>>> call, Throwable t) {
                             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
+                            MainActivity.stopProgress();
                         }
                     });
                 }
@@ -104,6 +107,7 @@ public class MenuListFragment extends Fragment {
         } catch (Exception e) {
             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
+            MainActivity.stopProgress();
         }
     }
 
@@ -137,6 +141,11 @@ public class MenuListFragment extends Fragment {
                                                 // 대표메뉴 리사이클러뷰 적용
                                                 binding.cvRepresent.setVisibility(View.VISIBLE);
 
+                                                result.getData().forEach(RepresentativeMenuDto ->{
+                                                    representMenuHashMap.put(RepresentativeMenuDto.getFoodId(), RepresentativeMenuDto.getRepresentativeMenuId());
+                                                    Log.e("대표 메뉴 리스트 받아오기 FoodId() :", Long.toString(RepresentativeMenuDto.getFoodId()));
+                                                });
+
                                                 RecyclerView recyclerView = binding.rvRepresent;
                                                 RepresentMenuAdapter representMenuAdapter = new RepresentMenuAdapter(result.getData(), getActivity());
                                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -150,6 +159,8 @@ public class MenuListFragment extends Fragment {
                                             MenuAdapter manageAdapter = new MenuAdapter(menuList, representMenuHashMap,getActivity());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(manageAdapter);
+
+                                            MainActivity.stopProgress();
                                         }
                                     });
                                 }
@@ -160,6 +171,7 @@ public class MenuListFragment extends Fragment {
                         public void onFailure(Call<ResultDto<List<RepresentativeMenuDto>>> call, Throwable t) {
                             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
+                            MainActivity.stopProgress();
                         }
                     });
                 }
@@ -168,6 +180,7 @@ public class MenuListFragment extends Fragment {
         } catch (Exception e) {
             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
+            MainActivity.stopProgress();
         }
     }
 }
