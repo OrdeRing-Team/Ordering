@@ -157,7 +157,6 @@ public class MenuActivity extends BasicActivity {
                     if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
 
-                    binding.btnBasket.setVisibility(View.GONE);
                     break;
                     
                 default:
