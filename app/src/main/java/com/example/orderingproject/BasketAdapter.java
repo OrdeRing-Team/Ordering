@@ -89,7 +89,15 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.CustomView
 
         int sum = arrayBasketList.get(position).getBasketPrice() * arrayBasketList.get(position).getBasketCount();
         holder.tvBasketSumPrice.setText(Utillity.computePrice(sum)+"원");
-        Glide.with(holder.itemView.getContext()).load(arrayBasketList.get(position).getBasketImageUrl()).into(holder.ivBasketMenuImage);
+
+        // 메뉴 이미지가 없을 경우 예외 처리
+        if (arrayBasketList.get(position).getBasketImageUrl() == null) {
+            holder.ivBasketMenuImage.setVisibility(View.GONE);
+        }
+        else {
+            Glide.with(holder.itemView.getContext()).load(arrayBasketList.get(position).getBasketImageUrl()).into(holder.ivBasketMenuImage);
+        }
+
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
