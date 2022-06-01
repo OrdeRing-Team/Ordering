@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +58,8 @@ public class WaitingFragment extends Fragment {
 
         Log.e("CustomerId", String.valueOf(UserInfo.getCustomerId()));
         getWaitingInfo();
+
+        refreshWaitingView();
 
         btnClickFuntion();
 
@@ -112,7 +115,6 @@ public class WaitingFragment extends Fragment {
                             Log.e("myWaitingNumber", "is null");
                             binding.viewWaitingNone.setVisibility(View.VISIBLE);
                             binding.viewWaiting.setVisibility(View.GONE);
-                            //UserInfo.setWaitingId(null);
 
                         }
 
@@ -128,6 +130,32 @@ public class WaitingFragment extends Fragment {
                             String storeIcon = result.getData().getProfileImageUrl();
                             if (storeIcon == null) Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
                             else Glide.with(getActivity()).load(storeIcon).into(binding.ivStoreIcon);
+
+                            // 예상 호출 시간 계산 알고리즘
+                            String date = result.getData().getWaitingRegisterTime();
+                            String time = date.substring(date.length()-8, date.length());
+                            String registerHour = time.substring(0, 2);
+                            String registerMin = time.substring(3, 5);
+                            Log.e("waiting register time", registerHour + ":" + registerMin);
+
+                            int waitingTime = result.getData().getEstimatedWaitingTime();
+                            int hour = Integer.parseInt(registerHour), min = Integer.parseInt(registerMin) + waitingTime;
+                            if (min >= 60) {
+                                while (min >= 60) {
+                                    hour += 1;
+                                    min -= 60;
+                                }
+                            }
+                            String callHour = String.valueOf(hour);
+                            String callMinute = String.valueOf(min);
+                            if (min < 10) {
+                                callMinute = "0" + callMinute;
+                            }
+                            if (hour < 10) {
+                                callHour = "0" + callHour;
+                            }
+                            binding.tvCallTime.setText(callHour + ":" + callMinute);
+
 
                             // MenuActivity에 넘겨주기 위한 값 저장
                             restaurantId = String.valueOf(result.getData().getRestaurantId());
@@ -204,5 +232,26 @@ public class WaitingFragment extends Fragment {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void refreshWaitingView() {
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.detach(WaitingListFragment.this).attach(WaitingListFragment.this).commit();
+        SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //ft.commit();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getWaitingInfo();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 500);
+
+            }
+        });
     }
 }
