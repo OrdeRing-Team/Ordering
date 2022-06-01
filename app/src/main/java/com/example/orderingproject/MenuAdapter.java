@@ -35,6 +35,7 @@ import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -96,8 +97,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
     }
 
 
-
-
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -134,6 +133,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
             holder.ivMenu.setClipToOutline(true);
         }
 
+        for(HashMap.Entry<Long, Long> entryset : representMenuHashMap.entrySet()){
+            Log.e("Represent Food ID ", entryset.getKey().toString());
+        }
         if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())){
             holder.tvRepresent.setVisibility(View.VISIBLE);
         }
@@ -151,7 +153,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
         if (MenuActivity.fromTo.equals("waitingFrag")) {
             holder.itemView.setClickable(false);
         }
-
 
         if(holder.itemView.isClickable()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

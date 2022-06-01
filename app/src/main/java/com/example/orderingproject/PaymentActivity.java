@@ -158,12 +158,16 @@ public class PaymentActivity extends BasicActivity {
                                         }
                                     });
                                 }else{
+                                    Log.e("Result", "result.getData() == null");
+
                                     stopProgress();
                                     Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                                     Log.e("result","Null");
                                 }
                             }
                             else{
+                                Log.e("Result", "response in not successful");
+
                                 stopProgress();
                                 Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                                 Log.e("menuOrder","isFailed");
@@ -172,6 +176,7 @@ public class PaymentActivity extends BasicActivity {
 
                         @Override
                         public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+                            Log.e("Result", "onFailure");
                             stopProgress();
                             Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());

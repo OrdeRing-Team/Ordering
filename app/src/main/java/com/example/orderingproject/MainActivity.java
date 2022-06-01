@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -115,7 +117,7 @@ public class MainActivity extends BasicActivity {
                 // 스캔 취소시
                 Log.e("ZXING", "스캔 취소됨");
             } else {
-                showLongToast(this, result.getContents());
+//                showLongToast(this, result.getContents());
                 String url[] = result.getContents().split("/");
                 StringBuilder sb = new StringBuilder();
                 int a = 0;
@@ -140,10 +142,15 @@ public class MainActivity extends BasicActivity {
                         // Bundle에 담아서 WaitingInfoDialog로 보낸다.
                         Bundle waitingData = new Bundle();
                         waitingData.putString("storeId", url[3]);
-
-                        WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
-                        waitingInfoDialog.show(this.getSupportFragmentManager(),"waitingInfoDialog");
-                        waitingInfoDialog.setArguments(waitingData);
+                        Handler handler_ = new Handler(Looper.getMainLooper());
+                        handler_.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
+                                waitingInfoDialog.show(getSupportFragmentManager(),"waitingInfoDialog");
+                                waitingInfoDialog.setArguments(waitingData);
+                            }
+                        }, 0);
                     }
 
                     else {
@@ -159,4 +166,5 @@ public class MainActivity extends BasicActivity {
             super.onActivityResult(requestCode, resultCode, intent);
         }
     }
+
 }

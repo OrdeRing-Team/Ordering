@@ -1,10 +1,12 @@
 package com.example.orderingproject.Dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CustomStoreDialog extends Dialog {
     private CustomStoreInfoDialogBinding binding;
+    CustomProgressBar progressDialog;
     Context mContext;
 
     String restaurantName;
@@ -59,6 +63,8 @@ public class CustomStoreDialog extends Dialog {
 
         binding = CustomStoreInfoDialogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        startProgress();
 
         initButtonListeners();
     }
@@ -165,10 +171,14 @@ public class CustomStoreDialog extends Dialog {
                                             }else {
                                                 Glide.with(getContext()).load(profileImageUrl).into(binding.ivStoreIcon);
                                             }
+
+                                            stopProgress();
                                         }
                                     });
                                 }
                                 else{
+                                    stopProgress();
+
                                     Toast.makeText(mContext,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
                                     dismiss();
                                 }
@@ -177,6 +187,8 @@ public class CustomStoreDialog extends Dialog {
 
                         @Override
                         public void onFailure(Call<ResultDto<RestaurantPreviewDto>> call, Throwable t) {
+                            stopProgress();
+
                             MainActivity.showLongToast(getOwnerActivity(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요");
                             Toast.makeText(mContext,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
                             Log.e("e = " , t.getMessage());
@@ -188,6 +200,8 @@ public class CustomStoreDialog extends Dialog {
             }.start();
 
         } catch (Exception e) {
+            stopProgress();
+
             Toast.makeText(mContext,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
             Log.e("e = " , e.getMessage());
 
@@ -195,6 +209,35 @@ public class CustomStoreDialog extends Dialog {
         }
     }
 
+    public void startProgress() {
 
+        if (mContext == null ) {
+            return;
+        }
+
+        if (progressDialog == null || !progressDialog.isShowing()) {
+            progressDialog = new CustomProgressBar(mContext);
+            progressDialog.setCancelable(false);
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            progressDialog.setContentView(R.layout.progress_custom_loading);
+            progressDialog.show();
+        }
+
+
+        final ImageView img_loading_frame = (ImageView) progressDialog.findViewById(R.id.iv_frame_loading);
+        final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
+        img_loading_frame.post(new Runnable() {
+            @Override
+            public void run() {
+                frameAnimation.start();
+            }
+        });
+    }
+
+    public void stopProgress() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
 }
