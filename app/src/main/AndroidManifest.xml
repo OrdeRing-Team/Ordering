@@ -70,6 +70,9 @@
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             tools:replace="android:screenOrientation" />
+        <activity
+            android:name=".OrderlistDetailActivity"
+            android:exported="true" />
 
         <service
             android:name=".FCM_Service.MyFirebaseMessagingService"

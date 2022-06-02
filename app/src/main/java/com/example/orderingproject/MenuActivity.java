@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -158,7 +159,24 @@ public class MenuActivity extends BasicActivity {
                     stopProgress();
 
                     break;
-                    
+
+                case "orderList":
+                    Log.e("this Intent", "came from orderList");
+                    fromTo = "orderList";
+                    store = getIntent().getStringExtra("storeId");
+                    restaurantName = getIntent().getStringExtra("restaurantName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrl");
+                    service = "takeout";
+                    setStoreBackgroundImage(store, this);
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    binding.tvStoreName.setText(restaurantName);
+                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+                    updateBasket();
+                    break;
+
+
                 default:
                     Log.e("this Intent", "came from waitingFrag");
                     fromTo = "waitingFrag";
@@ -343,7 +361,59 @@ public class MenuActivity extends BasicActivity {
         });
     }
 
+    private void setStoreBackgroundImage(String storeId, Activity activity){
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+storeId+"/preview/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantPreviewDto>> call = service.storePreview(Long.parseLong(storeId));
+
+                    call.enqueue(new Callback<ResultDto<RestaurantPreviewDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantPreviewDto>> call, Response<ResultDto<RestaurantPreviewDto>> response) {
+
+                            ResultDto<RestaurantPreviewDto> result = response.body();
+                            if (response.isSuccessful()) {
+                                if(result.getData() != null){
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            backgroundImageUrl = result.getData().getBackgroundImageUrl();
+
+                                            Glide.with(activity).load(backgroundImageUrl).into(binding.ivSigmenu);
+                                        }
+                                    });
+                                }
+                                else{
+                                    Toast.makeText(activity,"매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantPreviewDto>> call, Throwable t) {
+
+                            Toast.makeText(activity,"매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                            Log.e("e = " , t.getMessage());
+
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+
+            Toast.makeText(activity,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+            Log.e("e = " , e.getMessage());
+        }
+    }
 
     @Override
     protected void onResume() {

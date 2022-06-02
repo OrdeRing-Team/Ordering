@@ -5,6 +5,7 @@ import static com.example.orderingproject.ENUM_CLASS.OrderType.TABLE;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Handler;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +29,11 @@ import com.example.orderingproject.Dialog.CustomDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.response.OrderPreviewDto;
-import com.example.orderingproject.Dto.response.PreviousHistoryDto;
+import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.ENUM_CLASS.OrderStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -44,7 +43,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.CustomViewHolder>{
-    List<PreviousHistoryDto> arrayList;
+    List<OrderPreviewWithRestSimpleDto> arrayList;
     Context context;
     Activity activity;
     View.OnClickListener positiveButton;
@@ -82,7 +81,7 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
         }
     }
 
-    public OrderlistAdapter(List<PreviousHistoryDto> arrayList) {
+    public OrderlistAdapter(List<OrderPreviewWithRestSimpleDto> arrayList) {
         // adapter constructor
         this.arrayList = arrayList;
     }
@@ -93,7 +92,7 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
     }
 
 
-    public OrderlistAdapter(List<PreviousHistoryDto> arrayList, Context context, ConstraintLayout emptyTexts) {
+    public OrderlistAdapter(List<OrderPreviewWithRestSimpleDto> arrayList, Context context, ConstraintLayout emptyTexts) {
         // adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
@@ -204,14 +203,14 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
                                 .build();
 
                         RetrofitService service = retrofit.create(RetrofitService.class);
-                        Call<ResultDto<OrderPreviewDto>> call = service.orderCancel(cancelOrderId);
+                        Call<ResultDto<OrderPreviewWithRestSimpleDto>> call = service.orderCancel(cancelOrderId);
 
-                        call.enqueue(new Callback<ResultDto<OrderPreviewDto>>() {
+                        call.enqueue(new Callback<ResultDto<OrderPreviewWithRestSimpleDto>>() {
                             @Override
-                            public void onResponse(Call<ResultDto<OrderPreviewDto>> call, Response<ResultDto<OrderPreviewDto>> response) {
+                            public void onResponse(Call<ResultDto<OrderPreviewWithRestSimpleDto>> call, Response<ResultDto<OrderPreviewWithRestSimpleDto>> response) {
 
                                 if (response.isSuccessful()) {
-                                    ResultDto<OrderPreviewDto> result;
+                                    ResultDto<OrderPreviewWithRestSimpleDto> result;
                                     result = response.body();
                                     if (result.getData() != null) {
                                         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -220,18 +219,14 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
                                             public void run() {
                                                 MainActivity.stopProgress();
                                                 Log.e("position###", Integer.toString(absolutePosition));
+
+                                                updateOrderOutRecyclerView(result.getData());
                                                 arrayList.remove(absolutePosition);
                                                 notifyItemRemoved(absolutePosition);
                                                 if(arrayList.isEmpty()){
                                                     emptyTexts.setVisibility(View.VISIBLE);
                                                 }
                                                 Log.e("주문취소", "성공");
-//                                                    updateProcessedRecyclerView(result.getData(),false);
-//                                                    arrayList.remove(canceledPosition);
-//                                                    if(arrayList.size() == 0){
-//                                                        emptyreceived.setVisibility(View.VISIBLE);
-//                                                    }
-//                                                    notifyItemRemoved(canceledPosition);
                                                 dialog.stopProgress();
                                                 dialog.dismiss();
                                             }
@@ -252,7 +247,7 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
                             }
 
                             @Override
-                            public void onFailure(Call<ResultDto<OrderPreviewDto>> call, Throwable t) {
+                            public void onFailure(Call<ResultDto<OrderPreviewWithRestSimpleDto>> call, Throwable t) {
                                 MainActivity.stopProgress();
 
                                 Toast.makeText(context, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
@@ -278,6 +273,27 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
             dialog.dismiss();
         };
 
+        holder.btn_order_in_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, OrderlistDetailActivity.class);
+//                intent.putExtra()
+                context.startActivity(intent);
+            }
+        });
+
+        holder.tv_order_in_store_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MenuActivity.class);
+                intent.putExtra("activity", "orderList");
+                intent.putExtra("storeId", Long.toString(arrayList.get(holder.getAbsoluteAdapterPosition()).getRestaurantId()));
+                intent.putExtra("restaurantName",arrayList.get(holder.getAbsoluteAdapterPosition()).getRestaurantName());
+                intent.putExtra("profileImageUrl", arrayList.get(holder.getAbsoluteAdapterPosition()).getProfileUrl());
+
+                context.startActivity(intent);
+            }
+        });
     }
 
 
@@ -288,19 +304,17 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
         return (arrayList != null ? arrayList.size() : 0);
     }
 
-//    @SuppressLint("DefaultLocale")
-//    public void updateProcessedRecyclerView(OrderPreviewDto orderPreviewDto, boolean isOrderComplete){
-//        if(!isOrderComplete) {
-//            orderPreviewDto.setOrderStatus(OrderStatus.CANCELED);
-//        }else{
-//            orderPreviewDto.setOrderStatus(OrderStatus.COMPLETED);
-//        }
-//        List<OrderPreviewDto> tmpList = new ArrayList<OrderPreviewDto>();
-//        tmpList.add(orderPreviewDto);
-//        tmpList.addAll(OrderListFragment.processedList);
-//        OrderListFragment.processedList = tmpList;
-//        OrderListFragment.setProcessedRecyclerView(OrderListFragment.processedList);
-//        processedCount.setText(String.format("(%d)",tmpList.size()));
-//    }
+    @SuppressLint("DefaultLocale")
+    public void updateOrderOutRecyclerView(OrderPreviewWithRestSimpleDto orderPreviewWithRestSimpleDto){
+
+        orderPreviewWithRestSimpleDto.setOrderStatus(OrderStatus.CANCELED);
+
+        List<OrderPreviewWithRestSimpleDto> tmpList = new ArrayList<OrderPreviewWithRestSimpleDto>();
+        tmpList.add(orderPreviewWithRestSimpleDto);
+        tmpList.addAll(OrderlistFragment.pastOrderList);
+        OrderlistFragment.pastOrderList = tmpList;
+        OrderlistFragment.setPastOrderRecyclerView(OrderlistFragment.pastOrderList);
+    }
+
 
 }

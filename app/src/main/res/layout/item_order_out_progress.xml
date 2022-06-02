@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_baselayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:background="@color/white"
+    android:elevation="10dp"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/tv_order_out_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="주문취소됨"
+        android:textColor="@color/error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_order_out_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020-20-20 14:00"
+        android:textColor="@color/gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_order_out_cancel" />
+
+    <TextView
+        android:id="@+id/tv_order_out_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="포장"
+        android:textColor="@color/gray"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/tv_order_out_day"
+        app:layout_constraintStart_toEndOf="@id/tv_order_out_day"
+        app:layout_constraintTop_toTopOf="@id/tv_order_out_day" />
+
+
+    <Button
+        android:id="@+id/btn_order_out_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:background="@drawable/round_rectangle_background_stroke"
+        android:text="상세보기"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_order_out_order_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주문번호 : 15번"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/tv_order_out_day"
+        app:layout_constraintTop_toBottomOf="@id/tv_order_out_day" />
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="5dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_order_out_order_number"
+        app:srcCompat="@drawable/icon" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_order_out_inner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toBottomOf="@id/item_image"
+        app:layout_constraintEnd_toStartOf="@id/btn_order_out_detail"
+        app:layout_constraintStart_toEndOf="@id/item_image"
+        app:layout_constraintTop_toTopOf="@id/item_image">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_order_out_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_order_out_store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="반반스프링스 경상대점"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text=">"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tv_order_out_store_name"
+                app:layout_constraintStart_toEndOf="@id/tv_order_out_store_name"
+                app:layout_constraintTop_toTopOf="@id/tv_order_out_store_name" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_order_out_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="아메리카노(ICE) 1개, 헤이즐넛아메리카노(ICE) 2개"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_order_out_store_name" />
+
+        <TextView
+            android:id="@+id/tv_order_out_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="총 주문금액 : 0원"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_out_menu" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    int currentPage = SplashActivity.adapter.getItemCount() / 2;
+    int currentPage;
 
     String eventPageDescript;
     int listSize;
@@ -131,6 +131,7 @@ public class HomeFragment extends Fragment {
     private void initData() {
         // 배너 데이터
         if (SplashActivity.adapter != null) {
+            currentPage = SplashActivity.adapter.getItemCount() / 2;
             this.listSize = SplashActivity.listSize;
 
             binding.vpEvent.setAdapter(SplashActivity.adapter);

@@ -145,26 +145,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.loopeer.cardstack.CardStackView
-                android:id="@+id/stackview_main"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_order_out_progress"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@android:color/white"
-                android:clipToPadding="false"
-                android:paddingLeft="12dp"
-                android:paddingTop="12dp"
-                android:paddingRight="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_order_out_progress" />
-            <!--            <androidx.recyclerview.widget.RecyclerView-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="15dp"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/tv_order_out_progress"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"/>-->
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_empty_order_out_progress"
                 android:layout_width="match_parent"
@@ -199,6 +189,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <ProgressBar
+        android:id="@+id/progressbar_orderlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

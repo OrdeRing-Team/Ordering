@@ -144,7 +144,7 @@ public class PaymentActivity extends BasicActivity {
                                         @Override
                                         public void run() {
                                             stopProgress();
-                                            Toast.makeText(PaymentActivity.this, "주문 요청됨",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(PaymentActivity.this, "주문이 요청되었습니다.",Toast.LENGTH_SHORT).show();
                                             UserInfo.setBasketCount(0);
                                             if(selectedCouponId == null || selectedCouponId == 0){
                                                 Intent intent = new Intent(PaymentActivity.this, BasketActivity.class);

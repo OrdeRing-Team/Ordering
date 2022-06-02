@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.orderingproject.ENUM_CLASS.OrderType;
 import com.example.orderingproject.R;
@@ -29,9 +30,17 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    final String PACKING_CHANNEL = "PACKING";
-    final String TABLE_CHANNEL = "TABLE";
-    final String WAITING_CHANNEL = "WAITING";
+    final String PACKING_CHANNEL = OrderType.PACKING.toString();
+    final String TABLE_CHANNEL = OrderType.TABLE.toString();
+    final String WAITING_CHANNEL = OrderType.WAITING.toString();
+    final String CANCEL_CHANNEL = OrderType.CANCEL.toString();
+
+    private LocalBroadcastManager broadcastManager;
+
+    @Override
+    public void onCreate() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+    }
 
     @Override
     public void onNewToken(String p0) {
@@ -68,6 +77,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        Intent intent2 = new Intent("testData");
+        intent2.putExtra("data", remoteMessage.getData().get("channel_id"));
+        broadcastManager.sendBroadcast(intent2);
 
         Intent intent = new Intent(this, AuthActivity.class);
 
@@ -95,18 +107,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("   channel   :" , channel);
         Log.e("//=======//","===================================//");
 
-//        switch (channel){
-//            case "ORDER":
-//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_order");
-//                break;
-//            case "TAKEOUT":
-//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
-//                break;
-//            case "WAITING":
-//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
-//                break;
-//        }
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final String CHANNEL_DESCRIPTION = "ChannerDescription";
             final int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -114,13 +114,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             AudioAttributes attributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                     .build();
-//            if(remoteMessage.getData().get("Channel_id").equals("Channel_Waiting")){
-//                Channel = "Channel_Waiting";
-//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
-//            }else{
-//                Channel = "CHANNELTAKEOUT";
-//                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_takeout");
-//            }
+
             Log.e("//=======//","===================================//");
             Log.e("   Sound  :", sound.toString());
             Log.e("//=======//","===================================//");
@@ -165,6 +159,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_waiting");
 
                 NotificationChannel mChannel = new NotificationChannel("WAITING", "웨이팅 알림", importance);
+                mChannel.setDescription(CHANNEL_DESCRIPTION);
+                mChannel.enableLights(true);
+                mChannel.enableVibration(true);
+                mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+                mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+//                mChannel.setSound(sound, attributes);
+                notificationManager.createNotificationChannel(mChannel);
+            }
+            else if(channel.equals(CANCEL_CHANNEL)) {
+                Log.e("//=======//","===================================//");
+                Log.e("CHANNELT TYPE :" , CANCEL_CHANNEL);
+                Log.e("//=======//","===================================//");
+
+                sound = Uri.parse("android.resource://com.example.orderingmanager/raw/notify_cancel");
+
+                NotificationChannel mChannel = new NotificationChannel(CANCEL_CHANNEL, "주문취소 알림", importance);
                 mChannel.setDescription(CHANNEL_DESCRIPTION);
                 mChannel.enableLights(true);
                 mChannel.enableVibration(true);
