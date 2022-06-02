@@ -26,11 +26,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableResource;
+import com.example.orderingproject.Dto.FoodDto;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
+import com.example.orderingproject.Dto.response.RestaurantInfoDto;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.tabs.TabLayout;
@@ -53,7 +55,9 @@ public class MenuActivity extends BasicActivity {
                          profileImageUrl, backgroundImageUrl, fromTo;
 
     public static TextView BasketCountTextView;
-
+    public static String notice = null;
+    public static double storeLatitude;
+    public static double storeLongitude;
     public int basketCount = UserInfo.getBasketCount();
 
     private Long favStoreId;
@@ -72,7 +76,7 @@ public class MenuActivity extends BasicActivity {
         initView();
         initButtonListener();
         getFavStoreIdFromServer();
-
+        getNoticeAndCoordinate();
     }
     private void initButtonListener(){
         binding.btnBackToManageFrag.setOnClickListener(view -> finish());
@@ -107,6 +111,9 @@ public class MenuActivity extends BasicActivity {
 
 
     private void initData(){
+        notice = null;
+        storeLatitude = 0;
+        storeLongitude = 0;
         if(getIntent() != null) {
             switch (getIntent().getStringExtra("activity")) {
                 case "fromQR":
@@ -420,6 +427,56 @@ public class MenuActivity extends BasicActivity {
         super.onResume();
         if (getIntent().getStringExtra("activity").equals("fromQR")) {
             updateBasket();
+        }
+    }
+
+    public void getNoticeAndCoordinate(){
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+store+"/info/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantInfoDto>> call = service.getStoreNoticeAndCoordinate(Long.valueOf(store));
+
+                    call.enqueue(new Callback<ResultDto<RestaurantInfoDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantInfoDto>> call, Response<ResultDto<RestaurantInfoDto>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<RestaurantInfoDto> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            notice = result.getData().getNotice();
+                                            if(notice != null) {
+                                                Log.e("매장 공지사항 ", notice);
+                                            }
+                                            storeLatitude = result.getData().getLatitude();
+                                            storeLongitude = result.getData().getLongitude();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantInfoDto>> call, Throwable t) {
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Log.e("e = ", e.getMessage());
         }
     }
 }

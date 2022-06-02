@@ -173,7 +173,7 @@
                     android:id="@+id/tv_complete_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     android:text="00:00:00"
                     android:textColor="@color/gray"
                     android:textSize="12sp"

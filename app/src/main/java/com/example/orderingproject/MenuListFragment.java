@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MenuListFragment extends Fragment {
     private View view;
 
+    // false인 경우 공지사항 접은 상태
+    private Boolean viewMore = false;
 
     //viewbinding
     private FragmentMenuListBinding binding;
@@ -52,6 +55,7 @@ public class MenuListFragment extends Fragment {
         MainActivity.startProgress(getActivity());
 
         getMenuFromServer();
+        checkNotice();
         return view;
     }
 
@@ -182,5 +186,39 @@ public class MenuListFragment extends Fragment {
             Log.e("e = ", e.getMessage());
             MainActivity.stopProgress();
         }
+    }
+
+    public void checkNotice(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(MenuActivity.notice != null && !MenuActivity.notice.equals("")){
+                    Log.e("clNoticeLayout", "Visible");
+                    binding.clNoticeLayout.setVisibility(View.VISIBLE);
+                    binding.tvNotice.setText(MenuActivity.notice);
+                    binding.clNoticeViewmore.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(!viewMore) {
+                                binding.tvNotice.setMaxLines(100);
+                                binding.tvNoticeMore.setText("접어두기");
+                                binding.ivNoticeMore.setImageResource(R.drawable.ic_baseline_keyboard_double_arrow_up_24);
+                                viewMore = true;
+                            }
+                            else{
+                                binding.tvNotice.setMaxLines(4);
+                                binding.tvNoticeMore.setText("펼쳐보기");
+                                binding.ivNoticeMore.setImageResource(R.drawable.ic_baseline_keyboard_double_arrow_down_24);
+                                viewMore = false;
+                            }
+                        }
+                    });
+                }else{
+                    Log.e("clNoticeLayout", "gone");
+
+                }
+            }
+        },500);
+
     }
 }
