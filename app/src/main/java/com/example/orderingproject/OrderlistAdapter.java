@@ -140,6 +140,9 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
 
         String[] orderSummarySplitArr = arrayList.get(position).getOrderSummary().split(",");
         String[] orderSummaryFirstMenuSplitArr = orderSummarySplitArr[0].split(":");
+
+        holder.tv_order_in_store_name.setText(arrayList.get(position).getRestaurantName());
+
         int orderSummaryOtherMenuCount = orderSummarySplitArr.length-2;
         if(orderSummarySplitArr.length == 2) {
             holder.tv_order_in_menu.setText(orderSummarySplitArr[0]);
