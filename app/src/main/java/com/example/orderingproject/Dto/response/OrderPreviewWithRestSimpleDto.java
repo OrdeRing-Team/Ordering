@@ -16,6 +16,11 @@ public class OrderPreviewWithRestSimpleDto extends OrderPreviewDto {
     private Long restaurantId;
     private String profileUrl;
     private String restaurantName;
+    private int estimatedWaitingTime;
+
+    public int getEstimatedWaitingTime() {
+        return estimatedWaitingTime;
+    }
 
     public Long getRestaurantId() {
         return restaurantId;

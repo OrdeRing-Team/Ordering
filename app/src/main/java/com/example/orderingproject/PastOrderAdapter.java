@@ -121,6 +121,16 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
 //                context.startActivity(intent);
             }
         });
+
+        holder.btn_orderOutDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int absolutePosition = holder.getAbsoluteAdapterPosition();
+                Intent intent = new Intent(context, OrderlistDetailActivity.class);
+                intent.putExtra("orderId", arrayList.get(absolutePosition).getOrderId());
+                context.startActivity(intent);
+            }
+        });
     }
 
 

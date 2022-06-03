@@ -200,7 +200,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
                                                             }
                                                         });
                                                         Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                                    }else{
+                                                        Log.e("result.getData()","false");
                                                     }
+                                                }
+                                                else{
+                                                    Log.e("response","failed");
                                                 }
                                             }
 
