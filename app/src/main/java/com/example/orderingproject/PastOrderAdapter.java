@@ -3,6 +3,7 @@ package com.example.orderingproject;
 import static com.example.orderingproject.ENUM_CLASS.OrderType.TABLE;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +34,8 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
         TextView tv_orderOutCancel, tv_orderOutDay, tv_orderOutType, tv_orderOutOrderNumber, tv_orderOutStoreName, tv_orderOutMenu, tv_orderOutPrice;
         ImageView iv_orderOutImage;
 
+        ConstraintLayout cl_reviewWrite;
+
         Button btn_orderOutDetail;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -47,7 +51,7 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
             iv_orderOutImage = itemView.findViewById(R.id.item_image);
 
             btn_orderOutDetail = itemView.findViewById(R.id.btn_order_out_detail);
-
+            cl_reviewWrite = itemView.findViewById(R.id.cl_review_write);
         }
     }
 
@@ -109,6 +113,14 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
             holder.tv_orderOutMenu.setText(String.format("%s 외 %d개", orderSummaryFirstMenuSplitArr[0],orderSummaryOtherMenuCount));
             holder.tv_orderOutPrice.setText(orderSummarySplitArr[orderSummarySplitArr.length -1]);
         }
+
+        holder.cl_reviewWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(context, ReviewWriteActivity.class);
+//                context.startActivity(intent);
+            }
+        });
     }
 
 
