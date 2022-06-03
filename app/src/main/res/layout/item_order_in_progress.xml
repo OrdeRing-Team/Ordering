@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="1dp"
-    android:background="@color/white"
-    android:elevation="10dp"
+    android:background="@drawable/background_custom_waiting"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:padding="15dp">
 
     <Button
@@ -15,7 +16,8 @@
         android:layout_height="20dp"
         android:background="@drawable/round_rectangle_background_stroke_white_light_radius"
         android:text="주문취소"
-        android:textColor="@color/error"
+        android:textSize="13dp"
+        android:textColor="@color/main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +25,7 @@
         android:id="@+id/tv_order_in_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="2020-20-20 14:00"
         android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,8 +83,10 @@
         android:id="@+id/tv_order_in_order_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="주문번호 : 15번"
         android:textColor="@color/black"
+        android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@id/tv_order_in_day"
         app:layout_constraintTop_toBottomOf="@id/tv_order_in_day" />
 

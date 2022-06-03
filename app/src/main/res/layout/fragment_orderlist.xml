@@ -4,20 +4,20 @@
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/white"
     android:paddingBottom="70dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_gray">
+        android:background="#F6F6F6">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:elevation="10dp"
+            android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,6 @@
                 android:text="주문내역"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +51,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:paddingBottom="15dp"
+            android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/top_layout">
@@ -61,22 +61,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/baeminjua"
-                android:text="진행중인 주문"
+                android:layout_marginTop="15dp"
+                android:text="진행 중인 주문"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:background="@color/main"
-                app:layout_constraintEnd_toEndOf="@id/tv_order_in_progress"
-                app:layout_constraintStart_toStartOf="@id/tv_order_in_progress"
-                app:layout_constraintTop_toBottomOf="@id/tv_order_in_progress" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_order_in_progress"
@@ -126,7 +118,7 @@
             android:id="@+id/cl_order_out_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@color/white"
             android:paddingBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:text="이전 주문내역"
                 android:textColor="@color/black"
                 android:textSize="14sp"

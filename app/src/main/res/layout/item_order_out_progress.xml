@@ -4,9 +4,10 @@
     android:id="@+id/cl_baselayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp"
-    android:background="@color/white"
-    android:elevation="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/background_custom_grayline"
     android:padding="15dp">
 
     <TextView
@@ -56,8 +57,10 @@
         android:id="@+id/tv_order_out_order_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="주문번호 : 15번"
         android:textColor="@color/black"
+        android:textSize="15dp"
         app:layout_constraintStart_toStartOf="@id/tv_order_out_day"
         app:layout_constraintTop_toBottomOf="@id/tv_order_out_day" />
 
