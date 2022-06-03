@@ -60,12 +60,17 @@ public class MypageFragment extends Fragment {
 
         view = binding.getRoot();
 
+        initData();
         initButtonClickListener();
 
         return view;
     }
 
 
+    private void initData() {
+        binding.tvName.setText(UserInfo.getNickname());
+        binding.tvId.setText(UserInfo.getSignInId());
+    }
 
     private void initButtonClickListener(){
         binding.btnLogout.setOnClickListener(onClickListener);
@@ -337,6 +342,7 @@ public class MypageFragment extends Fragment {
     private final View.OnClickListener negativeButton = view -> {
         dialog.dismiss();
     };
+
     private void reverify(){
         String phoneNum = binding.etPhoneNum.getText().toString();
         if(phoneNum.length() != 11){

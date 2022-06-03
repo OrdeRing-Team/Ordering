@@ -16,35 +16,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/white">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/background_custom_gray"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="60dp">
-
-            <ImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
-                android:layout_gravity="center"
-                android:layout_marginTop="35dp"/>
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16dp"
-                android:backgroundTint="#656565"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"/>
-        </LinearLayout>
+            android:text="OrdeRing"
+            android:textColor="@color/main"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,10 +36,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="55dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="아이디"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:layout_marginTop="13dp"
                 android:layout_marginBottom="13dp"
                 android:layout_marginLeft="30dp"/>
@@ -89,7 +97,6 @@
                 android:text="현재 비밀번호"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:layout_marginLeft="30dp"/>
 
             <EditText
@@ -98,6 +105,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:backgroundTint="#656565"
+                android:inputType="textPassword"
+                android:textSize="15dp"
                 android:layout_marginLeft="10dp" />
 
             <ImageView
@@ -108,8 +117,7 @@
                 app:srcCompat="@drawable/ic_check"
                 tools:ignore="ContentDescription"
                 tools:visibility="visible"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"/>
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -126,7 +134,6 @@
                 android:text="신규 비밀번호"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:layout_marginLeft="30dp"/>
 
             <EditText
@@ -135,6 +142,10 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#656565"
                 android:textColor="@color/black"
+                android:inputType="textPassword"
+                android:hint="6자 이상 입력해 주세요."
+                android:textColorHint="#AAAAAA"
+                android:textSize="15dp"
                 android:layout_marginLeft="10dp" />
 
             <ImageView
@@ -145,8 +156,7 @@
                 app:srcCompat="@drawable/ic_check"
                 tools:ignore="ContentDescription"
                 tools:visibility="visible"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"/>
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -163,7 +173,6 @@
                 android:text="비밀번호 확인"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:layout_marginLeft="30dp"/>
 
             <EditText
@@ -172,6 +181,8 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#656565"
                 android:textColor="@color/black"
+                android:textSize="15dp"
+                android:inputType="textPassword"
                 android:layout_marginLeft="10dp" />
 
             <ImageView
@@ -182,8 +193,7 @@
                 app:srcCompat="@drawable/ic_check"
                 tools:ignore="ContentDescription"
                 tools:visibility="visible"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"/>
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -191,28 +201,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <!-- 오른쪽 정렬을 위한 View -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_changePW"
-                android:layout_width="70dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
-                android:backgroundTint="#F8EBEB"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_custom_waiting"
                 android:outlineProvider="none"
-                android:text="변경"
+                android:text="비밀번호 변경하기"
                 android:textColor="#232323" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -220,7 +228,6 @@
                 android:text="휴대폰 인증"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:layout_marginLeft="30dp"/>
 
         </LinearLayout>
@@ -228,26 +235,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/et_phoneNum"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#656565"
                 android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/black"
+                android:inputType="phone"
+                android:hint="'-' 없이 입력해 주세요."
+                android:textColorHint="#AAAAAA"
+                android:textSize="15dp"
                 android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/btn_reverify"
-                android:layout_width="70dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#F8EBEB"
-                android:text="재인증"
-                android:textColor="#232323"
                 android:layout_marginRight="30dp"
-                android:outlineProvider="none" />
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_custom_waiting"
+                android:outlineProvider="none"
+                android:text="휴대폰 번호 재인증하기"
+                android:textColor="#232323" />
 
         </LinearLayout>
 
@@ -256,7 +271,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="80dp">
 
             <Button
                 android:id="@+id/btn_logout"
