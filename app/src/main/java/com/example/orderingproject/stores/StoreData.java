@@ -1,16 +1,17 @@
 package com.example.orderingproject.stores;
 
+import java.util.List;
+
 public class StoreData {
-    int image;
+    String image;
     String title;
-    String content;
+    List content;
     String score;
 
 
-    public StoreData(int image, String title, String score, String content) {
+    public StoreData(String image, String title, List<String> content) {
         this.image = image;
         this.title = title;
-        this.score = score;
         this.content = content;
     }
 
@@ -22,11 +23,11 @@ public class StoreData {
         this.title = title;
     }
 
-    public String getContent() {
+    public List getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(List content) {
         this.content = content;
     }
 
@@ -38,11 +39,11 @@ public class StoreData {
         this.score = score;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

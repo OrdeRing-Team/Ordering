@@ -1,8 +1,18 @@
 package com.example.orderingproject;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -39,6 +49,9 @@ public class HomeFragment extends Fragment {
     final long DELAY_MS = 5000;  // (초기 웨이팅 타임) ex) 앱 로딩 후 5초 뒤 플립됨.
     final long PERIOD_MS = 5000; // 5초 주기로 배너 이동
 
+    double longitude;
+    double latitude;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,16 +59,55 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+
         initData();
         initViews();
         initButtonListener();
+
         return view;
     }
 
+
     private void initButtonListener() {
+        final LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         binding.btnStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if ( Build.VERSION.SDK_INT >= 23 &&
+                        ContextCompat.checkSelfPermission( getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
+                            0 );
+
+                    Log.e("위도 in if", String.valueOf(longitude));
+                    Log.e("경도 in if", String.valueOf(latitude));
+
+                }
+                else {
+                    //Location location = lm.getLastKnownLocation();
+                    LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                    String locationProvider = LocationManager.NETWORK_PROVIDER;
+                    Location location = locationManager.getLastKnownLocation(locationProvider);
+                    //location = lm.getLastKnownLocation(provider);
+//                    double longitude = location.getLongitude();
+//                    double latitude = location.getLatitude();
+//                    double altitude = location.getAltitude();
+
+                    //txtResult.setText("위치정보 : " + location + "\n" );
+
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                            1000,
+                            1,
+                            gpsLocationListener);
+                    lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                            1000,
+                            1,
+                            gpsLocationListener);
+
+                    Log.e("위도 in else", String.valueOf(longitude));
+                    Log.e("경도 in else", String.valueOf(latitude));
+                }
+
                 Intent intent = new Intent(getActivity(), StoresActivity.class);
                 startActivity(intent);
                 //getActivity().finish();   //현재 액티비티 종료
@@ -87,18 +139,18 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.llCouponbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CouponActivity.class);
-                intent.putExtra("from", "HomeFragment");
-                startActivity(intent);
-            }
-        });
-
-        binding.llFavStores.setOnClickListener(view -> {
-            startActivity(new Intent(getActivity(), FavStoreListActivity.class));
-        });
+//        binding.btnCouponBox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getActivity(), CouponActivity.class);
+//                intent.putExtra("from", "HomeFragment");
+//                startActivity(intent);
+//            }
+//        });
+//
+//        binding.btnFavStores.setOnClickListener(view -> {
+//            startActivity(new Intent(getActivity(), FavStoreListActivity.class));
+//        });
 
 
         /** 임시 버튼 나중에 삭제 할 것 **/
@@ -127,6 +179,34 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+    final LocationListener gpsLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+
+            String provider = location.getProvider();
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            double altitude = location.getAltitude();
+
+//            txtResult.setText("위치정보 : " + provider + "\n" +
+//                    "위도 : " + longitude + "\n" +
+//                    "경도 : " + latitude + "\n" +
+//                    "고도  : " + altitude);
+
+            Log.e("위도", String.valueOf(longitude));
+            Log.e("경도", String.valueOf(latitude));
+
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+    };
 
     private void initData() {
         // 배너 데이터

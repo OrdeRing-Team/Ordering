@@ -8,6 +8,7 @@ import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.request.PasswordChangeDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
+import com.example.orderingproject.Dto.request.RestaurantPreviewListReqDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
@@ -16,6 +17,7 @@ import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
+import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
 
 import java.util.List;
 
@@ -137,4 +139,7 @@ public interface RetrofitService {
 	@GET("/api/customer/{customerId}/bookmarks")
 	Call<ResultDto<List<BookmarkPreviewDto>>> getFavStoreList(@Path("customerId") Long customerId);
 
+	// 위치기반 매장 목록 반환
+	@POST("/api/restaurants")
+	Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> getStoreList(@Body RestaurantPreviewListReqDto restaurantPreviewListReqDto);
 }

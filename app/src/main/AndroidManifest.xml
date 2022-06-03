@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.orderingproject">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 이미지 업로드 관련 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,6 +12,11 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- Include only if your app benefits from precise location access. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 
     <application
         android:allowBackup="true"

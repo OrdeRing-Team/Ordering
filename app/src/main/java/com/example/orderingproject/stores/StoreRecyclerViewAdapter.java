@@ -53,8 +53,8 @@ class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.Vie
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         StoreData item = itemData.get(position);
         holder.title.setText(item.getTitle());
-        holder.content.setText(item.getContent());
-        holder.image.setImageResource(item.getImage());
+        holder.content.setText((CharSequence) item.getContent());
+        holder.image.setImageResource(Integer.parseInt(item.getImage()));
         holder.score.setText(item.getScore());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
