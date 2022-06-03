@@ -76,7 +76,7 @@ public class OrderlistDetailActivity extends BasicActivity {
                 public void run() {
                     setOrderProgress();
                 }
-            },10);
+            },20);
         }
     }
 }
