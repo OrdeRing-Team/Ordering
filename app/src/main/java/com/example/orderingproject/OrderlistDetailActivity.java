@@ -85,20 +85,21 @@ public class OrderlistDetailActivity extends BasicActivity {
     }
 
     private void initData(){
-        progress = 0;
+        progress = 1;
 
         getOrderData();
     }
 
 
     private void setOrderProgress(boolean delayMore){
-        progress++;
+        Log.e("setOrderProgress",Integer.toString(progress));
         binding.customProgressbarOrder.setProgress(progress);
-        int delay = delayMore ? 20 : 5;
-        if(progress < progressMax){
+        int delay = delayMore ? 20 : 10;
+        if(progress < progressMax-1){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    progress++;
                     setOrderProgress(delayMore);
                 }
             },delay);
@@ -340,7 +341,7 @@ public class OrderlistDetailActivity extends BasicActivity {
         String result = convertTimeToString(" - " + hourFormat.format(cal.getTime()));
 
         binding.clRemainTime.setVisibility(View.VISIBLE);
-        binding.tvRemainTime.setText(result);
+        binding.tvRemainTime.setText(result.substring(0,10));
     }
 
     private void initOrderListRecyclerView(){

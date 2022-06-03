@@ -25,6 +25,7 @@ import com.example.orderingproject.ENUM_CLASS.OrderType;
 import com.example.orderingproject.R;
 import com.example.orderingproject.MainActivity;
 import com.example.orderingproject.AuthActivity;
+import com.example.orderingproject.SplashActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -81,8 +82,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent2.putExtra("data", remoteMessage.getData().get("channel_id"));
         broadcastManager.sendBroadcast(intent2);
 
-        Intent intent = new Intent(this, AuthActivity.class);
-
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.putExtra("fromFCM_Channel",remoteMessage.getData().get("channel_id"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 

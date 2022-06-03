@@ -48,12 +48,15 @@ public class SplashActivity extends Activity {
     SharedPreferences loginSP;
     SharedPreferences noticeSP;
     String memberId, password, notice;
+    Bundle extras;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         initData();
+
+        extras = getIntent().getExtras();
 
         startSplash2();
         startLoading();
@@ -144,8 +147,14 @@ public class SplashActivity extends Activity {
                                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                        // fcm 푸시 클릭으로 들어왔을 때 처리
+                                                        if (extras != null) {
+                                                            Log.e("bundle 유효 :: LoginActivity", getIntent().getStringExtra("fromFCM_Channel"));
+                                                            intent.putExtra("fromFCM_Channel", getIntent().getStringExtra("fromFCM_Channel"));
+                                                        }
                                                         UserInfo.setUserInfo(result.getData(), memberId);
-                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                        startActivity(intent);
 
                                                         finish();
                                                     }
