@@ -238,7 +238,7 @@ public class OrderlistDetailActivity extends BasicActivity {
                 binding.tvComplete.setTextColor(getColor(R.color.blue));
                 binding.tvCheck.setTextColor(getColor(R.color.gray));
 //                setRemainTime(cancelOrCompletedTimeOriginal);
-                binding.tvRemainTime.setText(convertTimeToString(cancelOrCompletedTimeOriginal력));
+                binding.tvRemainTime.setText(convertTimeToString(cancelOrCompletedTimeOriginal));
                 break;
         }
 
