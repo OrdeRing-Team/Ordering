@@ -127,9 +127,7 @@ public interface RetrofitService {
 
 	// 내 주문 내역(완료) 리스트 가져오기
 	@GET("/api/customer/{customerId}/orders/finished")
-	Call<ResultDto<List<OrderPreviewWithRestSimpleDto>>> getOrderOutList(@Path("customerId") Long customerId,
-																		 @Query(value = "offset") int page,
-																		 @Query(value = "limit") int limit);
+	Call<ResultDto<List<OrderPreviewWithRestSimpleDto>>> getOrderOutList(@Path("customerId") Long customerId);
 
 	/** 웨이팅 관련 함수 **/
 	// 웨이팅 요청
