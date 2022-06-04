@@ -33,6 +33,8 @@ import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.ENUM_CLASS.FoodCategory;
+import com.example.orderingproject.ENUM_CLASS.RestaurantType;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.tabs.TabLayout;
@@ -58,6 +60,14 @@ public class MenuActivity extends BasicActivity {
     public static String notice = null;
     public static double storeLatitude;
     public static double storeLongitude;
+    public static String ownerName;
+    public static String restaurantNameForInfo;
+    public static String address;
+    public static RestaurantType restaurantType;
+    public static FoodCategory foodCategory;
+    public static Integer tableCount;
+    public static Integer orderWaitingTime;
+
     public int basketCount = UserInfo.getBasketCount();
 
     private Long favStoreId;
@@ -76,7 +86,7 @@ public class MenuActivity extends BasicActivity {
         initView();
         initButtonListener();
         getFavStoreIdFromServer();
-        getNoticeAndCoordinate();
+        getStoreInfo();
     }
     private void initButtonListener(){
         binding.btnBackToManageFrag.setOnClickListener(view -> finish());
@@ -207,7 +217,6 @@ public class MenuActivity extends BasicActivity {
         }
 
     }
-
 
     private void initView(){
 
@@ -430,7 +439,7 @@ public class MenuActivity extends BasicActivity {
         }
     }
 
-    public void getNoticeAndCoordinate(){
+    public void getStoreInfo(){
         try {
             new Thread() {
                 @SneakyThrows
@@ -461,6 +470,14 @@ public class MenuActivity extends BasicActivity {
                                             }
                                             storeLatitude = result.getData().getLatitude();
                                             storeLongitude = result.getData().getLongitude();
+                                            ownerName = result.getData().getOwnerName();
+                                            restaurantNameForInfo = result.getData().getRestaurantName();
+                                            address = result.getData().getAddress();
+                                            restaurantType = result.getData().getRestaurantType();
+                                            foodCategory = result.getData().getFoodCategory();
+                                            tableCount = result.getData().getTableCount();
+                                            orderWaitingTime = result.getData().getOrderingWaitingTime();
+
                                         }
                                     });
                                 }

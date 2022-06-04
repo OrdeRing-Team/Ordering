@@ -25,6 +25,7 @@ import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.BasketPutDto;
 import com.example.orderingproject.Dto.response.BasketFoodDto;
+import com.example.orderingproject.Dto.response.OrderDetailDto;
 import com.example.orderingproject.databinding.ActivityBasketBinding;
 
 import java.util.ArrayList;
@@ -256,10 +257,16 @@ public class BasketActivity extends BasicActivity {
 
                         if(intentResult != null) {
                             boolean resultValue = intentResult.getBooleanExtra("orderCompleted", false);
+                            Long orderId = intentResult.getLongExtra("orderId",0);
                             Log.e("resultValue", Boolean.toString(resultValue));
+                            Log.e("orderId", Long.toString(orderId));
 
                             if(resultValue) {
                                 initData();
+                                Intent intent = new Intent(BasketActivity.this, OrderlistDetailActivity.class);
+                                intent.putExtra("orderId",orderId);
+                                Log.e("toOrderListDetailActivity ### orderId : ",Long.toString(orderId));
+                                startActivity(intent);
                                 finish();
                             }
                             else{
