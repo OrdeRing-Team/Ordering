@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_baselayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@color/white"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="50dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/light_main"
+        app:cardCornerRadius="30dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:elevation="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="삭제"
+                android:textColor="@color/gray"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_review_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ㅇㅁㄴㅇㅁㄴㅇ"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/iv_review_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_review_profile"/>
+
+    <RatingBar
+        android:id="@+id/ratingBar_review_inner"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:progressTint="#FFEB3B"
+        android:stepSize="1"
+        app:layout_constraintBottom_toBottomOf="@id/iv_review_profile"
+        app:layout_constraintStart_toEndOf="@id/iv_review_profile"
+        android:layout_marginStart="10dp"
+        android:theme="@style/RatingBar" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_review_image"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_review_profile"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_review_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/cv_review_image"
+        app:layout_constraintTop_toBottomOf="@id/cv_review_image"
+        app:layout_constraintEnd_toEndOf="@id/cv_review_image"
+        android:layout_marginTop="10dp"
+        android:text="너무 맛있어요~~ 너무예쁘네혀 넘예브네혀 넘옙네혀 놈협으네 농협은행"
+        android:textColor="@color/black"
+        android:id="@+id/tv_review"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_review">
+
+    </com.google.android.material.chip.ChipGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

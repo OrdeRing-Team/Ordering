@@ -111,6 +111,7 @@
         <entry key="app/src/main/res/layout/item_order_out_progress.xml" value="0.28587341308593756" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.4084468992285454" />
         <entry key="app/src/main/res/layout/item_represent.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/item_review.xml" value="0.20176544189453127" />
         <entry key="app/src/main/res/layout/item_store.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_intro_title.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.11684782608695653" />
