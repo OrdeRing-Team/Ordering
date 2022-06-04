@@ -61,6 +61,10 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
                 tv_order_in_menu, tv_order_in_status, tv_order_in_order_number, tv_order_in_price;
         Button btn_order_in_detail, btn_order_in_cancel;
         ImageView iv_order_in_menu_image;
+
+        // 리뷰작성 버튼
+        ConstraintLayout cl_review_write;
+
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             //item 에 대한 클릭 이벤트 설정
@@ -76,7 +80,6 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
             btn_order_in_cancel = itemView.findViewById(R.id.btn_order_in_cancel);
 
             iv_order_in_menu_image = itemView.findViewById(R.id.item_image);
-
 
         }
     }
@@ -114,7 +117,6 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
 
     @Override
     public void onBindViewHolder(@NonNull OrderlistAdapter.CustomViewHolder holder, int position) {
-
 
         Log.e("//==========//","//====================================================//");
         Log.e("   position  /",Integer.toString(position));
@@ -190,6 +192,7 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
                 dialog.show();
             }
         });
+
         positiveButton = view -> {
 
             dialog.showProgress();

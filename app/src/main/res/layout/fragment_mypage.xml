@@ -143,7 +143,7 @@
                 android:backgroundTint="#656565"
                 android:textColor="@color/black"
                 android:inputType="textPassword"
-                android:hint="6자 이상 입력해 주세요."
+                android:hint="6자 이상 입력해주세요."
                 android:textColorHint="#AAAAAA"
                 android:textSize="15dp"
                 android:layout_marginLeft="10dp" />
@@ -247,7 +247,7 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black"
                 android:inputType="phone"
-                android:hint="'-' 없이 입력해 주세요."
+                android:hint="'-' 없이 입력해주세요."
                 android:textColorHint="#AAAAAA"
                 android:textSize="15dp"
                 android:layout_weight="1"/>

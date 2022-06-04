@@ -1,4 +1,4 @@
-package com.example.orderingproject;
+package com.example.orderingproject.review;
 
 import android.content.Intent;
 import android.os.Bundle;

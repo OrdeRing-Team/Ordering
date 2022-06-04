@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,8 +118,9 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
         holder.cl_reviewWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, ReviewWriteActivity.class);
-//                context.startActivity(intent);
+                Log.e("리뷰작성버튼", "클릭됨.");
+                Intent intent = new Intent(context, WriteReviewActivity.class);
+                context.startActivity(intent);
             }
         });
 

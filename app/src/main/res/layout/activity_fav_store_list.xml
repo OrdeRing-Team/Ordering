@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="즐겨 찾는 매장을 등록해주세요  :)"
+        android:text="즐겨 찾는 매장을 등록해보세요  :)"
         android:textSize="18sp"
         android:visibility="gone"
         android:textColor="@color/et_hint"/>

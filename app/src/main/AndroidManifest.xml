@@ -77,6 +77,11 @@
             android:name=".OrderlistDetailActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".WriteReviewActivity"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
+            android:exported="true" />
+
         <service
             android:name=".FCM_Service.MyFirebaseMessagingService"
             android:exported="false">
