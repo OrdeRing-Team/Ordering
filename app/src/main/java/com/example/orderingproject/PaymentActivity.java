@@ -48,6 +48,7 @@ public class PaymentActivity extends BasicActivity {
     boolean cashButtonClicked = false;
     String store, service, restaurantName;
     String[] serviceSplitArr;
+    Long orderId;
     ArrayList<BasketData> basketList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,11 +145,14 @@ public class PaymentActivity extends BasicActivity {
                                         @Override
                                         public void run() {
                                             stopProgress();
+                                            orderId = result.getData();
                                             Toast.makeText(PaymentActivity.this, "주문이 요청되었습니다.",Toast.LENGTH_SHORT).show();
                                             UserInfo.setBasketCount(0);
                                             if(selectedCouponId == null || selectedCouponId == 0){
                                                 Intent intent = new Intent(PaymentActivity.this, BasketActivity.class);
                                                 intent.putExtra("orderCompleted", true);
+                                                intent.putExtra("orderId",orderId);
+
                                                 setResult(RESULT_OK, intent);
                                                 finish();
                                             }
@@ -413,6 +417,7 @@ public class PaymentActivity extends BasicActivity {
 
                                             Intent intent = new Intent(PaymentActivity.this, BasketActivity.class);
                                             intent.putExtra("orderCompleted", true);
+                                            intent.putExtra("orderId",orderId);
                                             setResult(RESULT_OK, intent);
                                             finish();
                                             Log.e("couponId",Long.toString(selectedCouponId) + " // 사용 처리됨");

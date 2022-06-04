@@ -59,7 +59,7 @@ public class OrderlistDetailActivity extends BasicActivity {
     private OrderStatus orderStatus;
     private Long restaurantId;
     private String restaurantName;
-    private int estimatedWaitingTime;
+    private int orderWaitingTime;
     private List<OrderFoodDto> orderFoods;
 
     int progressMax, progress;
@@ -158,8 +158,8 @@ public class OrderlistDetailActivity extends BasicActivity {
                                                 orderStatus = result.getData().getOrderStatus();
                                                 restaurantId = result.getData().getRestaurantId();
                                                 restaurantName = result.getData().getRestaurantName();
-                                                estimatedWaitingTime = result.getData().getEstimatedWaitingTime();
-
+                                                orderWaitingTime = result.getData().getOrderingWaitingTime();
+                                                Log.e("orderWaitingTime############", Integer.toString(orderWaitingTime));
                                                 orderFoods = result.getData().getOrderFoods();
 
                                                 setOrderData();
@@ -321,7 +321,7 @@ public class OrderlistDetailActivity extends BasicActivity {
     }
 
     private void setRemainTime(String original){
-        Log.e("estimatedWaitingTime", Integer.toString(estimatedWaitingTime));
+        Log.e("estimatedWaitingTime", Integer.toString(orderWaitingTime));
         String[] tmpDate = original.split(" - ");
 //        String convertDate = tmpDate[0] + tmpDate[1];
 //        Log.e("condate",convertDate);
@@ -336,7 +336,7 @@ public class OrderlistDetailActivity extends BasicActivity {
         cal.setTime(regTime);
 
         // TODO : 매장 주문 대기시간 설정 기능 구현할 것
-        cal.add(Calendar.MINUTE,estimatedWaitingTime);
+        cal.add(Calendar.MINUTE,orderWaitingTime);
 
         String result = convertTimeToString(" - " + hourFormat.format(cal.getTime()));
 
