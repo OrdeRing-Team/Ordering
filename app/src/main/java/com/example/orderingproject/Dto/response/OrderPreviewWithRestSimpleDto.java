@@ -14,9 +14,14 @@ import static lombok.AccessLevel.PROTECTED;
 public class OrderPreviewWithRestSimpleDto extends OrderPreviewDto {
 
     private Long restaurantId;
+    private Long reviewId;
     private String profileUrl;
     private String restaurantName;
     private int orderingWaitingTime;
+
+    public Long getReviewId() {
+        return reviewId;
+    }
 
     public int getOrderingWaitingTime() {
         return orderingWaitingTime;

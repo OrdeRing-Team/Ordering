@@ -115,11 +115,18 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
             holder.tv_orderOutPrice.setText(orderSummarySplitArr[orderSummarySplitArr.length -1]);
         }
 
+        if(arrayList.get(position).getOrderStatus() == OrderStatus.CANCELED ||
+        arrayList.get(position).getReviewId() != null){
+            holder.cl_reviewWrite.setVisibility(View.GONE);
+        }
         holder.cl_reviewWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("리뷰작성버튼", "클릭됨.");
                 Intent intent = new Intent(context, WriteReviewActivity.class);
+                intent.putExtra("restaurantId",arrayList.get(position).getRestaurantId());
+                intent.putExtra("orderId",arrayList.get(position).getOrderId());
+                intent.putExtra("restaurantName",arrayList.get(position).getRestaurantName());
                 context.startActivity(intent);
             }
         });

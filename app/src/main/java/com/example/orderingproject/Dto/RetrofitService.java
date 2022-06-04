@@ -8,6 +8,7 @@ import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.request.PasswordChangeDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
+import com.example.orderingproject.Dto.request.ReviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
@@ -24,12 +25,15 @@ import com.example.orderingproject.Dto.response.RestaurantInfoDto;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -164,5 +168,16 @@ public interface RetrofitService {
 	// 찜한 매장 리스트 불러오기
 	@GET("/api/customer/{customerId}/bookmarks")
 	Call<ResultDto<List<BookmarkPreviewDto>>> getFavStoreList(@Path("customerId") Long customerId);
+
+	/** 리뷰 관련 **/
+	// 주문한 음식 리뷰 작성하기 API
+	@Multipart
+	@POST("/api/customer/review")
+	Call<ResultDto<Boolean>> addReview(@Query("restaurant_id") Long restaurantId, @Query("order_id") Long orderId, @Part(value = "dto") ReviewDto reviewDto, @Part MultipartBody.Part file);
+
+//	// 주문한 음식 리뷰 작성하기 API (이미지 포함)
+//	@Multipart
+//	@POST("/api/customer/review")
+//	Call<ResultDto<Boolean>> addReviewWithImage(@Query("restaurant_id") Long restaurantId, @Query("order_id") Long orderId, @Part(value = "dto") ReviewDto reviewDto);
 
 }
