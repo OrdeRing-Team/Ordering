@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    //탭 줄바꿈 없애기 위한 style
+    <!--탭 줄바꿈 없애기 위한 style-->
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
     </style>
@@ -8,5 +8,5 @@
         <item name="android:singleLine">true</item>
         <item name="android:maxLines">1</item>
     </style>
-
+    <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice"/>
 </resources>

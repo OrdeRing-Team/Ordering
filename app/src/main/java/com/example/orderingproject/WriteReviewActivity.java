@@ -104,7 +104,6 @@ public class WriteReviewActivity extends BasicActivity {
                                                     });
                                                 } else {
                                                     stopProgress();
-                                                    Log.e("result.getData() ", "false@@@@@@@@@@@@@");
                                                     Toast.makeText(WriteReviewActivity.this, "이미 해당 주문에 대한 리뷰를 작성했습니다", Toast.LENGTH_SHORT).show();
                                                 }
                                             } else {

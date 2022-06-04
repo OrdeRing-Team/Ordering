@@ -22,6 +22,7 @@ import com.example.orderingproject.Dto.response.OrderPreviewDto;
 import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
 import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 
 import java.util.List;
 
@@ -175,9 +176,8 @@ public interface RetrofitService {
 	@POST("/api/customer/review")
 	Call<ResultDto<Boolean>> addReview(@Query("restaurant_id") Long restaurantId, @Query("order_id") Long orderId, @Part(value = "dto") ReviewDto reviewDto, @Part MultipartBody.Part file);
 
-//	// 주문한 음식 리뷰 작성하기 API (이미지 포함)
-//	@Multipart
-//	@POST("/api/customer/review")
-//	Call<ResultDto<Boolean>> addReviewWithImage(@Query("restaurant_id") Long restaurantId, @Query("order_id") Long orderId, @Part(value = "dto") ReviewDto reviewDto);
+	// 매장 리뷰 리스트 조회 API
+	@GET("/api/restaurant/{restaurantId}/reviews")
+	Call<ResultDto<List<ReviewPreviewDto>>> getReviewList(@Path("restaurantId") Long restaurantId);
 
 }

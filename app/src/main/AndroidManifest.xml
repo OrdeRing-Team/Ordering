@@ -32,7 +32,7 @@
             android:exported="true" />
         <activity
             android:name=".MenuActivity"
-            android:exported="true" />
+            android:exported="true"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true">

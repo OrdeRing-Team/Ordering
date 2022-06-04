@@ -4,10 +4,10 @@
     android:id="@+id/cl_baselayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:background="@color/white"
+    android:theme="@style/Theme.OrdeRingProject"
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
     android:paddingTop="15dp"
@@ -36,7 +36,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -93,11 +93,11 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/cv_review_image"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_review_image"
-        app:layout_constraintEnd_toEndOf="@id/cv_review_image"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"
         android:text="너무 맛있어요~~ 너무예쁘네혀 넘예브네혀 넘옙네혀 놈협으네 농협은행"
         android:textColor="@color/black"
@@ -109,7 +109,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_review">
 
