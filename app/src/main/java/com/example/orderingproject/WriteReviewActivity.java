@@ -2,6 +2,10 @@ package com.example.orderingproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,7 +21,15 @@ import com.example.orderingproject.Dto.response.OrderDetailDto;
 import com.example.orderingproject.databinding.ActivityWriteReviewBinding;
 import com.google.firestore.v1.Write;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import lombok.SneakyThrows;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,8 +40,13 @@ public class WriteReviewActivity extends BasicActivity {
 
     private ActivityWriteReviewBinding binding;
 
+    private final int GET_GALLERY_IMAGE = 200;
+
     Long restaurantId, orderId;
     String restaurantName;
+
+    File imageFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +101,13 @@ public class WriteReviewActivity extends BasicActivity {
                                             .build();
 
                                     RetrofitService service = retrofit.create(RetrofitService.class);
-                                    Call<ResultDto<Boolean>> call = service.addReview(restaurantId, orderId, reviewDto, null);
+                                    Call<ResultDto<Boolean>> call = null;
+                                    if(imageFile == null) call = service.addReview(restaurantId, orderId, reviewDto, null);
+                                    else{
+                                        RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), imageFile);
+                                        MultipartBody.Part image = MultipartBody.Part.createFormData("image", String.valueOf(System.currentTimeMillis()), fileBody);
+                                        call = service.addReview(restaurantId, orderId, reviewDto, image);
+                                    }
 
                                     call.enqueue(new Callback<ResultDto<Boolean>>() {
                                         @Override
@@ -149,5 +172,67 @@ public class WriteReviewActivity extends BasicActivity {
                 Log.e("rating",Float.toString(v));
             }
         });
+
+        binding.llReviewImageBeforeUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentStart();
+            }
+        });
+
+        binding.llReviewImageUploaded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentStart();
+            }
+        });
+    }
+
+    private void intentStart(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intent, GET_GALLERY_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri selectedImageUri = data.getData();
+            Log.e("selectedImageUri",selectedImageUri.toString());
+            binding.llReviewImageUploaded.setVisibility(View.VISIBLE);
+            binding.llReviewImageBeforeUpload.setVisibility(View.GONE);
+            binding.ivReviewImageUploaded.setImageURI(selectedImageUri);
+
+            BitmapDrawable drawable = (BitmapDrawable) binding.ivReviewImageUploaded.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            imageFile = convertBitmapToFile(bitmap, UserInfo.getSignInId() + System.currentTimeMillis() + ".png");
+            Log.e("image", "imageFile is " + imageFile);
+        }
+    }
+
+    private File convertBitmapToFile(Bitmap bitmap, String fileName) {
+
+        File storage = getCacheDir();
+        File tempFile = new File(storage, fileName);
+
+        try {
+            tempFile.createNewFile();
+
+            FileOutputStream out = new FileOutputStream(tempFile);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
+
+            out.close();
+            return tempFile;
+        } catch (FileNotFoundException e) {
+            Log.e("Menu Image","FileNotFoundException : " + e.getMessage());
+        } catch (IOException e) {
+            Log.e("Menu Image","IOException : " + e.getMessage());
+        }
+        return null;
     }
 }
