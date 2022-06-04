@@ -43,7 +43,6 @@ public class OrderlistFragment extends Fragment {
     private LinearLayout mActionButtonContainer;
     public static List<OrderPreviewWithRestSimpleDto> pastOrderList;
     static RecyclerView orderOutRecyclerView;
-//    private TestStackAdapter mTestStackAdapter;
 
 
     @Override

@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/light_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="30dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_layout"
@@ -70,7 +72,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="30dp"
+                android:paddingTop="10dp">
 
                 <ProgressBar
                     android:id="@+id/custom_progressbar_order"
@@ -80,14 +84,12 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="30dp"
                     android:max="100"
                     android:progress="0"
                     android:progressDrawable="@drawable/progressbar_custom"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <View
                     android:id="@+id/division_received"
@@ -145,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="00:00:00"
+                    android:visibility="gone"
                     android:textColor="@color/gray"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/division_check"
@@ -166,6 +169,7 @@
                     android:textColor="@color/gray"
                     android:textSize="12sp"
                     android:textStyle="bold"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintBottom_toTopOf="@id/division_check"
                     app:layout_constraintEnd_toStartOf="@id/division_complete" />
 
@@ -175,10 +179,51 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:text="00:00:00"
+                    android:visibility="gone"
                     android:textColor="@color/gray"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toStartOf="@id/division_complete"
                     app:layout_constraintTop_toBottomOf="@id/tv_complete" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_remain_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@id/custom_progressbar_order"
+                    app:layout_constraintBottom_toTopOf="@id/tv_complete"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:background="@drawable/round_rectangle_background_stroke_main_light_radius">
+                    <TextView
+                        android:id="@+id/tv_remain_time_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="예상 완료시간 "
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+                    <TextView
+                        android:id="@+id/tv_remain_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_remain_time_header"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
@@ -212,6 +257,18 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_canceled_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(2022년 20월 20일 오전 11:08)"
+                    android:textColor="@color/error"
+                    app:layout_constraintStart_toEndOf="@id/tv_order_detail_status"
+                    app:layout_constraintTop_toTopOf="@id/tv_order_detail_status"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_order_detail_status"
+                    android:layout_marginStart="5dp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_order_detail_store_name"
@@ -257,6 +314,28 @@
                     app:layout_constraintTop_toTopOf="@id/tv_order_detail_order_time_header" />
 
                 <TextView
+                    android:id="@+id/tv_order_detail_complete_time_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주문완료 : "
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_order_detail_order_time_header" />
+
+
+                <TextView
+                    android:id="@+id/tv_order_detail_complete_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2022년 06월 02일 오전 11:08"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@id/tv_order_detail_complete_time_header"
+                    app:layout_constraintTop_toTopOf="@id/tv_order_detail_complete_time_header" />
+                <TextView
                     android:id="@+id/tv_order_detail_order_id_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -264,7 +343,7 @@
                     android:textColor="@color/gray"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_order_detail_order_time_header" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_order_detail_complete_time_header" />
 
                 <TextView
                     android:id="@+id/tv_order_detail_order_id"
@@ -324,7 +403,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_menu_payment"
+                android:id="@+id/rv_order_detail_food_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -341,7 +420,7 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="15dp"
                 android:background="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/rv_menu_payment" />
+                app:layout_constraintTop_toBottomOf="@id/rv_order_detail_food_list" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -366,6 +445,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_division_payment" />
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/progressBar_orderdetail_list"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

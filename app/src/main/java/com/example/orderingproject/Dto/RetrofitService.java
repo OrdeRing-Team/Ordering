@@ -16,6 +16,7 @@ import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
+import com.example.orderingproject.Dto.response.OrderDetailDto;
 import com.example.orderingproject.Dto.response.OrderPreviewDto;
 import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
@@ -128,6 +129,10 @@ public interface RetrofitService {
 	// 내 주문 내역(완료) 리스트 가져오기
 	@GET("/api/customer/{customerId}/orders/finished")
 	Call<ResultDto<List<OrderPreviewWithRestSimpleDto>>> getOrderOutList(@Path("customerId") Long customerId);
+
+	// 주문 상세 정보 반환 API
+	@GET("/api/customer/order/{orderId}/detail")
+	Call<ResultDto<OrderDetailDto>> getOrderDetail(@Path("orderId") Long orderId);
 
 	/** 웨이팅 관련 함수 **/
 	// 웨이팅 요청

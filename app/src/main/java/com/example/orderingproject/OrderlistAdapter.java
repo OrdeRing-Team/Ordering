@@ -141,7 +141,6 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
         String[] orderSummarySplitArr = arrayList.get(position).getOrderSummary().split(",");
         String[] orderSummaryFirstMenuSplitArr = orderSummarySplitArr[0].split(":");
 
-        holder.tv_order_in_store_name.setText(arrayList.get(position).getRestaurantName());
 
         int orderSummaryOtherMenuCount = orderSummarySplitArr.length-2;
         if(orderSummarySplitArr.length == 2) {
@@ -151,6 +150,8 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
             holder.tv_order_in_menu.setText(String.format("%s 외 %d개", orderSummaryFirstMenuSplitArr[0],orderSummaryOtherMenuCount));
             holder.tv_order_in_price.setText(orderSummarySplitArr[orderSummarySplitArr.length -1]);
         }
+
+        holder.tv_order_in_store_name.setText(arrayList.get(position).getRestaurantName());
         holder.tv_order_in_order_number.setText(String.format("주문번호 : %d번", arrayList.get(position).getOrderId()));
         holder.tv_order_in_type.setText(arrayList.get(position).getOrderType() == TABLE ?
                 (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") : "포장");
@@ -279,8 +280,9 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
         holder.btn_order_in_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int absolutePosition = holder.getAbsoluteAdapterPosition();
                 Intent intent = new Intent(context, OrderlistDetailActivity.class);
-//                intent.putExtra()
+                intent.putExtra("orderId", arrayList.get(absolutePosition).getOrderId());
                 context.startActivity(intent);
             }
         });

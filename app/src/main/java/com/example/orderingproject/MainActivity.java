@@ -2,6 +2,7 @@ package com.example.orderingproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -65,7 +66,13 @@ public class MainActivity extends BasicActivity {
                 return true;
             }
         });
-
+        if(getIntent().getStringExtra("fromFCM_Channel") != null){
+            String getintentString = getIntent().getStringExtra("fromFCM_Channel");
+            Log.e("getIntent 유효", getintentString);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new OrderlistFragment()).commit();
+        }else{
+            Log.e("fromFCM_Channel", "null");
+        }
         initData();
     }
 
@@ -167,4 +174,17 @@ public class MainActivity extends BasicActivity {
         }
     }
 
+    // fcm 푸시알림 클릭으로 들어왔을 때 전달받는 intent
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Log.e("bundle 유효", getIntent().getStringExtra("fromFCM_Channel"));
+            Fragment orderlistFragment = new OrderlistFragment();
+            orderlistFragment.setArguments(extras);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, orderlistFragment).commit(); //FrameLayout에 QrFragment.xml띄우기
+        }
+    }
 }
