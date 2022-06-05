@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp">
+        android:layout_marginBottom="15dp"
+        android:background="@color/extra_light_gray">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,6 +41,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
                     android:text="5.0"
+                    android:maxLength="3"
                     android:textColor="@color/black"
                     android:textSize="30dp"
                     android:textStyle="bold" />
@@ -82,10 +84,11 @@
                         android:layout_width="200dp"
                         android:layout_height="7dp"
                         android:layout_gravity="center"
-                        android:max="5"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/progressbar_custom"
                         android:progressBackgroundTint="#EAEAEA"
                         android:progressBackgroundTintMode="src_over"
-                        android:progressDrawable="@drawable/background_custom_gray"
                         android:progressTint="@color/main" />
                 </LinearLayout>
 
@@ -108,10 +111,11 @@
                         android:layout_width="200dp"
                         android:layout_height="7dp"
                         android:layout_gravity="center"
-                        android:max="5"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/progressbar_custom"
                         android:progressBackgroundTint="#EAEAEA"
                         android:progressBackgroundTintMode="src_over"
-                        android:progressDrawable="@drawable/background_custom_gray"
                         android:progressTint="@color/main" />
                 </LinearLayout>
 
@@ -134,10 +138,11 @@
                         android:layout_width="200dp"
                         android:layout_height="7dp"
                         android:layout_gravity="center"
-                        android:max="5"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/progressbar_custom"
                         android:progressBackgroundTint="#EAEAEA"
                         android:progressBackgroundTintMode="src_over"
-                        android:progressDrawable="@drawable/background_custom_gray"
                         android:progressTint="@color/main" />
                 </LinearLayout>
 
@@ -160,10 +165,11 @@
                         android:layout_width="200dp"
                         android:layout_height="7dp"
                         android:layout_gravity="center"
-                        android:max="5"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/progressbar_custom"
                         android:progressBackgroundTint="#EAEAEA"
                         android:progressBackgroundTintMode="src_over"
-                        android:progressDrawable="@drawable/background_custom_gray"
                         android:progressTint="@color/main" />
                 </LinearLayout>
 
@@ -186,10 +192,11 @@
                         android:layout_width="200dp"
                         android:layout_height="7dp"
                         android:layout_gravity="center"
-                        android:max="5"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/progressbar_custom"
                         android:progressBackgroundTint="#EAEAEA"
                         android:progressBackgroundTintMode="src_over"
-                        android:progressDrawable="@drawable/background_custom_gray"
                         android:progressTint="@color/main" />
                 </LinearLayout>
 

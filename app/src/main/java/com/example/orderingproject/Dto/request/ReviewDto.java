@@ -13,5 +13,5 @@ import static lombok.AccessLevel.PROTECTED;
 public class ReviewDto {
 
     private String review;
-    private byte rating;
+    private float rating;
 }

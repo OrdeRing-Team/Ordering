@@ -2,10 +2,13 @@ package com.example.orderingproject;
 
 import static com.example.orderingproject.ENUM_CLASS.OrderType.TABLE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,6 +26,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dialog.CustomDialog;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 import com.example.orderingproject.ENUM_CLASS.OrderStatus;
@@ -32,11 +39,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.CustomViewHolder>{
     List<ReviewPreviewDto> arrayList;
     Context context;
     int position;
+
+    ConstraintLayout cl_emptyReview;
+    CustomDialog dialog;
+    View.OnClickListener positiveButton;
+    View.OnClickListener negativeButton;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
@@ -75,9 +93,10 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Cu
     }
 
 
-    public ReviewListAdapter(List<ReviewPreviewDto> arrayList, Context context) {
+    public ReviewListAdapter(List<ReviewPreviewDto> arrayList, Context context, ConstraintLayout cl_emptyReview) {
         this.arrayList = arrayList;
         this.context = context;
+        this.cl_emptyReview = cl_emptyReview;
     }
 
     @NonNull
@@ -94,6 +113,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Cu
 
         if(UserInfo.getCustomerId() != arrayList.get(position).getCustomerId()){
             holder.cv_delete.setVisibility(View.GONE);
+        }else {
+            initDeleteListener(holder);
         }
 
         if(arrayList.get(position).getImageUrl() != null){
@@ -101,8 +122,10 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Cu
         }else holder.cv_reviewImage.setVisibility(View.GONE);
         holder.tv_review.setText(arrayList.get(position).getReview());
 
+        holder.tv_reviewerName.setText(arrayList.get(position).getNickname());
 
-
+        Log.e("raiting",Float.toString(arrayList.get(position).getRating()));
+        holder.ratingBar.setRating(arrayList.get(position).getRating());
 
         String orderSummary = arrayList.get(position).getOrderSummary();
 
@@ -122,6 +145,101 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Cu
 
     }
 
+    private void initDeleteListener(ReviewListAdapter.CustomViewHolder holder){
+        holder.cv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("#####position#####", Integer.toString(holder.getAbsoluteAdapterPosition()));
+                dialog = new CustomDialog(
+                        context,
+                        "리뷰를 삭제하시겠습니까?",
+                        "삭제한 리뷰는 복구할 수 없습니다. 삭제하시겠습니까?",
+                        "삭제","취소",
+                        positiveButton,negativeButton, "#000000",holder.getAbsoluteAdapterPosition());
+
+                dialog.show();
+            }
+        });
+
+        positiveButton = view -> {
+
+            dialog.showProgress();
+            try {
+                new Thread() {
+                    @SneakyThrows
+                    public void run() {
+                        int absolutePosition = dialog.getAbsolutePosition();
+                        Long reviewId = arrayList.get(absolutePosition).getReviewId();
+                        Log.e("absolutePosition",Integer.toString(absolutePosition));
+                        Log.e("reviewId", reviewId.toString());
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://www.ordering.ml/api/customer/review/"+reviewId+"/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Boolean>> call = service.deleteReview(reviewId);
+
+                        call.enqueue(new Callback<ResultDto<Boolean>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                if (response.isSuccessful()) {
+                                    ResultDto<Boolean> result;
+                                    result = response.body();
+                                    if (result.getData()) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Log.e("position###", Integer.toString(absolutePosition));
+
+                                                arrayList.remove(absolutePosition);
+                                                notifyItemRemoved(absolutePosition);
+                                                if(arrayList.isEmpty()){
+                                                    cl_emptyReview.setVisibility(View.VISIBLE);
+                                                }
+                                                Log.e("리뷰삭제", "성공");
+                                                dialog.stopProgress();
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                    }else{
+                                        Toast.makeText(context,"리뷰 삭제에 실패했습니다.",Toast.LENGTH_SHORT).show();
+                                        dialog.stopProgress();
+
+                                    }
+                                }
+                                else{
+                                    Log.e("response failed",Long.toString(reviewId));
+                                    dialog.stopProgress();
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                Toast.makeText(context, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                Log.e("e = ", t.getMessage());
+                                dialog.stopProgress();
+
+                            }
+                        });
+                    }
+                }.start();
+
+            } catch (Exception e) {
+
+                Toast.makeText(context, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                Log.e("e = ", e.getMessage());
+                dialog.stopProgress();
+
+            }
+        };
+
+        negativeButton = view -> {
+            dialog.dismiss();
+        };
+    }
 
     @Override
     public int getItemCount() {

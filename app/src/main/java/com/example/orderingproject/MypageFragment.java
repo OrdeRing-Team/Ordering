@@ -194,15 +194,12 @@ public class MypageFragment extends Fragment {
     public void deleteAccount() {
         try {
             MainActivity.showProgress(getActivity());
-            MainActivity.showProgress(getActivity());
-
-            MemberIdDto memberId = new MemberIdDto(UserInfo.getCustomerId());
 
             new Thread() {
                 @SneakyThrows
                 public void run() {
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/customer/"+ UserInfo.getCustomerId().toString()+"/")
+                            .baseUrl("http://www.ordering.ml/api/customer/"+ Long.toString(UserInfo.getCustomerId())+"/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
@@ -216,10 +213,12 @@ public class MypageFragment extends Fragment {
                             if (response.isSuccessful()) {
                                 ResultDto<Boolean> result;
                                 result = response.body();
-                                if (result.getData() != null) {
+                                Log.e("response###","successful");
+                                if (result.getData()) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
+                                            Log.e("result.getData()###","true");
 
                                             clearSharedPreferences();
                                             startActivity(new Intent(getActivity(), StartActivity.class));
@@ -238,6 +237,9 @@ public class MypageFragment extends Fragment {
                                         }
                                     });
                                 }
+                            }else{
+                                Log.e("response###","failed");
+
                             }
                         }
 

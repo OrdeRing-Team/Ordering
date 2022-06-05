@@ -68,8 +68,6 @@ public class SignupActivity extends AppCompatActivity {
     private List<String> firstNick = new ArrayList<String>();
     private List<String> lastNick = new ArrayList<String>();
 
-    // 파이어베이스 인증
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +75,6 @@ public class SignupActivity extends AppCompatActivity {
 
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        mAuth = FirebaseAuth.getInstance();
 
         complete = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale);
 
