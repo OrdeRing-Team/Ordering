@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -34,9 +35,11 @@ import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 import com.example.orderingproject.ENUM_CLASS.FoodCategory;
 import com.example.orderingproject.ENUM_CLASS.RestaurantType;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
+import com.example.orderingproject.review.ReviewListAdapter;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -73,6 +76,9 @@ public class MenuActivity extends BasicActivity {
 
     private Long favStoreId;
 
+    public static int totalStars, oneStar, twoStars, threeStars, fourStars, fiveStars;
+    public static List<ReviewPreviewDto> reviewList;
+    public static float reviewTotalRating;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +129,14 @@ public class MenuActivity extends BasicActivity {
 
     private void initData(){
         notice = null;
+        totalStars = 0;
+        oneStar = 0;
+        twoStars = 0;
+        threeStars = 0;
+        fourStars = 0;
+        fiveStars = 0;
+        reviewList =  null;
+        reviewTotalRating = 0;
         storeLatitude = 0;
         storeLongitude = 0;
         if(getIntent() != null) {
@@ -175,7 +189,12 @@ public class MenuActivity extends BasicActivity {
                     if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
                     if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
+                    updateBasket();
 
+                    if(basketCount > 0){
+                        binding.tvBasketcount.setVisibility(View.VISIBLE);
+                        binding.tvBasketcount.setText(Integer.toString(basketCount));
+                    }
                     break;
 
                 case "orderList":
@@ -478,7 +497,7 @@ public class MenuActivity extends BasicActivity {
                                             foodCategory = result.getData().getFoodCategory();
                                             tableCount = result.getData().getTableCount();
                                             orderWaitingTime = result.getData().getOrderingWaitingTime();
-
+                                            initReviewRecyclerView();
                                         }
                                     });
                                 }
@@ -501,5 +520,80 @@ public class MenuActivity extends BasicActivity {
     public void setRatings(float rating, String ratingString){
         binding.ratingBar.setRating(rating);
         binding.tvScore.setText(ratingString);
+    }
+
+    private void initReviewRecyclerView(){
+        try{
+            new Thread(){
+                @SneakyThrows
+                public void run(){
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + store + "/reviews/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<ReviewPreviewDto>>> call = service.getReviewList(Long.parseLong(store));
+
+                    call.enqueue(new Callback<ResultDto<List<ReviewPreviewDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<ReviewPreviewDto>>> call, Response<ResultDto<List<ReviewPreviewDto>>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<List<ReviewPreviewDto>> result;
+                                result = response.body();
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            for(ReviewPreviewDto i : result.getData()){
+                                                reviewTotalRating += i.getRating();
+                                                switch ((int)i.getRating()){
+                                                    case 1:
+                                                        oneStar++;
+                                                        break;
+                                                    case 2:
+                                                        twoStars++;
+                                                        break;
+                                                    case 3:
+                                                        threeStars++;
+                                                        break;
+                                                    case 4:
+                                                        fourStars++;
+                                                        break;
+                                                    case 5:
+                                                        fiveStars++;
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
+                                            totalStars = oneStar + twoStars + threeStars + fourStars + fiveStars;
+                                            if(result.getData().size() != 0) {
+                                                reviewTotalRating /= result.getData().size();
+                                            }else{
+                                                reviewTotalRating = 0;
+                                            }
+                                            reviewList = result.getData();
+
+                                            setRatings(reviewTotalRating, Float.toString(reviewTotalRating));
+                                        }
+                                    });
+                                }
+                            }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<ReviewPreviewDto>>> call, Throwable t) {
+                            Toast.makeText(MenuActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(MenuActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
     }
 }
