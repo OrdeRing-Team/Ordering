@@ -40,6 +40,9 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
+    public static double longitude;
+    public static double latitude;
+
     int currentPage = SplashActivity.adapter.getItemCount() / 2;
 
     String eventPageDescript;
@@ -48,9 +51,6 @@ public class HomeFragment extends Fragment {
     Timer timer;
     final long DELAY_MS = 5000;  // (초기 웨이팅 타임) ex) 앱 로딩 후 5초 뒤 플립됨.
     final long PERIOD_MS = 5000; // 5초 주기로 배너 이동
-
-    public double longitude;
-    public double latitude;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

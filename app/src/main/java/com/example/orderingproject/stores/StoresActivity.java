@@ -20,8 +20,8 @@ public class StoresActivity extends AppCompatActivity implements HomeFragment.On
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    public static double longitude;
-    public static double latitude;
+//    public static double longitude;
+//    public static double latitude;
 
 
     @Override
@@ -31,16 +31,16 @@ public class StoresActivity extends AppCompatActivity implements HomeFragment.On
 
         KoreanFoodFragment koreanFoodFragment = new KoreanFoodFragment();
 
-        longitude = getIntent().getDoubleExtra("위도",0);
-        latitude = getIntent().getDoubleExtra("경도",0);
-
-        Log.e("받아온 위도", String.valueOf(longitude));
-        Log.e("받아온 경도", String.valueOf(latitude));
-
-        Bundle bundle = new Bundle();
-        bundle.putDouble("longitude", longitude);
-
-        koreanFoodFragment.setArguments(bundle);
+//        longitude = getIntent().getDoubleExtra("위도",0);
+//        latitude = getIntent().getDoubleExtra("경도",0);
+//
+//        Log.e("받아온 위도", String.valueOf(longitude));
+//        Log.e("받아온 경도", String.valueOf(latitude));
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putDouble("longitude", longitude);
+//
+//        koreanFoodFragment.setArguments(bundle);
 
         ViewPager vp = findViewById(R.id.viewpager);
         VPAdapter adapter = new VPAdapter(getSupportFragmentManager());

@@ -108,6 +108,9 @@ dependencies {
     implementation 'com.loopeer.library:cardstack:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    // loading motion
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
     // google maps
 //    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 //    implementation 'com.google.android.gms:play-services-location:19.0.1'
