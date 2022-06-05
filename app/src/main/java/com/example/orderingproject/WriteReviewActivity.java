@@ -94,7 +94,7 @@ public class WriteReviewActivity extends BasicActivity {
                                 @SneakyThrows
                                 public void run() {
 
-                                    ReviewDto reviewDto = new ReviewDto(review, (byte) Float.floatToIntBits(rating));
+                                    ReviewDto reviewDto = new ReviewDto(review, rating);
                                     Retrofit retrofit = new Retrofit.Builder()
                                             .baseUrl("http://www.ordering.ml/api/")
                                             .addConverterFactory(GsonConverterFactory.create())

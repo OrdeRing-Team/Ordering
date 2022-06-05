@@ -84,8 +84,54 @@ public class StoreReviewFragment extends Fragment {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
+현                                            float reviewTotalRating = 0;
+                                            int fiveStars = 0, fourStars = 0, threeStars = 0, twoStars = 0, oneStar = 0;
+                                            for(ReviewPreviewDto i : result.getData()){
+                                                reviewTotalRating += i.getRating();
+                                                switch ((int)i.getRating()){
+                                                    case 1:
+                                                        oneStar++;
+                                                        break;
+                                                    case 2:
+                                                        twoStars++;
+                                                        break;
+                                                    case 3:
+                                                        threeStars++;
+                                                        break;
+                                                    case 4:
+                                                        fourStars++;
+                                                        break;
+                                                    case 5:
+                                                        fiveStars++;
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
+
+                                            int totalStars = oneStar + twoStars + threeStars + fourStars + fiveStars;
+                                            Log.e("totalStars###############",Integer.toString(totalStars));
+                                            binding.progressbar1.setMax(totalStars);
+                                            binding.progressbar2.setMax(totalStars);
+                                            binding.progressbar3.setMax(totalStars);
+                                            binding.progressbar4.setMax(totalStars);
+                                            binding.progressbar5.setMax(totalStars);
+
+                                            binding.progressbar1.setProgress(oneStar);
+                                            binding.progressbar2.setProgress(twoStars);
+                                            binding.progressbar3.setProgress(threeStars);
+                                            binding.progressbar4.setProgress(fourStars);
+                                            binding.progressbar5.setProgress(fiveStars);
+
+                                            Log.e("one two three four five",Integer.toString(oneStar) + Integer.toString(twoStars) +
+                                                    Integer.toString(threeStars) + Integer.toString(fourStars) + Integer.toString(fiveStars));
+                                            reviewTotalRating /= result.getData().size();
+
+                                            binding.ratingBar.setRating(reviewTotalRating);
+                                            binding.tvRating.setText(Float.toString(reviewTotalRating));
+
                                             RecyclerView recyclerView = binding.rvReview;
-                                            ReviewListAdapter reviewListAdapter = new ReviewListAdapter(result.getData(), getContext());
+                                            ReviewListAdapter reviewListAdapter = new ReviewListAdapter(result.getData(), getContext(), binding.clEmptyReview);
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                                             recyclerView.setAdapter(reviewListAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), 1));

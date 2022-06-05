@@ -18,12 +18,12 @@ import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
-import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
 import com.example.orderingproject.Dto.response.OrderDetailDto;
 import com.example.orderingproject.Dto.response.OrderPreviewDto;
 import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
 import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
 import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 
 import java.util.List;
@@ -172,6 +172,10 @@ public interface RetrofitService {
 	@GET("/api/customer/{customerId}/bookmarks")
 	Call<ResultDto<List<BookmarkPreviewDto>>> getFavStoreList(@Path("customerId") Long customerId);
 
+	// 위치기반 매장 목록 반환
+	@POST("/api/restaurants")
+	Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> getStoreList(@Body RestaurantPreviewListReqDto restaurantPreviewListReqDto);
+
 	/** 리뷰 관련 **/
 	// 주문한 음식 리뷰 작성하기 API
 	@Multipart
@@ -182,7 +186,8 @@ public interface RetrofitService {
 	@GET("/api/restaurant/{restaurantId}/reviews")
 	Call<ResultDto<List<ReviewPreviewDto>>> getReviewList(@Path("restaurantId") Long restaurantId);
 
-	// 위치기반 매장 목록 반환
-	@POST("/api/restaurants")
-	Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> getStoreList(@Body RestaurantPreviewListReqDto restaurantPreviewListReqDto);
+	// 리뷰 삭제 API
+	@DELETE("/api/customer/review/{review_id}")
+	Call<ResultDto<Boolean>> deleteReview(@Path("review_id") Long reviewId);
+
 }
