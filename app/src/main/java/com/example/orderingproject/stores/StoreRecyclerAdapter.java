@@ -93,7 +93,17 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
             Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.iv_storeIcon);
         }
 
-        holder.tv_storeSigMenus.setText(String.valueOf(arrayList.get(position).getContent()));
+        if (arrayList.get(position).getContent().size() == 0) {
+            holder.tv_storeSigMenus.setText("대표 메뉴가 없습니다.");
+        }
+        else {
+            // [, ] 제거
+            String content = String.valueOf(arrayList.get(position).getContent());
+            String sigMenus = content.substring(1, content.length()-1);
+            holder.tv_storeSigMenus.setText(sigMenus);
+        }
+
+
 
     }
 

@@ -79,9 +79,6 @@ public class HomeFragment extends Fragment {
                     ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                             0 );
 
-                    Log.e("위도 in if", String.valueOf(longitude));
-                    Log.e("경도 in if", String.valueOf(latitude));
-
                 }
                 else {
                     //Location location = lm.getLastKnownLocation();
@@ -104,12 +101,8 @@ public class HomeFragment extends Fragment {
                             1,
                             gpsLocationListener);
 
-                    Log.e("위도 in else", String.valueOf(longitude));
-                    Log.e("경도 in else", String.valueOf(latitude));
 
                     Intent intent = new Intent(getActivity(), StoresActivity.class);
-                    intent.putExtra("위도", longitude);
-                    intent.putExtra("경도", latitude);
                     startActivity(intent);
                 }
 
@@ -142,18 +135,18 @@ public class HomeFragment extends Fragment {
             }
         });
 
-//        binding.btnCouponBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), CouponActivity.class);
-//                intent.putExtra("from", "HomeFragment");
-//                startActivity(intent);
-//            }
-//        });
-//
-//        binding.btnFavStores.setOnClickListener(view -> {
-//            startActivity(new Intent(getActivity(), FavStoreListActivity.class));
-//        });
+        binding.btnCouponBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CouponActivity.class);
+                intent.putExtra("from", "HomeFragment");
+                startActivity(intent);
+            }
+        });
+
+        binding.btnFavStores.setOnClickListener(view -> {
+            startActivity(new Intent(getActivity(), FavStoreListActivity.class));
+        });
 
 
         /** 임시 버튼 나중에 삭제 할 것 **/

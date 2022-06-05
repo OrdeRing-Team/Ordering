@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -58,24 +59,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+
 public class KoreanFoodFragment extends Fragment {
 
     private static final FoodCategory KOREAN_FOOD = FoodCategory.KOREAN_FOOD;
-    private ArrayList<StoreData> storeList;
-    private RecyclerView recyclerView;
-    private StoreRecyclerAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
     private FragmentKoreanFoodBinding binding;
     private View v;
-    LocationManager locationManager;
-    final int REQUEST_CODE_LOCATION = 2;
-
-
-    public Bundle bundle;
-    double longitude;
-//    double latitude;
-
-
 
 
     @Nullable
@@ -86,32 +76,19 @@ public class KoreanFoodFragment extends Fragment {
         binding = FragmentKoreanFoodBinding.inflate(inflater, container, false);
         v = binding.getRoot();
 
-
-
-        // 사용자 위치를 불러오는데 일정 시간이 소요되므로 지연 처리를 해주어야 함.
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("* 위도 *", String.valueOf(HomeFragment.longitude));
-                Log.e("* 경도 *", String.valueOf(HomeFragment.latitude));
-
-                getStoreListFromServer(KOREAN_FOOD);
-            }
-        },5000);
-
+        delayFunction();
+        refreshStoreList();
 
         return v;
     }
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
-
+    // 사용자 위치 기반 매장 리스트 가져오기
     public void getStoreListFromServer(FoodCategory foodCategory) {
+
+        Log.e("사용자 위도 from HomeFrag", String.valueOf(HomeFragment.longitude));
+        Log.e("사용자 경도 from HomeFrag", String.valueOf(HomeFragment.latitude));
+
         ArrayList<StoreData> storeList = new ArrayList<>();
         RestaurantPreviewListReqDto restaurantPreviewListReqDto = new RestaurantPreviewListReqDto(HomeFragment.latitude, HomeFragment.longitude, foodCategory);
 
@@ -140,15 +117,18 @@ public class KoreanFoodFragment extends Fragment {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Log.e("latitude", String.valueOf(HomeFragment.latitude));
-                                            Log.e("longtitude", String.valueOf(HomeFragment.longitude));
-
                                             result.getData().forEach(restaurantPreviewWithDistanceDto ->{
                                                 //restaurantPreviewWithDistanceDto.getDistanceMeter();
                                                 storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
                                                 Log.e("매장명", restaurantPreviewWithDistanceDto.getRestaurantName());
                                             });
 
+                                            // 주변 매장이 없을 경우 예외 처리
+                                            Log.e("storeList's size", String.valueOf(storeList.size()));
+                                            if (storeList.size() == 0) { binding.tvEmptyStores.setVisibility(View.VISIBLE); }
+                                            else { binding.tvEmptyStores.setVisibility(View.GONE); }
+
+                                            // 리사이클러뷰 연결
                                             RecyclerView recyclerView = binding.koreanFoodList;
                                             StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -175,15 +155,44 @@ public class KoreanFoodFragment extends Fragment {
         }
     }
 
-//    // ProgressDialog 생성
-//    public void createProgress() {
-//        Sprite anim = new ThreeBounce();
-//        ProgressBar progressbar = new ProgressBar(this);
-//        progressDialog.setMessage("Image Uploading ...");
-//
-//        anim.setColor(Color.rgb(227, 85, 85));
-//        progressDialog.setIndeterminateDrawable(anim);
-//    }
+
+    // 데이터 업로드 지연 처리 함수
+    private void delayFunction() {
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        // 사용자 위치를 불러오는데 일정 시간이 소요되므로 지연 처리를 꼭 해주어야 함. ( -> 좀 오래 걸리긴 하는데... )
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getStoreListFromServer(KOREAN_FOOD);
+                binding.progressBar.setVisibility(View.GONE);
+            }
+
+        },4000);
+
+    }
+
+
+    // 스크롤 새로고침
+    private void refreshStoreList() {
+        SwipeRefreshLayout mSwipeRefreshLayout = v.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //ft.commit();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getStoreListFromServer(KOREAN_FOOD);
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 500);
+
+            }
+        });
+    }
 
 
 }

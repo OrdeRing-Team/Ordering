@@ -84,7 +84,7 @@ public class StoreReviewFragment extends Fragment {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-현                                            float reviewTotalRating = 0;
+                                            float reviewTotalRating = 0;
                                             int fiveStars = 0, fourStars = 0, threeStars = 0, twoStars = 0, oneStar = 0;
                                             for(ReviewPreviewDto i : result.getData()){
                                                 reviewTotalRating += i.getRating();
