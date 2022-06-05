@@ -1,12 +1,16 @@
 package com.example.orderingproject.stores;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +30,7 @@ import com.example.orderingproject.Dto.request.RestaurantPreviewListReqDto;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
 import com.example.orderingproject.ENUM_CLASS.FoodCategory;
+import com.example.orderingproject.HomeFragment;
 import com.example.orderingproject.R;
 import com.example.orderingproject.UserInfo;
 import com.example.orderingproject.databinding.ActivityFavStoreListBinding;
@@ -35,17 +40,18 @@ import com.example.orderingproject.favoriteStores.FavStoreData;
 import com.example.orderingproject.favoriteStores.FavStoreListActivity;
 import com.example.orderingproject.stores.StoreRecyclerAdapter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 public class KoreanFoodFragment extends Fragment {
 
     private static final FoodCategory KOREAN_FOOD = FoodCategory.KOREAN_FOOD;
@@ -58,6 +64,11 @@ public class KoreanFoodFragment extends Fragment {
     final int REQUEST_CODE_LOCATION = 2;
 
 
+    public Bundle bundle;
+    double longitude;
+//    double latitude;
+
+
 
 
     @Nullable
@@ -66,7 +77,21 @@ public class KoreanFoodFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_korean_food, container, false);
-//        //리사이클러뷰
+
+        int sub_number;
+
+        //Integer longitude = getActivity().getIntent().getExtras().getInt("위도");
+        Bundle bundle = getArguments();
+        //Double longitude = bundle.getDouble("longitude");
+
+        Log.e("* 위도 *", String.valueOf(StoresActivity.longitude));
+        Log.e("* 경도 *", String.valueOf(StoresActivity.latitude));
+
+        getStoreListFromServer(StoresActivity.latitude, StoresActivity.longitude, KOREAN_FOOD);
+
+        //sub_number = intent.getIntExtra("문자", 0);
+
+        //리사이클러뷰
 //        recyclerView = (RecyclerView) v.findViewById(R.id.korean_food_list);
 //        recyclerView.setHasFixedSize(true);
 //
@@ -77,49 +102,9 @@ public class KoreanFoodFragment extends Fragment {
 //        recyclerView.setAdapter(adapter);
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        //사용자의 위치 수신을 위한 세팅
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        //사용자의 현재 위치
-//        Location userLocation = getMyLocation();
-//        if(userLocation!=null){
-//            double latitude = userLocation.getLatitude();
-//            double longitude = userLocation.getLongitude();
-////        userVO.setLat(latitude);
-////        userVO.setLon(longitude);
-//            System.out.println("////////////현재 내 위치값 : "+latitude+","+longitude);
-//            Log.e("위도경도값", String.valueOf(latitude));
-//            Log.e("위도경도값", String.valueOf(longitude));
-//
-//
-//            getStoreListFromServer(latitude, longitude, FoodCategory.KOREAN_FOOD);
-//
-//        }
 
         return v;
     }
-
-    /*** 사용자의 위치를 수신*/
-    private Location getMyLocation() {
-        Location currentLocation = null;
-        // Register the listener with the Location Manager to receive location updates
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            System.out.println("////////////사용자에게 권한을 요청해야함");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_CODE_LOCATION);
-            getMyLocation(); //권한 승인하면 즉시 위치값 받는 부분
-        }
-        else {
-            System.out.println("////////////권한요청 안해도됨");
-            // 수동으로 위치 구하기
-            String locationProvider = LocationManager.GPS_PROVIDER;
-            currentLocation = locationManager.getLastKnownLocation(locationProvider);
-            if (currentLocation != null) {
-                double lng = currentLocation.getLongitude();
-                double lat = currentLocation.getLatitude();
-            }
-        }
-        return currentLocation;
-    }
-
 
 
     @Override
@@ -137,52 +122,67 @@ public class KoreanFoodFragment extends Fragment {
 //    }
 
 
-    // 찜 목록 불러오기
-    private void getStoreListFromServer(double latitude, double longtitude, FoodCategory foodCategory) {
+    //매장 한달
+    public void getStoreListFromServer(double latitude, double longtitude, FoodCategory foodCategory) {
         ArrayList<StoreData> StoreList = new ArrayList<>();
-        RestaurantPreviewListReqDto restaurantPreviewListReqDto = new RestaurantPreviewListReqDto(latitude, longtitude, KOREAN_FOOD);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.ordering.ml/api/restaurants")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        try {
+            Log.e("foodcategory", String.valueOf(foodCategory));
+            RestaurantPreviewListReqDto restaurantPreviewListReqDto = new RestaurantPreviewListReqDto(latitude, longtitude, foodCategory);
 
-        RetrofitService service = retrofit.create(RetrofitService.class);
-        Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call = service.getStoreList(restaurantPreviewListReqDto);
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurants/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
-        call.enqueue(new Callback<ResultDto<List<RestaurantPreviewWithDistanceDto>>>() {
-            @Override
-            public void onResponse(Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call, Response<ResultDto<List<RestaurantPreviewWithDistanceDto>>> response) {
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call = service.getStoreList(restaurantPreviewListReqDto);
 
-                if (response.isSuccessful()) {
-                    ResultDto<List<RestaurantPreviewWithDistanceDto>> result;
-                    result = response.body();
-                    if (result.getData() != null) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                result.getData().forEach(restaurantPreviewWithDistanceDto ->{
-                                    //restaurantPreviewWithDistanceDto.getDistanceMeter();
-                                    StoreList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
-                                    Log.e("매장 리스트", String.valueOf(StoreList));
-                                });
+                    call.enqueue(new Callback<ResultDto<List<RestaurantPreviewWithDistanceDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call, Response<ResultDto<List<RestaurantPreviewWithDistanceDto>>> response) {
 
-                                RecyclerView recyclerView = binding.koreanFoodList;
-                                StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
-                                //FavStoreAdapter favStoreAdapter = new FavStoreAdapter(StoreList, getActivity());
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                recyclerView.setAdapter(StoreAdapter);
+                            if (response.isSuccessful()) {
+                                ResultDto<List<RestaurantPreviewWithDistanceDto>> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            result.getData().forEach(restaurantPreviewWithDistanceDto ->{
+                                                //restaurantPreviewWithDistanceDto.getDistanceMeter();
+                                                StoreList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
+                                                Log.e("매장 리스트", String.valueOf(StoreList));
+                                            });
+
+                                            RecyclerView recyclerView = binding.koreanFoodList;
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(StoreList);
+                                            //FavStoreAdapter favStoreAdapter = new FavStoreAdapter(StoreList, getActivity());
+                                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                            recyclerView.setAdapter(StoreAdapter);
+                                        }
+                                    });
+                                }
                             }
-                        });
-                    }
-                }
-            }
+                        }
 
-            @Override
-            public void onFailure(Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call, Throwable t) {
-                Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                Log.e("e = ", t.getMessage());
-            }
-        });
+                        @Override
+                        public void onFailure(Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
     }
+
 }

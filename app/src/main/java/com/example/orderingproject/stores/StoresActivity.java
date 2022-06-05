@@ -1,27 +1,46 @@
 package com.example.orderingproject.stores;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.orderingproject.HomeFragment;
 import com.example.orderingproject.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class StoresActivity extends AppCompatActivity {
+public class StoresActivity extends AppCompatActivity implements HomeFragment.OnApplySelectedListener {
 
     //private ActivityStoresBinding binding;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    public static double longitude;
+    public static double latitude;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stores);
+
+        KoreanFoodFragment koreanFoodFragment = new KoreanFoodFragment();
+
+        longitude = getIntent().getDoubleExtra("위도",0);
+        latitude = getIntent().getDoubleExtra("경도",0);
+
+        Log.e("받아온 위도", String.valueOf(longitude));
+        Log.e("받아온 경도", String.valueOf(latitude));
+
+        Bundle bundle = new Bundle();
+        bundle.putDouble("longitude", longitude);
+
+        koreanFoodFragment.setArguments(bundle);
 
         ViewPager vp = findViewById(R.id.viewpager);
         VPAdapter adapter = new VPAdapter(getSupportFragmentManager());
@@ -55,5 +74,8 @@ public class StoresActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onCatagoryApplySelected(int longitude) {
 
+    }
 }

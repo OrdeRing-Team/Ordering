@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment {
     final long DELAY_MS = 5000;  // (초기 웨이팅 타임) ex) 앱 로딩 후 5초 뒤 플립됨.
     final long PERIOD_MS = 5000; // 5초 주기로 배너 이동
 
-    double longitude;
-    double latitude;
+    public double longitude;
+    public double latitude;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,8 +108,6 @@ public class HomeFragment extends Fragment {
                     Log.e("경도 in else", String.valueOf(latitude));
                 }
 
-                Intent intent = new Intent(getActivity(), StoresActivity.class);
-                startActivity(intent);
                 //getActivity().finish();   //현재 액티비티 종료
             }
         });
@@ -192,6 +190,10 @@ public class HomeFragment extends Fragment {
 //                    "위도 : " + longitude + "\n" +
 //                    "경도 : " + latitude + "\n" +
 //                    "고도  : " + altitude);
+            Intent intent = new Intent(getActivity(), StoresActivity.class);
+            intent.putExtra("위도", longitude);
+            intent.putExtra("경도", latitude);
+            startActivity(intent);
 
             Log.e("위도", String.valueOf(longitude));
             Log.e("경도", String.valueOf(latitude));
@@ -207,6 +209,10 @@ public class HomeFragment extends Fragment {
         public void onProviderDisabled(String provider) {
         }
     };
+
+    public interface OnApplySelectedListener {
+        public void onCatagoryApplySelected( int longitude);
+    }
 
     private void initData() {
         // 배너 데이터

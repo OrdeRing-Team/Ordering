@@ -124,7 +124,7 @@ class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.Vie
             title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);
             image = itemView.findViewById(R.id.image);
-            score = itemView.findViewById(R.id.score);
+            //score = itemView.findViewById(R.id.score);
 
             //이미지뷰 원형으로 표시
             image.setBackground(new ShapeDrawable(new OvalShape()));
