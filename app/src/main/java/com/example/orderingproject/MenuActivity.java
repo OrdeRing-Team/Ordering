@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -495,5 +496,10 @@ public class MenuActivity extends BasicActivity {
         } catch (Exception e) {
             Log.e("e = ", e.getMessage());
         }
+    }
+
+    public void setRatings(float rating, String ratingString){
+        binding.ratingBar.setRating(rating);
+        binding.tvScore.setText(ratingString);
     }
 }

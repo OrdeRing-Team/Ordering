@@ -1,20 +1,12 @@
-package com.example.orderingproject;
+package com.example.orderingproject.review;
 
-import static com.example.orderingproject.ENUM_CLASS.OrderType.TABLE;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Outline;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -29,13 +21,12 @@ import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dialog.CustomDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
-import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.Dto.response.ReviewPreviewDto;
-import com.example.orderingproject.ENUM_CLASS.OrderStatus;
+import com.example.orderingproject.R;
+import com.example.orderingproject.UserInfo;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.util.Arrays;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;

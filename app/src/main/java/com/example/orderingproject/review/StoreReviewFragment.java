@@ -1,6 +1,5 @@
 package com.example.orderingproject.review;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,11 +18,8 @@ import android.widget.Toast;
 
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
-import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
 import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 import com.example.orderingproject.MenuActivity;
-import com.example.orderingproject.OrderlistAdapter;
-import com.example.orderingproject.ReviewListAdapter;
 import com.example.orderingproject.databinding.FragmentStoreReviewBinding;
 
 import java.util.List;
@@ -129,6 +125,8 @@ public class StoreReviewFragment extends Fragment {
 
                                             binding.ratingBar.setRating(reviewTotalRating);
                                             binding.tvRating.setText(Float.toString(reviewTotalRating));
+
+                                            ((MenuActivity)getActivity()).setRatings(reviewTotalRating, Float.toString(reviewTotalRating));
 
                                             RecyclerView recyclerView = binding.rvReview;
                                             ReviewListAdapter reviewListAdapter = new ReviewListAdapter(result.getData(), getContext(), binding.clEmptyReview);

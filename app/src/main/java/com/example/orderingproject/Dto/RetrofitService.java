@@ -190,4 +190,10 @@ public interface RetrofitService {
 	@DELETE("/api/customer/review/{review_id}")
 	Call<ResultDto<Boolean>> deleteReview(@Path("review_id") Long reviewId);
 
+
+
+	// 최근 주문 매장 리스트 가져오기
+	@GET("/api/customer/{customerId}/orders/recent")
+	Call<ResultDto<List<RestaurantPreviewDto>>> getRecentOrderList(@Path("customerId") Long customerId);
+
 }
