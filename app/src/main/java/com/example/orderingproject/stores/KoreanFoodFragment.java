@@ -60,6 +60,7 @@ public class KoreanFoodFragment extends Fragment {
     private StoreRecyclerAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private FragmentKoreanFoodBinding binding;
+    private View v;
     LocationManager locationManager;
     final int REQUEST_CODE_LOCATION = 2;
 
@@ -76,7 +77,8 @@ public class KoreanFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_korean_food, container, false);
+        binding = FragmentKoreanFoodBinding.inflate(inflater, container, false);
+        v = binding.getRoot();
 
         int sub_number;
 
