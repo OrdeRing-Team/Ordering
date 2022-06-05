@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.orderingproject.review.StoreReviewFragment;
 import com.example.orderingproject.stores.AsianWesternFoodFragment;
 import com.example.orderingproject.stores.CafeFragment;
 import com.example.orderingproject.stores.ChickenFragment;

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.orderingproject.BasicActivity;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
@@ -30,7 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FavStoreListActivity extends AppCompatActivity {
+public class FavStoreListActivity extends BasicActivity {
 
     private ActivityFavStoreListBinding binding;
 
@@ -45,11 +46,13 @@ public class FavStoreListActivity extends AppCompatActivity {
 
     }
 
+
     private void initButtonFunction() {
         binding.btnBack.setOnClickListener(view -> {
-            finish();
+            FinishWithAnim();
         });
     }
+
 
     // 찜 목록 불러오기
     private void getFavStoreListFromServer() {
@@ -75,13 +78,20 @@ public class FavStoreListActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 result.getData().forEach(bookmarkPreviewDto ->{
-                                    favStoreList.add(new FavStoreData(bookmarkPreviewDto.getProfileImageUrl(), bookmarkPreviewDto.getRestaurantName(), bookmarkPreviewDto.getRepresentativeMenus()));
+                                    favStoreList.add(new FavStoreData(bookmarkPreviewDto.getProfileImageUrl(), bookmarkPreviewDto.getRestaurantName(), bookmarkPreviewDto.getRepresentativeMenus(), bookmarkPreviewDto.getRestaurantId(), bookmarkPreviewDto.getBackgroundImageUrl()));
                                 });
+
+                                // 찜 매장 리스트가 없을 경우 (예외 처리)
+                                if (favStoreList.size() == 0) {
+                                    binding.tvEmpty.setVisibility(View.VISIBLE);
+                                }
 
                                 RecyclerView recyclerView = binding.rvFavStores;
                                 FavStoreAdapter favStoreAdapter = new FavStoreAdapter(favStoreList, FavStoreListActivity.this);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(FavStoreListActivity.this));
                                 recyclerView.setAdapter(favStoreAdapter);
+
+
                             }
                         });
                     }
@@ -94,5 +104,13 @@ public class FavStoreListActivity extends AppCompatActivity {
                 Log.e("e = ", t.getMessage());
             }
         });
+    }
+
+
+    // 즉시 갱신 ( MenuActivity에서 찜 상태 변경 시 )
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFavStoreListFromServer();
     }
 }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -25,11 +26,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableResource;
+import com.example.orderingproject.Dto.FoodDto;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
+import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.ENUM_CLASS.FoodCategory;
+import com.example.orderingproject.ENUM_CLASS.RestaurantType;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
 import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.tabs.TabLayout;
@@ -49,9 +54,19 @@ public class MenuActivity extends BasicActivity {
     private ActivityMenuBinding binding;
 
     public static String store, service, restaurantName,
-                         profileImageUrl, backgroundImageUrl;
+                         profileImageUrl, backgroundImageUrl, fromTo;
 
     public static TextView BasketCountTextView;
+    public static String notice = null;
+    public static double storeLatitude;
+    public static double storeLongitude;
+    public static String ownerName;
+    public static String restaurantNameForInfo;
+    public static String address;
+    public static RestaurantType restaurantType;
+    public static FoodCategory foodCategory;
+    public static Integer tableCount;
+    public static Integer orderWaitingTime;
 
     public int basketCount = UserInfo.getBasketCount();
 
@@ -71,7 +86,7 @@ public class MenuActivity extends BasicActivity {
         initView();
         initButtonListener();
         getFavStoreIdFromServer();
-
+        getStoreInfo();
     }
     private void initButtonListener(){
         binding.btnBackToManageFrag.setOnClickListener(view -> finish());
@@ -84,6 +99,7 @@ public class MenuActivity extends BasicActivity {
                 intent.putExtra("restaurantName", restaurantName);
                 startActivity(intent);
             }
+
             else{
                 Toast.makeText(MenuActivity.this,"메뉴를 선택해주세요.",Toast.LENGTH_SHORT).show();
             }
@@ -105,47 +121,110 @@ public class MenuActivity extends BasicActivity {
 
 
     private void initData(){
+        notice = null;
+        storeLatitude = 0;
+        storeLongitude = 0;
         if(getIntent() != null) {
-            store = getIntent().getStringExtra("store");
-            service = getIntent().getStringExtra("service");
-            restaurantName = getIntent().getStringExtra("restaurantName");
-            profileImageUrl = getIntent().getStringExtra("profileImageUrl");
-            backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
-            Log.e("store", store);
-            Log.e("service", service);
-            Log.e("restaurantName", restaurantName);
-            Log.e("basketCount", Integer.toString(basketCount));
-            if(profileImageUrl != null) {
-                Log.e("profileImageUrl", profileImageUrl);
-            }
-            if(backgroundImageUrl != null) {
-                Log.e("backgroundImageUrl", backgroundImageUrl);
-            }
+            switch (getIntent().getStringExtra("activity")) {
+                case "fromQR":
+                    fromTo = "QR";
+                    store = getIntent().getStringExtra("store");
+                    service = getIntent().getStringExtra("service");
+                    restaurantName = getIntent().getStringExtra("restaurantName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrl");
+                    backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrl");
+                    Log.e("store", store);
+                    Log.e("service", service);
+                    Log.e("restaurantName", restaurantName);
+                    Log.e("basketCount", Integer.toString(basketCount));
+                    if(profileImageUrl != null) {
+                        Log.e("profileImageUrl", profileImageUrl);
+                    }
+                    if(backgroundImageUrl != null) {
+                        Log.e("backgroundImageUrl", backgroundImageUrl);
+                    }
 
-            Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
-            Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
-            binding.tvStoreName.setText(restaurantName);
-            if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
-            if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
-            stopProgress();
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
+                    binding.tvStoreName.setText(restaurantName);
+                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+
+                    updateBasket();
+
+                    if(basketCount > 0){
+                        binding.tvBasketcount.setVisibility(View.VISIBLE);
+                        binding.tvBasketcount.setText(Integer.toString(basketCount));
+                    }
+                    break;
+
+                case "favActivity":
+                    Log.e("this Intent", "came from favActivity");
+                    fromTo = "favActivity";
+                    store = getIntent().getStringExtra("storeId");
+                    restaurantName = getIntent().getStringExtra("storeName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrlfromFav");
+                    backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrlfromFav");
+                    service = "takeout";
+
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
+                    binding.tvStoreName.setText(restaurantName);
+                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+
+                    break;
+
+                case "orderList":
+                    Log.e("this Intent", "came from orderList");
+                    fromTo = "orderList";
+                    store = getIntent().getStringExtra("storeId");
+                    restaurantName = getIntent().getStringExtra("restaurantName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrl");
+                    service = "takeout";
+                    setStoreBackgroundImage(store, this);
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    binding.tvStoreName.setText(restaurantName);
+                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+                    updateBasket();
+                    break;
+
+
+                default:
+                    Log.e("this Intent", "came from waitingFrag");
+                    fromTo = "waitingFrag";
+                    store = getIntent().getStringExtra("storeId");
+                    restaurantName = getIntent().getStringExtra("storeName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrlfromFav");
+                    backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrlfromFav");
+                    service = "waiting";
+
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
+                    binding.tvStoreName.setText(restaurantName);
+                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+
+                    binding.btnBasket.setVisibility(View.GONE);
+                    break;
+            }
 
         }
-        updateBasket();
 
-        if(basketCount > 0){
-            binding.tvBasketcount.setVisibility(View.VISIBLE);
-            binding.tvBasketcount.setText(Integer.toString(basketCount));
-        }
     }
-
 
     private void initView(){
 
-        //툴바 타이틀 설정
+        // 툴바 타이틀 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(restaurantName);
 
-        //뷰페이저 세팅
+        // 뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
         ViewPagerAdapter adapter = new ViewPagerAdapter(this, 1,3);
@@ -298,11 +377,123 @@ public class MenuActivity extends BasicActivity {
         });
     }
 
+    private void setStoreBackgroundImage(String storeId, Activity activity){
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+storeId+"/preview/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantPreviewDto>> call = service.storePreview(Long.parseLong(storeId));
+
+                    call.enqueue(new Callback<ResultDto<RestaurantPreviewDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantPreviewDto>> call, Response<ResultDto<RestaurantPreviewDto>> response) {
+
+                            ResultDto<RestaurantPreviewDto> result = response.body();
+                            if (response.isSuccessful()) {
+                                if(result.getData() != null){
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            backgroundImageUrl = result.getData().getBackgroundImageUrl();
+
+                                            Glide.with(activity).load(backgroundImageUrl).into(binding.ivSigmenu);
+                                        }
+                                    });
+                                }
+                                else{
+                                    Toast.makeText(activity,"매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantPreviewDto>> call, Throwable t) {
+
+                            Toast.makeText(activity,"매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                            Log.e("e = " , t.getMessage());
+
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+
+            Toast.makeText(activity,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+            Log.e("e = " , e.getMessage());
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateBasket();
+        if (getIntent().getStringExtra("activity").equals("fromQR")) {
+            updateBasket();
+        }
+    }
+
+    public void getStoreInfo(){
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/"+store+"/info/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<RestaurantInfoDto>> call = service.getStoreNoticeAndCoordinate(Long.valueOf(store));
+
+                    call.enqueue(new Callback<ResultDto<RestaurantInfoDto>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<RestaurantInfoDto>> call, Response<ResultDto<RestaurantInfoDto>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<RestaurantInfoDto> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            notice = result.getData().getNotice();
+                                            if(notice != null) {
+                                                Log.e("매장 공지사항 ", notice);
+                                            }
+                                            storeLatitude = result.getData().getLatitude();
+                                            storeLongitude = result.getData().getLongitude();
+                                            ownerName = result.getData().getOwnerName();
+                                            restaurantNameForInfo = result.getData().getRestaurantName();
+                                            address = result.getData().getAddress();
+                                            restaurantType = result.getData().getRestaurantType();
+                                            foodCategory = result.getData().getFoodCategory();
+                                            tableCount = result.getData().getTableCount();
+                                            orderWaitingTime = result.getData().getOrderingWaitingTime();
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<RestaurantInfoDto>> call, Throwable t) {
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Log.e("e = ", e.getMessage());
+        }
     }
 }

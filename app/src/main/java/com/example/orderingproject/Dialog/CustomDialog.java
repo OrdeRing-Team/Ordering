@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class CustomDialog extends Dialog {
     String negativeButtonText;
     TextView messages;
     String contentsColor;
+    int absolutePosition;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -89,5 +91,42 @@ public class CustomDialog extends Dialog {
         this.positiveButton = positiveButton;
         this.negativeButton = negativeButton;
         this.contentsColor = contentsColor;
+    }
+
+    public CustomDialog(@NonNull Context context,
+                        String title,
+                        String contents,
+                        String positiveButtonText,
+                        String negativeButtonText,
+                        View.OnClickListener positiveButton,
+                        View.OnClickListener negativeButton,
+                        String contentsColor, int absolutePosition){
+        super(context);
+
+        this.title = title;
+        this.contents = contents;
+        this.positiveButtonText = positiveButtonText;
+        this.negativeButtonText = negativeButtonText;
+        this.positiveButton = positiveButton;
+        this.negativeButton = negativeButton;
+        this.contentsColor = contentsColor;
+        this.absolutePosition = absolutePosition;
+    }
+
+    public void showProgress(){
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public void stopProgress(){
+        binding.progressBar.setVisibility(View.GONE);
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public int getAbsolutePosition(){
+        return absolutePosition;
     }
 }

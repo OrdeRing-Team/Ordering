@@ -24,6 +24,7 @@ import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.response.BasketFoodDto;
 import com.example.orderingproject.ENUM_CLASS.OrderType;
+import com.example.orderingproject.Exception.FcmErrorException;
 import com.example.orderingproject.databinding.ActivityPaymentBinding;
 
 import java.util.ArrayList;
@@ -42,10 +43,12 @@ public class PaymentActivity extends BasicActivity {
 
     int totalPrice = 0;
     Long selectedCouponId;
-
+    OrderType orderType;
     boolean possibleToOrder = false;
     boolean cashButtonClicked = false;
     String store, service, restaurantName;
+    String[] serviceSplitArr;
+    Long orderId;
     ArrayList<BasketData> basketList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +120,11 @@ public class PaymentActivity extends BasicActivity {
             new Thread() {
                 @SneakyThrows
                 public void run() {
+                    OrderDto orderDto = new OrderDto(null, OrderType.PACKING);;
 
-                    /** 주문 방식 (PACKING_ORDER) 새롭게 처리할 것 **/
-
-                    OrderDto orderDto = new OrderDto(null, OrderType.PACKING_ORDER);
+                    if(orderType == OrderType.TABLE){
+                        orderDto = new OrderDto(Integer.parseInt(serviceSplitArr[1]), OrderType.TABLE);
+                    }
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://www.ordering.ml/")
                             .addConverterFactory(GsonConverterFactory.create())
@@ -141,11 +145,14 @@ public class PaymentActivity extends BasicActivity {
                                         @Override
                                         public void run() {
                                             stopProgress();
-                                            Toast.makeText(PaymentActivity.this, "주문 요청됨",Toast.LENGTH_SHORT).show();
+                                            orderId = result.getData();
+                                            Toast.makeText(PaymentActivity.this, "주문이 요청되었습니다.",Toast.LENGTH_SHORT).show();
                                             UserInfo.setBasketCount(0);
                                             if(selectedCouponId == null || selectedCouponId == 0){
                                                 Intent intent = new Intent(PaymentActivity.this, BasketActivity.class);
                                                 intent.putExtra("orderCompleted", true);
+                                                intent.putExtra("orderId",orderId);
+
                                                 setResult(RESULT_OK, intent);
                                                 finish();
                                             }
@@ -155,16 +162,26 @@ public class PaymentActivity extends BasicActivity {
                                         }
                                     });
                                 }else{
+                                    Log.e("Result", "result.getData() == null");
+
+                                    stopProgress();
+                                    Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                                     Log.e("result","Null");
                                 }
                             }
                             else{
+                                Log.e("Result", "response in not successful");
+
+                                stopProgress();
+                                Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                                 Log.e("menuOrder","isFailed");
                             }
                         }
 
                         @Override
                         public void onFailure(Call<ResultDto<Long>> call, Throwable t) {
+                            Log.e("Result", "onFailure");
+                            stopProgress();
                             Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                         }
@@ -172,7 +189,14 @@ public class PaymentActivity extends BasicActivity {
                 }
             }.start();
 
-        } catch (Exception e) {
+        }
+        catch(FcmErrorException e){
+            /** FCM 알림 실패 **/
+            stopProgress();
+            MainActivity.showToast(PaymentActivity.this,"FCM Error Exception");
+        }
+        catch (Exception e) {
+            stopProgress();
             Toast.makeText(PaymentActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
             Log.e("e = ", e.getMessage());
         }
@@ -224,15 +248,17 @@ public class PaymentActivity extends BasicActivity {
 
         binding.tvSubtitleStoreName.setText(restaurantName);
 
-        String[] serviceSplitArr = service.split("e");
+        serviceSplitArr = service.split("e");
         if(serviceSplitArr[0].equals("tabl")){
             binding.tvSubtitleTableNum.setText(serviceSplitArr[1] + "번");
+            orderType = OrderType.TABLE;
         }else{
             binding.tvSubtitleTableNum.setVisibility(View.GONE);
             binding.tvSubtitleTwo.setVisibility(View.GONE);
         }
         if(service.equals("takeout")){
             binding.tvService.setText("포장");
+            orderType = OrderType.PACKING;
         }
     }
 
@@ -391,6 +417,7 @@ public class PaymentActivity extends BasicActivity {
 
                                             Intent intent = new Intent(PaymentActivity.this, BasketActivity.class);
                                             intent.putExtra("orderCompleted", true);
+                                            intent.putExtra("orderId",orderId);
                                             setResult(RESULT_OK, intent);
                                             finish();
                                             Log.e("couponId",Long.toString(selectedCouponId) + " // 사용 처리됨");

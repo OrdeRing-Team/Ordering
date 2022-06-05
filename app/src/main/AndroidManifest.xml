@@ -12,6 +12,9 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Include only if your app benefits from precise location access. -->
@@ -35,7 +38,7 @@
             android:exported="true" />
         <activity
             android:name=".MenuActivity"
-            android:exported="true" />
+            android:exported="true"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -76,6 +79,27 @@
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             tools:replace="android:screenOrientation" />
+        <activity
+            android:name=".OrderlistDetailActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".WriteReviewActivity"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
+            android:exported="true" />
+
+        <service
+            android:name=".FCM_Service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+<!--        <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyAjn7X2XWIph24xNvRgb7vWRgVAAyxFRV8" />-->
+
     </application>
 
 </manifest>

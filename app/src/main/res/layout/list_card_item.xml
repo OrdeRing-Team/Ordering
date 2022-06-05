@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_list_card_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:stackHeaderHeight="160dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frame_list_card_item"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:padding="20dp"
+        android:background="@drawable/round_rectangle_background_stroke">
+
+        <TextView
+            android:id="@+id/tv_order_in_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020-20-20 14:00"
+            android:textColor="@color/gray"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_order_in_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tv_order_in_day"
+            android:layout_marginStart="10dp"
+            android:text="포장"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/tv_order_in_day"
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_in_day"/>
+
+        <Button
+            android:id="@+id/btn_order_in_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="상세보기"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:background="@drawable/round_rectangle_background_stroke"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="3dp"/>
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_in_day"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@drawable/icon" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_order_in_inner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="@id/item_image"
+            android:layout_marginStart="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/item_image">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_order_in_store_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_order_in_store_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="반반스프링스 경상대점"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginStart="5dp"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="@id/tv_order_in_store_name"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_order_in_store_name"
+                    app:layout_constraintStart_toEndOf="@id/tv_order_in_store_name"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아메리카노(ICE) 외 2개 15,000원"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_order_in_store_name"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/container_list_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:background="@color/white">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_container_list_inner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

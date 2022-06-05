@@ -1,64 +1,65 @@
 package com.example.orderingproject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StoreInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.orderingproject.Dto.FoodDto;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
+import com.example.orderingproject.ENUM_CLASS.RestaurantType;
+import com.example.orderingproject.databinding.FragmentMenuListBinding;
+import com.example.orderingproject.databinding.FragmentStoreInfoBinding;
+
+import java.util.List;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 public class StoreInfoFragment extends Fragment {
+    private View view;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public StoreInfoFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StoreInfoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StoreInfoFragment newInstance(String param1, String param2) {
-        StoreInfoFragment fragment = new StoreInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private FragmentStoreInfoBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store_info, container, false);
+        view = inflater.inflate(R.layout.fragment_store_info, container, false);
+        binding = FragmentStoreInfoBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
+
+        initView();
+
+        return view;
     }
+
+    @SuppressLint("SetTextI18n")
+    public void initView(){
+        binding.tvStoreInfoStoreName.setText(MenuActivity.restaurantNameForInfo);
+        binding.tvStoreInfoLocation.setText(MenuActivity.address);
+        binding.tvStoreInfoOwnerName.setText(MenuActivity.ownerName);
+        binding.tvStoreInfoOrderWaitingTime.setText(Integer.toString(MenuActivity.orderWaitingTime)+"분");
+        if(MenuActivity.restaurantType == RestaurantType.FOR_HERE_TO_GO) {
+            binding.tvStoreInfoRestauranttype.setText("매장식사, 포장");
+        }else binding.tvStoreInfoRestauranttype.setText("포장");
+        binding.tvStoreInfoTableCount.setText(Integer.toString(MenuActivity.tableCount)+"개");
+    }
+
 }

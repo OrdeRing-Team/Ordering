@@ -160,7 +160,13 @@ public class CustomMenuOptionDialog extends Dialog implements View.OnClickListen
     @SuppressLint({"SetTextI18n", "ObsoleteSdkInt"})
     private void initViews(){
         // 메뉴 이미지 설정
-        Glide.with(getContext()).load(menuImageUrl).into(binding.ivMenuimage);
+        if (menuImageUrl.equals("null")) {
+            binding.ivMenuimage.setVisibility(View.GONE);
+        }
+        else {
+            Glide.with(getContext()).load(menuImageUrl).into(binding.ivMenuimage);
+        }
+
         // 둥근 모서리 이미지뷰에서는 scaleType 변경 시 둥근 모서리가 해제됨. 따라서 코드상에서 다시 설정 해준다.
         // 아래 메서드는 API 21 이상부터 사용 가능
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){

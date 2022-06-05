@@ -31,7 +31,10 @@ import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.databinding.BottomSheetDialogLoginBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -69,6 +72,7 @@ public class LoginBottomSheet extends BottomSheetDialogFragment {
 
         initListener();
 
+
         return view;
     }
 
@@ -96,64 +100,81 @@ public class LoginBottomSheet extends BottomSheetDialogFragment {
                 // 로그인 조건 처리
                 if (memberId.length() > 0 && password.length() > 0) {
                     try {
-                        SignInDto signInDto = new SignInDto(memberId, password);
-
-                        new Thread() {
-                            @SneakyThrows
-                            public void run() {
-                                // login
-
-                                Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl("http://www.ordering.ml/api/customer/signin/")
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build();
-
-                                RetrofitService service = retrofit.create(RetrofitService.class);
-                                Call<ResultDto<CustomerSignInResultDto>> call = service.customerSignIn(signInDto);
-
-                                call.enqueue(new Callback<ResultDto<CustomerSignInResultDto>>() {
+                        FirebaseMessaging.getInstance().getToken()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
                                     @Override
-                                    public void onResponse(Call<ResultDto<CustomerSignInResultDto>> call, Response<ResultDto<CustomerSignInResultDto>> response) {
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.e("토큰 조회", "Fetching FCM registration token failed", task.getException());
+                                            return;
+                                        }
 
-                                        ResultDto<CustomerSignInResultDto> result = response.body();
-                                        if(result.getData() != null){
-                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    if(binding.cbAutologin.isChecked()){
-                                                        loginSP = getActivity().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+                                        String token = task.getResult();
 
-                                                        SharedPreferences.Editor autoLoginEdit = loginSP.edit();
-                                                        autoLoginEdit.putString("signInId", memberId);
-                                                        autoLoginEdit.putString("password", password);
-                                                        autoLoginEdit.commit();
+                                        SignInDto signInDto = new SignInDto(memberId, password, token);
+
+                                        new Thread() {
+                                            @SneakyThrows
+                                            public void run() {
+                                                // login
+
+                                                Retrofit retrofit = new Retrofit.Builder()
+                                                        .baseUrl("http://www.ordering.ml/api/customer/signin/")
+                                                        .addConverterFactory(GsonConverterFactory.create())
+                                                        .build();
+
+                                                RetrofitService service = retrofit.create(RetrofitService.class);
+                                                Call<ResultDto<CustomerSignInResultDto>> call = service.customerSignIn(signInDto);
+
+                                                call.enqueue(new Callback<ResultDto<CustomerSignInResultDto>>() {
+                                                    @Override
+                                                    public void onResponse(Call<ResultDto<CustomerSignInResultDto>> call, Response<ResultDto<CustomerSignInResultDto>> response) {
+
+                                                        ResultDto<CustomerSignInResultDto> result = response.body();
+                                                        if(result.getData() != null){
+                                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    if(binding.cbAutologin.isChecked()){
+                                                                        loginSP = getActivity().getSharedPreferences("autoLogin", Activity.MODE_PRIVATE);
+
+                                                                        SharedPreferences.Editor autoLoginEdit = loginSP.edit();
+                                                                        autoLoginEdit.putString("signInId", memberId);
+                                                                        autoLoginEdit.putString("password", password);
+                                                                        autoLoginEdit.commit();
+                                                                    }
+                                                                    UserInfo.setUserInfo(result.getData(), memberId);
+                                                                    startActivity(new Intent(getActivity(), MainActivity.class));
+                                                                    dismiss();
+                                                                    getActivity().finish();
+                                                                }
+                                                            });
+                                                        }
+                                                        else{
+                                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
+                                                                    showLoginErrorPopup();
+                                                                }
+                                                            });
+                                                        }
                                                     }
-                                                    UserInfo.setUserInfo(result.getData(), memberId);
-                                                    startActivity(new Intent(getActivity(), MainActivity.class));
-                                                    dismiss();
-                                                    getActivity().finish();
-                                                }
-                                            });
-                                        }
-                                        else{
-                                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Log.e("로그인 실패 ! ", "아이디 혹은 비밀번호 일치하지 않음");
-                                                    showLoginErrorPopup();
-                                                }
-                                            });
-                                        }
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<ResultDto<CustomerSignInResultDto>> call, Throwable t) {
-                                        Toast.makeText(getActivity(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
-                                        Log.e("e = " , t.getMessage());
+                                                    @Override
+                                                    public void onFailure(Call<ResultDto<CustomerSignInResultDto>> call, Throwable t) {
+                                                        Toast.makeText(getActivity(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                                                        Log.e("e = " , t.getMessage());
+                                                    }
+                                                });
+                                            }
+                                        }.start();
+
+                                        String msg = getString(R.string.msg_token_fmt, token);
+                                        Log.e("token Log", msg);
                                     }
                                 });
-                            }
-                        }.start();
+
 
                     } catch (Exception e) {
                         Toast.makeText(getActivity(),"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();

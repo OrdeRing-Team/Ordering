@@ -17,7 +17,9 @@ public class MyWaitingInfoDto {
     private Long numInFrontOfMe;
     private int estimatedWaitingTime;
     private String waitingRegisterTime;
+    private Long restaurantId;
     private String restaurantName;
     private String profileImageUrl;
+    private String backgroundImageUrl;
 }
 

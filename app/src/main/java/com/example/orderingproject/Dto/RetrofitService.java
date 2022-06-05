@@ -9,6 +9,7 @@ import com.example.orderingproject.Dto.request.PasswordChangeDto;
 import com.example.orderingproject.Dto.request.PhoneNumberDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
 import com.example.orderingproject.Dto.request.RestaurantPreviewListReqDto;
+import com.example.orderingproject.Dto.request.ReviewDto;
 import com.example.orderingproject.Dto.request.SignInDto;
 import com.example.orderingproject.Dto.request.VerificationDto;
 import com.example.orderingproject.Dto.request.WaitingRegisterDto;
@@ -18,15 +19,24 @@ import com.example.orderingproject.Dto.response.CouponDto;
 import com.example.orderingproject.Dto.response.CustomerSignInResultDto;
 import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
 import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
+import com.example.orderingproject.Dto.response.OrderDetailDto;
+import com.example.orderingproject.Dto.response.OrderPreviewDto;
+import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
+import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
+import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -80,6 +90,14 @@ public interface RetrofitService {
 	@POST("/api/restaurant/{restaurantId}/foods")
 	Call<ResultDto<List<FoodDto>>> getFood(@Path("restaurantId") Long restaurantId);
 
+	// 대표메뉴 리스트 가져오기
+	@GET("/api/restaurant/{restaurant_id}/representatives")
+	Call<ResultDto<List<RepresentativeMenuDto>>> getRepresentList(@Path("restaurant_id") Long restaurantId);
+
+	// 매장 공지사항, 좌표 가져오기
+	@GET("/api/restaurant/{restaurant_id}/info")
+	Call<ResultDto<RestaurantInfoDto>> getStoreNoticeAndCoordinate(@Path("restaurant_id") Long restaurantId);
+
 	// 장바구니 메뉴 추가
 	// 쿼리가 포함된 주소는 아래와 같이 사용
 	// http://www.ordering.ml/api/order/basket?customer_id={customer_id}&restaurant_id={restaurant_id}
@@ -107,6 +125,21 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> modifyBasketCount(@Query(value = "customer_id") Long customerId,
 											   @Body List<BasketPutDto> countChangedList);
 
+	// 고객 주문 취소
+	@POST("/api/order/{order_id}/cancel")
+	Call<ResultDto<OrderPreviewWithRestSimpleDto>> orderCancel(@Path("order_id") Long orderId);
+
+	// 내 주문 내역(진행 중) 리스트 가져오기
+	@GET("/api/customer/{customerId}/orders/ongoing")
+	Call<ResultDto<List<OrderPreviewWithRestSimpleDto>>> getOrderInList(@Path("customerId") Long customerId);
+
+	// 내 주문 내역(완료) 리스트 가져오기
+	@GET("/api/customer/{customerId}/orders/finished")
+	Call<ResultDto<List<OrderPreviewWithRestSimpleDto>>> getOrderOutList(@Path("customerId") Long customerId);
+
+	// 주문 상세 정보 반환 API
+	@GET("/api/customer/order/{orderId}/detail")
+	Call<ResultDto<OrderDetailDto>> getOrderDetail(@Path("orderId") Long orderId);
 
 	/** 웨이팅 관련 함수 **/
 	// 웨이팅 요청
@@ -138,6 +171,16 @@ public interface RetrofitService {
 	// 찜한 매장 리스트 불러오기
 	@GET("/api/customer/{customerId}/bookmarks")
 	Call<ResultDto<List<BookmarkPreviewDto>>> getFavStoreList(@Path("customerId") Long customerId);
+
+	/** 리뷰 관련 **/
+	// 주문한 음식 리뷰 작성하기 API
+	@Multipart
+	@POST("/api/customer/review")
+	Call<ResultDto<Boolean>> addReview(@Query("restaurant_id") Long restaurantId, @Query("order_id") Long orderId, @Part(value = "dto") ReviewDto reviewDto, @Part MultipartBody.Part file);
+
+	// 매장 리뷰 리스트 조회 API
+	@GET("/api/restaurant/{restaurantId}/reviews")
+	Call<ResultDto<List<ReviewPreviewDto>>> getReviewList(@Path("restaurantId") Long restaurantId);
 
 	// 위치기반 매장 목록 반환
 	@POST("/api/restaurants")

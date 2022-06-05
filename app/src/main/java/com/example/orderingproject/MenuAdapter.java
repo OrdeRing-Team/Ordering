@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,8 @@ import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -43,6 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHolder> {
     ArrayList<MenuData> arrayList;
+    HashMap<Long, Long> representMenuHashMap;
     Context context;
     public CustomMenuOptionDialog dialog;
 
@@ -50,9 +54,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
         //        itemView를 저장하는 custom viewHolder 생성
         //        findViewById & 각종 event 작업
-        TextView tvName, tvPrice, tvIntro, tvSoldout;
+        TextView tvName, tvPrice, tvIntro, tvSoldout, tvRepresent;
         ImageView ivMenu;
-        LinearLayout llBaseLayout;
+        ConstraintLayout clBaseLayout;
 
 
         public CustomViewHolder(@NonNull View itemView) {
@@ -64,7 +68,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
             tvIntro = itemView.findViewById(R.id.item_intro);
             ivMenu = itemView.findViewById(R.id.item_image);
             tvSoldout = itemView.findViewById(R.id.item_soldout);
-            llBaseLayout = itemView.findViewById(R.id.ll_baseLayout);
+            clBaseLayout = itemView.findViewById(R.id.cl_baselayout);
+            tvRepresent = itemView.findViewById(R.id.tv_represent);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,13 +89,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
     }
 
 
-    public MenuAdapter(ArrayList<MenuData> arrayList, Context context) {
+    public MenuAdapter(ArrayList<MenuData> arrayList, HashMap<Long, Long> representMenuHashMap, Context context) {
     // adapter constructor for needing context part
         this.arrayList = arrayList;
         this.context = context;
+        this.representMenuHashMap = representMenuHashMap;
     }
-
-
 
 
     @NonNull
@@ -129,14 +133,27 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
             holder.ivMenu.setClipToOutline(true);
         }
 
+        for(HashMap.Entry<Long, Long> entryset : representMenuHashMap.entrySet()){
+            Log.e("Represent Food ID ", entryset.getKey().toString());
+        }
+        if(representMenuHashMap.containsKey(arrayList.get(position).getFoodId())){
+            holder.tvRepresent.setVisibility(View.VISIBLE);
+        }
+
         // 품절 정보 불러와서 true이면 리사이클러뷰에 "품절" 출력하기
         boolean soldout = arrayList.get(position).getSoldout();
         if (soldout) {
             holder.tvSoldout.setVisibility(View.VISIBLE);
             holder.tvSoldout.setText("품절");
             holder.itemView.setClickable(false);
-            holder.llBaseLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.light_gray));
+            holder.clBaseLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.light_gray));
         }
+
+        // MenuActivity에서 전역변수 fromTo에 저장된 값이 waiting일 경우 해당 뷰에서 이동되었으므로 아이템 클릭 불가하도록 설정.
+        if (MenuActivity.fromTo.equals("waitingFrag")) {
+            holder.itemView.setClickable(false);
+        }
+
         if(holder.itemView.isClickable()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,7 +200,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
                                                             }
                                                         });
                                                         Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                                    }else{
+                                                        Log.e("result.getData()","false");
                                                     }
+                                                }
+                                                else{
+                                                    Log.e("response","failed");
                                                 }
                                             }
 

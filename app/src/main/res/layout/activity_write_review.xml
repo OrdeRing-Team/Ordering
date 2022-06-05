@@ -1,100 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".WriteReviewActivity"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/ic_baseline_arrow_back_24"
-        android:backgroundTint="@color/main"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btn_submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.458"
-        app:layout_constraintWidth_percent="0.6">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".WriteReviewActivity">
 
-        <TextView
-            android:id="@+id/textView7"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="주문한 메뉴에 대한 후기를 남겨주세요."
-            android:textColor="#6C6C6C"
-            android:textSize="20dp"
-            android:textStyle="italic" />
+            android:background="@color/white"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/ic_baseline_arrow_back_24"
+                android:backgroundTint="@color/main"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="리뷰 작성"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_save_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="15dp"
+                android:text="저장"
+                android:textColor="@color/main"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:text="매장 운영에 큰 도움이 돼요 !"
-            android:textColor="#6C6C6C"
-            android:textSize="15dp"
-            android:textStyle="italic" />
+            app:layout_constraintTop_toBottomOf="@+id/top_layout"
+            tools:layout_editor_absoluteX="0dp">
 
-        <ImageView
-            android:id="@+id/iv_menu"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/splash" />
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F3F3F3"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:text=" 사진 리뷰 (선택) "
-            android:textColor="#939393" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:elevation="1dp"
+                    android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edt_intro"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/main"
-            android:hint=" 후기를 작성해주세요."
-            android:inputType="textMultiLine"
-            android:lines="4"
-            android:maxLines="6"
-            android:minLines="6"
-            android:scrollbars="vertical"
-            android:textColor="#5E5E5E"
-            android:textColorHint="#939393"
-            android:textSize="16dp" />
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:gravity="center"
+                        android:text="주문한 메뉴에 대한 후기를 남겨주세요."
+                        android:textColor="#6C6C6C"
+                        android:textSize="19dp" />
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="40dp"
+                        android:gravity="center"
+                        android:text="매장 운영에 큰 도움이 돼요 !"
+                        android:textColor="#6C6C6C"
+                        android:textSize="15dp" />
 
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/main"
-        android:text="리뷰 등록하기"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.12"
-        tools:layout_editor_absoluteX="0dp" />
+                    <TextView
+                        android:id="@+id/tv_store_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="매장명"
+                        android:textColor="#393939"
+                        android:textSize="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:isIndicator="false"
+                        android:progressTint="#FFEB3B"
+                        android:stepSize="1"
+                        android:theme="@style/RatingBar" />
+
+
+                    <EditText
+                        android:id="@+id/et_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="#F6F6F6"
+                        android:hint="음식의 맛, 양, 포장 상태 등 \n음식에 대한 솔직한 후기를 남겨주세요 :)"
+                        android:inputType="textMultiLine"
+                        android:lines="6"
+                        android:maxLines="6"
+                        android:minLines="6"
+                        android:padding="10dp"
+                        android:scrollbars="vertical"
+                        android:textColor="#000000"
+                        android:textColorHint="#939393"
+                        android:textSize="15dp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_review_image_before_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="40dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="이미지 업로드하기 (선택)"
+                            android:textColor="#939393"
+                            android:textSize="13dp" />
+
+                        <ImageView
+                            android:id="@+id/iv_review"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/background_custom_rectanagle_white"
+                            android:elevation="3dp"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/splash" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_review_image_uploaded"
+                        android:layout_width="355dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="40dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cv_review_image_uploaded"
+                            android:layout_width="350dp"
+                            android:layout_height="350dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="@color/white"
+                            app:cardCornerRadius="20dp"
+                            android:elevation="20dp"
+                            android:layout_gravity="center_horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_review_profile">
+
+                            <ImageView
+                                android:id="@+id/iv_review_image_uploaded"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="다시 선택하시려면 사진을 터치하세요"
+                            android:textColor="@color/gray"
+                            android:layout_marginTop="5dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

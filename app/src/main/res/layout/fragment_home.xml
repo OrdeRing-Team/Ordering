@@ -34,23 +34,11 @@
                 android:id="@+id/logo_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="60dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/logo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!--로고 텍스트-->
                 <TextView
@@ -59,28 +47,73 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="20dp"
                     android:text="OrdeRing"
                     android:textColor="@color/main"
-                    android:textSize="23sp"
+                    android:textSize="28sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/btn_fav_stores"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@color/fui_transparent"
+                    android:scaleType="fitCenter"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_baseline_favorite_border_24"
+                    app:tint="@color/main" />
+
+                <ImageView
+                    android:id="@+id/btn_coupon_box"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/fui_transparent"
+                    android:scaleType="fitCenter"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_baseline_folder_open_24"
+                    app:tint="@color/main" />
+
             </LinearLayout>
 
 
-            <!--이벤트 및 쿠폰 레이아웃 (임시 !!!!)-->
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="진행 중인 이벤트"
+                android:textColor="#404040"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.077"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logo_layout" />
+
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_event"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="#EAC5C5"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logo_layout">
-            </androidx.viewpager2.widget.ViewPager2>
+                app:layout_constraintTop_toBottomOf="@+id/textView2"></androidx.viewpager2.widget.ViewPager2>
 
             <TextView
                 android:id="@+id/tv_pagenum"
@@ -90,10 +123,10 @@
                 app:layout_constraintBottom_toBottomOf="@id/vp_event"
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:background="@drawable/round_background"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,9 +134,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="15dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -111,116 +144,133 @@
                 app:layout_constraintTop_toBottomOf="@+id/vp_event">
 
 
-                <ImageButton
+                <LinearLayout
                     android:id="@+id/btn_qr_camera"
                     android:layout_width="170dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/background_custom_grayline"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/qr_scan_image"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_margin="10dp"
+                    android:elevation="4dp"
+                    android:background="@drawable/button_click_anim"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:background="@color/fui_transparent"
+                        android:text="QR코드"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="end"
+                        android:layout_marginBottom="10dp" >
 
 
-                <ImageButton
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="bottom"
+                            android:src="@drawable/ic_baseline_camera_alt_24"
+                            android:background="@color/fui_transparent"
+                            app:tint="#EC9595" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="15dp"
+                            android:src="@drawable/ic_baseline_qr_code_scanner_24"
+                            android:background="@color/fui_transparent"
+                            app:tint="@color/main" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:id="@+id/btn_store"
                     android:layout_width="170dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/background_custom_grayline"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/store_list_image"
+                    android:layout_margin="10dp"
+                    android:elevation="4dp"
+                    android:background="@drawable/button_click_anim"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/btn_qr_camera"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-                <LinearLayout
-                    android:id="@+id/ll_fav_stores"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_custom_grayline"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="38dp"
-                        android:layout_gravity="center"
-                        android:background="@color/fui_transparent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_baseline_favorite_24"
-                        app:tint="@color/main" />
+                    app:layout_constraintVertical_bias="0.0"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="top"
                         android:background="@color/fui_transparent"
-                        android:text="찜한 매장"
+                        android:text="추천매장"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
                         android:textColor="@color/black" />
 
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/ll_couponbox"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_custom_grayline"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout5"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="38dp"
-                        android:layout_gravity="center"
-                        android:background="@color/fui_transparent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_baseline_folder_24"
-                        app:tint="@color/blue" />
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@color/fui_transparent"
-                        android:text="쿠폰함"
-                        android:textColor="@color/black" />
+                        android:orientation="horizontal"
+                        android:layout_gravity="end"
+                        android:layout_marginBottom="10dp">
+
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="bottom"
+                            android:src="@drawable/ic_baseline_location_on_24"
+                            android:background="@color/fui_transparent"
+                            app:tint="#EC9595" />
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="15dp"
+                            android:src="@drawable/ic_baseline_storefront_24"
+                            android:background="@color/fui_transparent"
+                            app:tint="@color/main" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <TextView
                 android:id="@+id/textView"
@@ -232,13 +282,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.077"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
 
             <!--최근 주문 매장 (임시 !!!!)-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="170dp"
                 android:layout_marginTop="8dp"
                 android:background="#DAC1DF"
                 android:orientation="horizontal"
@@ -275,14 +325,14 @@
     <Button
         android:id="@+id/btn_minju"
         android:layout_width="120dp"
-        android:text="민주 매장 바로가기"
         android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="70dp"
+        android:background="@color/teal_200"
+        android:text="민주 매장 바로가기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="70dp"
-        android:background="@color/teal_200" />
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_jeonghyun"
