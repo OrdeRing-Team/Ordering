@@ -68,8 +68,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     }
 
 
-
-
     @NonNull
     @Override
     public StoreRecyclerAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -84,6 +82,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         // onBindViewHolder: put data of item list into xml widgets
         // xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
         // position에 해당하는 data, viewHolder의 itemView에 표시함
+
         holder.tv_storeName.setText(arrayList.get(position).getTitle());
         String imageURL = String.valueOf(arrayList.get(position).getImage());
         if (imageURL.equals("null")) {
