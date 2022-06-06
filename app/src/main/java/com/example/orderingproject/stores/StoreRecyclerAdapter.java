@@ -88,8 +88,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     }
 
 
-
-
     @NonNull
     @Override
     public StoreRecyclerAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -106,6 +104,9 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         // position에 해당하는 data, viewHolder의 itemView에 표시함
         holder.tv_storeName.setText(arrayList.get(position).getStoreName());
         String imageURL = String.valueOf(arrayList.get(position).getStoreIcon());
+
+        holder.tv_storeName.setText(arrayList.get(position).getTitle());
+        String imageURL = String.valueOf(arrayList.get(position).getImage());
         if (imageURL.equals("null")) {
             Glide.with(holder.itemView.getContext()).load(R.drawable.icon).into(holder.iv_storeIcon);
         }

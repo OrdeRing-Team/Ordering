@@ -60,6 +60,7 @@ public class FavStoreAdapter extends RecyclerView.Adapter<FavStoreAdapter.Custom
                         if(profileImageUrl!= null) {
                             intent.putExtra("profileImageUrlfromFav", profileImageUrl);
                         }
+
                         if(backgroundImageUrl != null) {
                             intent.putExtra("backgroundImageUrlfromFav", backgroundImageUrl);
                         }

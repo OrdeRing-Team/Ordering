@@ -172,6 +172,7 @@ public class MenuActivity extends BasicActivity {
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
                     binding.tvStoreName.setText(restaurantName);
+
                     if (profileImageUrl == null)
                         Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
                     if (backgroundImageUrl == null)
