@@ -1,46 +1,32 @@
 package com.example.orderingproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableResource;
-import com.example.orderingproject.Dto.FoodDto;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
-import com.example.orderingproject.Dto.request.WaitingRegisterDto;
 import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.RestaurantInfoDto;
+import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 import com.example.orderingproject.ENUM_CLASS.FoodCategory;
 import com.example.orderingproject.ENUM_CLASS.RestaurantType;
 import com.example.orderingproject.databinding.ActivityMenuBinding;
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.SneakyThrows;
@@ -54,7 +40,7 @@ public class MenuActivity extends BasicActivity {
     private ActivityMenuBinding binding;
 
     public static String store, service, restaurantName,
-                         profileImageUrl, backgroundImageUrl, fromTo;
+            profileImageUrl, backgroundImageUrl, fromTo;
 
     public static TextView BasketCountTextView;
     public static String notice = null;
@@ -72,6 +58,10 @@ public class MenuActivity extends BasicActivity {
 
     private Long favStoreId;
 
+    public static int totalStars, oneStar, twoStars, threeStars, fourStars, fiveStars;
+    public static List<ReviewPreviewDto> reviewList;
+    public static float reviewTotalRating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,21 +77,21 @@ public class MenuActivity extends BasicActivity {
         initButtonListener();
         getFavStoreIdFromServer();
         getStoreInfo();
+
     }
-    private void initButtonListener(){
+
+    private void initButtonListener() {
         binding.btnBackToManageFrag.setOnClickListener(view -> finish());
 
         binding.btnBasket.setOnClickListener(view -> {
-            if(UserInfo.getBasketCount() != 0) {
+            if (UserInfo.getBasketCount() != 0) {
                 Intent intent = new Intent(MenuActivity.this, BasketActivity.class);
                 intent.putExtra("store", store);
                 intent.putExtra("service", service);
                 intent.putExtra("restaurantName", restaurantName);
                 startActivity(intent);
-            }
-
-            else{
-                Toast.makeText(MenuActivity.this,"메뉴를 선택해주세요.",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MenuActivity.this, "메뉴를 선택해주세요.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -120,11 +110,19 @@ public class MenuActivity extends BasicActivity {
     }
 
 
-    private void initData(){
+    private void initData() {
         notice = null;
+        totalStars = 0;
+        oneStar = 0;
+        twoStars = 0;
+        threeStars = 0;
+        fourStars = 0;
+        fiveStars = 0;
+        reviewList = null;
+        reviewTotalRating = 0;
         storeLatitude = 0;
         storeLongitude = 0;
-        if(getIntent() != null) {
+        if (getIntent() != null) {
             switch (getIntent().getStringExtra("activity")) {
                 case "fromQR":
                     fromTo = "QR";
@@ -137,23 +135,25 @@ public class MenuActivity extends BasicActivity {
                     Log.e("service", service);
                     Log.e("restaurantName", restaurantName);
                     Log.e("basketCount", Integer.toString(basketCount));
-                    if(profileImageUrl != null) {
+                    if (profileImageUrl != null) {
                         Log.e("profileImageUrl", profileImageUrl);
                     }
-                    if(backgroundImageUrl != null) {
+                    if (backgroundImageUrl != null) {
                         Log.e("backgroundImageUrl", backgroundImageUrl);
                     }
 
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
                     binding.tvStoreName.setText(restaurantName);
-                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
-                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    if (profileImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if (backgroundImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
 
                     updateBasket();
 
-                    if(basketCount > 0){
+                    if (basketCount > 0) {
                         binding.tvBasketcount.setVisibility(View.VISIBLE);
                         binding.tvBasketcount.setText(Integer.toString(basketCount));
                     }
@@ -171,10 +171,17 @@ public class MenuActivity extends BasicActivity {
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
                     binding.tvStoreName.setText(restaurantName);
-                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
-                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    if (profileImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if (backgroundImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
+                    updateBasket();
 
+                    if (basketCount > 0) {
+                        binding.tvBasketcount.setVisibility(View.VISIBLE);
+                        binding.tvBasketcount.setText(Integer.toString(basketCount));
+                    }
                     break;
 
                 case "orderList":
@@ -187,8 +194,10 @@ public class MenuActivity extends BasicActivity {
                     setStoreBackgroundImage(store, this);
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     binding.tvStoreName.setText(restaurantName);
-                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
-                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    if (profileImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if (backgroundImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
                     updateBasket();
                     break;
@@ -206,8 +215,10 @@ public class MenuActivity extends BasicActivity {
                     Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
                     Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
                     binding.tvStoreName.setText(restaurantName);
-                    if(profileImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
-                    if(backgroundImageUrl == null) Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    if (profileImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if (backgroundImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
                     stopProgress();
 
                     binding.btnBasket.setVisibility(View.GONE);
@@ -218,7 +229,7 @@ public class MenuActivity extends BasicActivity {
 
     }
 
-    private void initView(){
+    private void initView() {
 
         // 툴바 타이틀 설정
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -227,7 +238,7 @@ public class MenuActivity extends BasicActivity {
         // 뷰페이저 세팅
         TabLayout tabLayout = findViewById(R.id.tab_layout_menu);
         ViewPager2 viewPager2 = findViewById(R.id.vp_manage_menu);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this, 1,3);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, 1, 3);
         viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2,
@@ -237,11 +248,9 @@ public class MenuActivity extends BasicActivity {
                         //tab.setText("Tab" + (position + 1));
                         if (position == 0) {
                             tab.setText("메뉴");
-                        }
-                        else if (position == 1) {
+                        } else if (position == 1) {
                             tab.setText("정보");
-                        }
-                        else {
+                        } else {
                             tab.setText("리뷰");
                         }
                     }
@@ -249,14 +258,14 @@ public class MenuActivity extends BasicActivity {
 
     }
 
-    public static void updateBasket(){
+    public static void updateBasket() {
         int basketCounts = UserInfo.getBasketCount();
-        if(basketCounts != 0){
-            if(BasketCountTextView.getVisibility() == View.GONE){
+        if (basketCounts != 0) {
+            if (BasketCountTextView.getVisibility() == View.GONE) {
                 BasketCountTextView.setVisibility(View.VISIBLE);
             }
             BasketCountTextView.setText(Integer.toString(basketCounts));
-        }else{
+        } else {
             BasketCountTextView.setVisibility(View.GONE);
         }
     }
@@ -326,14 +335,14 @@ public class MenuActivity extends BasicActivity {
             @Override
             public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
                 Toast.makeText(MenuActivity.this, "서버 요청에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                Log.e("e = " , t.getMessage());
+                Log.e("e = ", t.getMessage());
             }
         });
     }
 
 
     // 매장 찜 상태 불러오기
-    public void getFavStoreIdFromServer(){
+    public void getFavStoreIdFromServer() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.ordering.ml/api/customer/" + UserInfo.getCustomerId() + "/bookmarks/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -353,7 +362,7 @@ public class MenuActivity extends BasicActivity {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                result.getData().forEach(bookmarkPreviewDto ->{
+                                result.getData().forEach(bookmarkPreviewDto -> {
                                     if (store.equals(String.valueOf(bookmarkPreviewDto.getRestaurantId()))) {
                                         // 찜 매장 리스트에서 매장아이디가 현재 메뉴엑티비티의 매장아이디와 같은 경우에 찜 버튼을 채워진 하트로 변경.
                                         // 즉, 찜 매장 리스트에 해당 매장아이디가 존재한다면 채워진 하트 VISIBLE.
@@ -377,13 +386,13 @@ public class MenuActivity extends BasicActivity {
         });
     }
 
-    private void setStoreBackgroundImage(String storeId, Activity activity){
+    private void setStoreBackgroundImage(String storeId, Activity activity) {
         try {
             new Thread() {
                 @SneakyThrows
                 public void run() {
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/restaurant/"+storeId+"/preview/")
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + storeId + "/preview/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
@@ -396,7 +405,7 @@ public class MenuActivity extends BasicActivity {
 
                             ResultDto<RestaurantPreviewDto> result = response.body();
                             if (response.isSuccessful()) {
-                                if(result.getData() != null){
+                                if (result.getData() != null) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -405,9 +414,8 @@ public class MenuActivity extends BasicActivity {
                                             Glide.with(activity).load(backgroundImageUrl).into(binding.ivSigmenu);
                                         }
                                     });
-                                }
-                                else{
-                                    Toast.makeText(activity,"매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(activity, "매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요", Toast.LENGTH_LONG).show();
 
                                 }
                             }
@@ -416,8 +424,8 @@ public class MenuActivity extends BasicActivity {
                         @Override
                         public void onFailure(Call<ResultDto<RestaurantPreviewDto>> call, Throwable t) {
 
-                            Toast.makeText(activity,"매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
-                            Log.e("e = " , t.getMessage());
+                            Toast.makeText(activity, "매장 이미지 로드에 실패하였습니다.\n다시 시도해 주세요", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
 
                         }
                     });
@@ -426,8 +434,8 @@ public class MenuActivity extends BasicActivity {
 
         } catch (Exception e) {
 
-            Toast.makeText(activity,"일시적인 오류가 발생하였습니다\n다시 시도해 주세요",Toast.LENGTH_LONG).show();
-            Log.e("e = " , e.getMessage());
+            Toast.makeText(activity, "일시적인 오류가 발생하였습니다\n다시 시도해 주세요", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
         }
     }
 
@@ -439,14 +447,15 @@ public class MenuActivity extends BasicActivity {
         }
     }
 
-    public void getStoreInfo(){
+    public void getStoreInfo() {
         try {
+            startProgress(this);
             new Thread() {
                 @SneakyThrows
                 public void run() {
 
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/restaurant/"+store+"/info/")
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + store + "/info/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
@@ -465,7 +474,7 @@ public class MenuActivity extends BasicActivity {
                                         @Override
                                         public void run() {
                                             notice = result.getData().getNotice();
-                                            if(notice != null) {
+                                            if (notice != null) {
                                                 Log.e("매장 공지사항 ", notice);
                                             }
                                             storeLatitude = result.getData().getLatitude();
@@ -477,6 +486,8 @@ public class MenuActivity extends BasicActivity {
                                             foodCategory = result.getData().getFoodCategory();
                                             tableCount = result.getData().getTableCount();
                                             orderWaitingTime = result.getData().getOrderingWaitingTime();
+
+                                            initReviewRecyclerView();
 
                                         }
                                     });
@@ -494,6 +505,93 @@ public class MenuActivity extends BasicActivity {
 
         } catch (Exception e) {
             Log.e("e = ", e.getMessage());
+        }
+    }
+
+    public void setRatings(float rating, String ratingString) {
+        binding.ratingBar.setRating(rating);
+        binding.tvScore.setText(ratingString);
+    }
+
+    private void initReviewRecyclerView() {
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurant/" + store + "/reviews/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<ReviewPreviewDto>>> call = service.getReviewList(Long.parseLong(store));
+
+                    call.enqueue(new Callback<ResultDto<List<ReviewPreviewDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<ReviewPreviewDto>>> call, Response<ResultDto<List<ReviewPreviewDto>>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<List<ReviewPreviewDto>> result;
+                                result = response.body();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        for (ReviewPreviewDto i : result.getData()) {
+                                            reviewTotalRating += i.getRating();
+                                            switch ((int) i.getRating()) {
+                                                case 1:
+                                                    oneStar++;
+                                                    break;
+                                                case 2:
+                                                    twoStars++;
+                                                    break;
+                                                case 3:
+                                                    threeStars++;
+                                                    break;
+                                                case 4:
+                                                    fourStars++;
+                                                    break;
+                                                case 5:
+                                                    fiveStars++;
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        totalStars = oneStar + twoStars + threeStars + fourStars + fiveStars;
+                                        if (result.getData().size() != 0) {
+                                            reviewTotalRating /= result.getData().size();
+                                        } else {
+                                            reviewTotalRating = 0;
+                                        }
+                                        reviewList = result.getData();
+
+                                        setRatings(reviewTotalRating, Float.toString(reviewTotalRating));
+
+                                        Log.e("reviewList", "########################");
+                                        stopProgress();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<ReviewPreviewDto>>> call, Throwable t) {
+                            Toast.makeText(MenuActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                            stopProgress();
+
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(MenuActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+            stopProgress();
+
         }
     }
 }

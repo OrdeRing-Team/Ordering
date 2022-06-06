@@ -14,9 +14,13 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +30,27 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.orderingproject.Dialog.CustomStoreDialog;
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
+import com.example.orderingproject.Dto.response.RecentOrderRestaurantDto;
+import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.example.orderingproject.favoriteStores.FavStoreListActivity;
+import com.example.orderingproject.review.ReviewListAdapter;
 import com.example.orderingproject.stores.StoresActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
@@ -246,6 +264,7 @@ public class HomeFragment extends Fragment {
                     Toast.LENGTH_SHORT).show();
         }
 
+        getRecentOrderData();
     }
 
     private void initViews(){
@@ -292,5 +311,58 @@ public class HomeFragment extends Fragment {
     }
 
 
+    private void getRecentOrderData(){
+        try{
+            new Thread(){
+                @SneakyThrows
+                public void run(){
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/customer/"+UserInfo.getCustomerId()+"/orders/recent/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<RecentOrderRestaurantDto>>> call = service.getRecentOrderList(UserInfo.getCustomerId());
+
+                    call.enqueue(new Callback<ResultDto<List<RecentOrderRestaurantDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<RecentOrderRestaurantDto>>> call, Response<ResultDto<List<RecentOrderRestaurantDto>>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<List<RecentOrderRestaurantDto>> result;
+                                result = response.body();
+                                if (!result.getData().isEmpty()) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            RecyclerView recyclerView = binding.rvRecentOrder;
+                                            RecentStoreAdapter recentStoreAdapter = new RecentStoreAdapter(result.getData(), getContext());
+                                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+                                            recyclerView.setAdapter(recentStoreAdapter);
+                                            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), 1));
+                                        }
+                                    });
+                                }else{
+                                    binding.rvRecentOrder.setVisibility(View.GONE);
+                                    binding.llEmptyRecent.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<RecentOrderRestaurantDto>>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+    }
 
 }

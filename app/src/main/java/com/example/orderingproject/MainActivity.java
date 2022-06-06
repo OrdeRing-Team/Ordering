@@ -25,12 +25,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.HashMap;
+
 public class MainActivity extends BasicActivity {
 
     BottomNavigationView bottomNavigationView; //바텀네비뷰
     private ActivityMainBinding binding;
 
     static ProgressBar progressBar;
+
+    public static HashMap<String, Integer> nickIconHashMap = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,32 @@ public class MainActivity extends BasicActivity {
 
         // NoticeDialog 띄울지 여부
         if(NoticeInfo.getShow()) initNoticeDialog();
+
+
+        // 닉네임에 해당하는 icon 설정 -> Review 리스트에서 사용
+        // 치킨 통닭 달걀 -> chicken
+        // 국밥 마라탕 라면 부대찌개 -> jjim
+        // 아이스크림 치즈 샌드위치 케이크 샐러드 팥빙수 아메리카노 -> dessert
+        // 피자 -> pizza
+        // 비빔밥 두루치기 제육볶음 곱창 -> hansik
+        // 탕수육 짜장면 우동 짬뽕 -> chinesefood
+        // 떡볶이 -> bunsik2
+        // 냉면  -> asianfood
+        // 파스타 만두 왕갈비 햄버거 -> fastfood
+        // 초밥 회 돈까스 -> japanesefood
+        // 족발 통삼겹 -> jokbal
+        nickIconHashMap.put("치킨",1); nickIconHashMap.put("통닭",1); nickIconHashMap.put("달걀",1); nickIconHashMap.put("닭발",1);
+        nickIconHashMap.put("국밥",2); nickIconHashMap.put("마라탕",2); nickIconHashMap.put("라면",2); nickIconHashMap.put("부대찌개",2);
+        nickIconHashMap.put("아이스크림",3); nickIconHashMap.put("치즈",3); nickIconHashMap.put("샌드위치",3); nickIconHashMap.put("케이크",3);
+        nickIconHashMap.put("샐러드",3); nickIconHashMap.put("팥빙수",3); nickIconHashMap.put("아메리카노",3);
+        nickIconHashMap.put("피자",4);
+        nickIconHashMap.put("비빔밥",5); nickIconHashMap.put("두루치기",5); nickIconHashMap.put("제육볶음",5); nickIconHashMap.put("곱창",5);
+        nickIconHashMap.put("탕수육",6); nickIconHashMap.put("짜장면",6); nickIconHashMap.put("우동",6); nickIconHashMap.put("짬뽕",6);
+        nickIconHashMap.put("떡볶이",7);
+        nickIconHashMap.put("냉면",8);
+        nickIconHashMap.put("파스타",9); nickIconHashMap.put("만두",9); nickIconHashMap.put("왕갈비",9); nickIconHashMap.put("햄버거",9);
+        nickIconHashMap.put("초밥",10); nickIconHashMap.put("회",10); nickIconHashMap.put("돈까스",10);
+        nickIconHashMap.put("족발",11); nickIconHashMap.put("통삼겹",10);
     }
 
     public void initNoticeDialog(){

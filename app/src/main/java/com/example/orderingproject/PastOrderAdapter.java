@@ -87,6 +87,9 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
         if(arrayList.get(position).getOrderStatus() == OrderStatus.CANCELED){
             holder.tv_orderOutCancel.setVisibility(View.VISIBLE);
         }
+
+        holder.tv_orderOutStoreName.setText(arrayList.get(position).getRestaurantName());
+
         holder.tv_orderOutDay.setText(String.valueOf(arrayList.get(position).getReceivedTime()));
         holder.tv_orderOutType.setText(arrayList.get(position).getOrderType() == TABLE ?
                 (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") :
@@ -137,6 +140,19 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
                 int absolutePosition = holder.getAbsoluteAdapterPosition();
                 Intent intent = new Intent(context, OrderlistDetailActivity.class);
                 intent.putExtra("orderId", arrayList.get(absolutePosition).getOrderId());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.tv_orderOutStoreName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MenuActivity.class);
+                intent.putExtra("activity", "orderList");
+                intent.putExtra("storeId", Long.toString(arrayList.get(holder.getAbsoluteAdapterPosition()).getRestaurantId()));
+                intent.putExtra("restaurantName",arrayList.get(holder.getAbsoluteAdapterPosition()).getRestaurantName());
+                intent.putExtra("profileImageUrl", arrayList.get(holder.getAbsoluteAdapterPosition()).getProfileUrl());
+
                 context.startActivity(intent);
             }
         });
