@@ -1,53 +1,28 @@
 package com.example.orderingproject.stores;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.RestaurantPreviewListReqDto;
-import com.example.orderingproject.Dto.response.BookmarkPreviewDto;
 import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
 import com.example.orderingproject.ENUM_CLASS.FoodCategory;
 import com.example.orderingproject.HomeFragment;
-import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
-import com.example.orderingproject.UserInfo;
-import com.example.orderingproject.databinding.ActivityFavStoreListBinding;
 import com.example.orderingproject.databinding.FragmentKoreanFoodBinding;
-import com.example.orderingproject.favoriteStores.FavStoreAdapter;
-import com.example.orderingproject.favoriteStores.FavStoreData;
-import com.example.orderingproject.favoriteStores.FavStoreListActivity;
-import com.example.orderingproject.stores.StoreRecyclerAdapter;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.ThreeBounce;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

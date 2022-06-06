@@ -92,8 +92,10 @@
         <entry key="app/src/main/res/layout/custom_store_info_dialog.xml" value="0.13722826086956522" />
         <entry key="app/src/main/res/layout/fragment_asian_western_food.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_cafe.xml" value="0.13697916666666668" />
+        <entry key="app/src/main/res/layout/fragment_chicken.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_chinese.xml" value="0.12291666666666666" />
         <entry key="app/src/main/res/layout/fragment_chinese_food.xml" value="0.26132246376811596" />
+        <entry key="app/src/main/res/layout/fragment_fast_food.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1347160449926404" />
         <entry key="app/src/main/res/layout/fragment_japanese_food.xml" value="0.26132246376811596" />
         <entry key="app/src/main/res/layout/fragment_jokbal_bossam.xml" value="0.21458333333333332" />
@@ -101,7 +103,9 @@
         <entry key="app/src/main/res/layout/fragment_menu_list.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_orderlist.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_pizza.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_snack_bar.xml" value="0.26132246376811596" />
+        <entry key="app/src/main/res/layout/fragment_soup.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_store_info.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/fragment_store_review.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/fragment_waiting.xml" value="0.1619522094726563" />

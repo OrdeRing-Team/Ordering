@@ -1,66 +1,177 @@
 package com.example.orderingproject.stores;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.example.orderingproject.Dto.ResultDto;
+import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.request.RestaurantPreviewListReqDto;
+import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
+import com.example.orderingproject.ENUM_CLASS.FoodCategory;
+import com.example.orderingproject.HomeFragment;
 import com.example.orderingproject.R;
+import com.example.orderingproject.databinding.FragmentAsianWesternFoodBinding;
+import com.example.orderingproject.databinding.FragmentCafeBinding;
+import com.example.orderingproject.databinding.FragmentChickenBinding;
+import com.example.orderingproject.databinding.FragmentChineseFoodBinding;
+import com.example.orderingproject.databinding.FragmentKoreanFoodBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChineseFoodFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import lombok.SneakyThrows;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 public class ChineseFoodFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final FoodCategory CHINESE_FOOD = FoodCategory.CHINESE_FOOD;
+    private FragmentChineseFoodBinding binding;
+    private View v;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public ChineseFoodFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChineseFoodFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChineseFoodFragment newInstance(String param1, String param2) {
-        ChineseFoodFragment fragment = new ChineseFoodFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chinese_food, container, false);
+
+        binding = FragmentChineseFoodBinding.inflate(inflater, container, false);
+        v = binding.getRoot();
+
+        delayFunction();
+        refreshStoreList();
+
+        return v;
     }
+
+
+    // 사용자 위치 기반 매장 리스트 가져오기
+    public void getStoreListFromServer(FoodCategory foodCategory) {
+
+        Log.e("사용자 위도 from HomeFrag", String.valueOf(HomeFragment.longitude));
+        Log.e("사용자 경도 from HomeFrag", String.valueOf(HomeFragment.latitude));
+
+        ArrayList<StoreData> storeList = new ArrayList<>();
+        RestaurantPreviewListReqDto restaurantPreviewListReqDto = new RestaurantPreviewListReqDto(HomeFragment.latitude, HomeFragment.longitude, foodCategory);
+
+        try {
+            Log.e("foodcategory", String.valueOf(foodCategory));
+
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://www.ordering.ml/api/restaurants/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call = service.getStoreList(restaurantPreviewListReqDto);
+
+                    call.enqueue(new Callback<ResultDto<List<RestaurantPreviewWithDistanceDto>>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call, Response<ResultDto<List<RestaurantPreviewWithDistanceDto>>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<List<RestaurantPreviewWithDistanceDto>> result;
+                                result = response.body();
+                                if (result.getData() != null) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            result.getData().forEach(restaurantPreviewWithDistanceDto ->{
+                                                //restaurantPreviewWithDistanceDto.getDistanceMeter();
+                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
+                                                Log.e("매장명", restaurantPreviewWithDistanceDto.getRestaurantName());
+                                            });
+
+                                            // 주변 매장이 없을 경우 예외 처리
+                                            Log.e("storeList's size", String.valueOf(storeList.size()));
+                                            if (storeList.size() == 0) { binding.tvEmptyStores.setVisibility(View.VISIBLE); }
+                                            else { binding.tvEmptyStores.setVisibility(View.GONE); }
+
+                                            // 리사이클러뷰 연결
+                                            RecyclerView recyclerView = binding.chineseFoodList;
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
+                                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                            recyclerView.setAdapter(StoreAdapter);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<List<RestaurantPreviewWithDistanceDto>>> call, Throwable t) {
+                            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+    }
+
+
+    // 데이터 업로드 지연 처리 함수
+    private void delayFunction() {
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        // 사용자 위치를 불러오는데 일정 시간이 소요되므로 지연 처리를 꼭 해주어야 함. ( -> 좀 오래 걸리긴 하는데... )
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getStoreListFromServer(CHINESE_FOOD);
+                binding.progressBar.setVisibility(View.GONE);
+            }
+
+        },4000);
+
+    }
+
+
+    // 스크롤 새로고침
+    private void refreshStoreList() {
+        SwipeRefreshLayout mSwipeRefreshLayout = v.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //ft.commit();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getStoreListFromServer(CHINESE_FOOD);
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 500);
+
+            }
+        });
+    }
+
+
 }
