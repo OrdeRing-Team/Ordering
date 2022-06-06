@@ -81,6 +81,9 @@ public class RecentStoreAdapter extends RecyclerView.Adapter<RecentStoreAdapter.
     @Override
     public void onBindViewHolder(@NonNull RecentStoreAdapter.CustomViewHolder holder, int position) {
         Glide.with(context).load(arrayList.get(position).getBackgroundImageUrl()).into(holder.iv_recent_background);
+        if(arrayList.get(position).getBackgroundImageUrl() == null){
+            Glide.with(context).load(R.drawable.icon).into(holder.iv_recent_background);
+        }
         holder.tv_recent_store_name.setText(arrayList.get(position).getRestaurantName());
         holder.tv_recent_order_waiting_time.setText(arrayList.get(position).getOrderingWaitingTime() + "분");
 
