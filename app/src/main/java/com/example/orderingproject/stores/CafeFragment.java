@@ -54,6 +54,7 @@ public class CafeFragment extends Fragment {
         v = binding.getRoot();
 
         refreshStoreList();
+        getStoreListFromServer(FoodCategory.CAFE_DESSERT);
 
         return v;
     }
@@ -113,7 +114,7 @@ public class CafeFragment extends Fragment {
 
                                             // 리사이클러뷰 연결
                                             RecyclerView recyclerView = binding.cafeList;
-                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList, getContext());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(StoreAdapter);
                                         }

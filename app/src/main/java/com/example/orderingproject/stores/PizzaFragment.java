@@ -60,6 +60,7 @@ public class PizzaFragment extends Fragment {
         v = binding.getRoot();
 
         refreshStoreList();
+        getStoreListFromServer(FoodCategory.PIZZA);
 
         return v;
     }
@@ -119,7 +120,7 @@ public class PizzaFragment extends Fragment {
 
                                             // 리사이클러뷰 연결
                                             RecyclerView recyclerView = binding.pizzaList;
-                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList, getContext());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(StoreAdapter);
                                         }

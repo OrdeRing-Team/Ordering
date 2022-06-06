@@ -59,6 +59,7 @@ public class JokbalBossamFragment extends Fragment {
         v = binding.getRoot();
 
         refreshStoreList();
+        getStoreListFromServer(FoodCategory.JOKBAL_BOSSAM);
 
         return v;
     }
@@ -118,7 +119,7 @@ public class JokbalBossamFragment extends Fragment {
 
                                             // 리사이클러뷰 연결
                                             RecyclerView recyclerView = binding.jokbalBossamList;
-                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList, getContext());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(StoreAdapter);
                                         }

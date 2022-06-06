@@ -56,6 +56,7 @@ public class ChineseFoodFragment extends Fragment {
         v = binding.getRoot();
 
         refreshStoreList();
+        getStoreListFromServer(FoodCategory.CHINESE_FOOD);
 
         return v;
     }
@@ -115,7 +116,7 @@ public class ChineseFoodFragment extends Fragment {
 
                                             // 리사이클러뷰 연결
                                             RecyclerView recyclerView = binding.chineseFoodList;
-                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList, getContext());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(StoreAdapter);
                                         }

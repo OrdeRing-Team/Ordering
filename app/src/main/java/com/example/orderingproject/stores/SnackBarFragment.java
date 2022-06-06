@@ -61,6 +61,7 @@ public class SnackBarFragment extends Fragment {
         v = binding.getRoot();
 
         refreshStoreList();
+        getStoreListFromServer(FoodCategory.BUNSIK);
 
         return v;
     }
@@ -120,7 +121,7 @@ public class SnackBarFragment extends Fragment {
 
                                             // 리사이클러뷰 연결
                                             RecyclerView recyclerView = binding.snackBarList;
-                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList);
+                                            StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList, getContext());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(StoreAdapter);
                                         }
