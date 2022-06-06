@@ -55,7 +55,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
                     if (position != RecyclerView.NO_POSITION) {
 
                         Log.e("리사이클러뷰 아이템", "클릭됨.");
-                        Intent intent = new Intent(itemView.getContext(), FavStoreListActivity.class);
+                        Intent intent = new Intent(itemView.getContext(), MenuActivity.class);
                         intent.putExtra("activity", "storesActivity");
                         intent.putExtra("storeId", String.valueOf(arrayList.get(position).getRestaurantId()));
                         intent.putExtra("storeName", arrayList.get(position).getStoreName());

@@ -1,8 +1,16 @@
 package com.example.orderingproject;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationRequest;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.orderingproject.Dto.EventsDto;
 import com.example.orderingproject.Dto.NoticeDto;
@@ -42,6 +52,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SplashActivity extends Activity {
 
+    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     public static EventPagerAdapter adapter;
     public static int listSize;
 
@@ -60,8 +71,6 @@ public class SplashActivity extends Activity {
 
         startSplash2();
         startLoading();
-
-
     }
 
     private boolean getLocalData(){
