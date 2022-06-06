@@ -6,15 +6,41 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="OrdeRing에 가입하기 전,"
+            android:textColor="#616161"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.218"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="개인 정보를 설정해주세요."
+            android:textColor="#616161"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.74"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
 
         <EditText
             android:id="@+id/editTextNickname"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="55dp"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/main"
             android:ems="7"
-            android:fontFamily="@font/baeminjua"
             android:inputType="text"
             android:maxLength="11"
             android:textColor="#000000"
@@ -68,11 +94,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="52dp"
             android:text="@string/NicknameSubText"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -81,11 +106,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="52dp"
             android:text="@string/memberIdSubText"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
@@ -93,7 +117,7 @@
             android:id="@+id/et_memberId"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/main"
             android:ems="7"
             android:textColor="#000000"
             android:textColorHint="#C1C1C1"
@@ -135,11 +159,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:text="@string/PasswordSubText"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_memberId" />
 
@@ -148,11 +171,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:text="@string/PasswordCheckSubText"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -160,25 +182,27 @@
             android:id="@+id/textInputLayout_psCheck"
             android:layout_width="210dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/passwordCheck"
             app:layout_constraintStart_toEndOf="@+id/passwordCheck"
             app:layout_constraintTop_toTopOf="@+id/passwordCheck"
+            app:layout_constraintVertical_bias="0.487"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="#E1695E"
             tools:ignore="MissingConstraints">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPasswordCheck"
-                android:layout_width="210dp"
-                android:layout_height="50dp"
-                android:backgroundTint="@color/white"
-                android:inputType="textPassword"
-                android:textColor="#636363"
-                android:textColorHint="#E1695E"
-                android:textSize="18sp"
-                app:passwordToggleEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPasswordCheck"
+                    android:layout_width="210dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/main"
+                    android:inputType="textPassword"
+                    android:textColor="#636363"
+                    android:textColorHint="#E1695E"
+                    android:textSize="18sp"
+                    app:passwordToggleEnabled="true">
 
-            </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -223,7 +247,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="210dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/main"
                 android:inputType="textPassword"
                 android:textColor="#636363"
                 android:textColorHint="#E1695E"
@@ -281,41 +305,40 @@
             android:layout_marginStart="44dp"
             android:text="@string/auth_phoneNum"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_signupPhoneNum"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_signupPhoneNum" />
+
 
         <TextView
             android:id="@+id/tv_signupPhoneNum"
             android:layout_width="210dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="64dp"
             android:layout_marginEnd="55dp"
-            android:background="@drawable/round_rectangle_locked"
+            android:background="@drawable/background_custom_waiting"
             android:gravity="center"
             android:textColor="#B6B6B6"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
             android:text="@string/NicknameGuideText"
             android:textColor="#8F8F8F"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/editTextNickname"
-            app:layout_constraintEnd_toEndOf="@+id/editTextNickname"
-            app:layout_constraintStart_toStartOf="@+id/nickname" />
-
+            android:textSize="11sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_signupPhoneNum"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/iv_psComplete"
@@ -332,6 +355,7 @@
             android:id="@+id/iv_psCheckComplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/textInputLayout_psCheck"
             app:layout_constraintTop_toTopOf="@+id/passwordCheck"
@@ -365,11 +389,11 @@
         android:id="@+id/btn_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0D70E6"
+        android:background="@color/main"
         android:fontFamily="sans-serif-medium"
         android:text="@string/SignupButtonText"
         android:textSize="18sp"
-        android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"

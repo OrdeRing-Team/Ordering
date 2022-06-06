@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:background="#F1F1F1">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="10dp"
+        android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,6 @@
             android:text="@string/title_payment"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,27 +63,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="20dp"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
             android:paddingBottom="100dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/round_rectangle_background_stroke_white_light_radius"
-                android:padding="15dp">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/tv_service"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_rectangle_background_stroke_main_light_radius"
+                    android:background="@drawable/background_custom_waiting"
                     android:padding="10dp"
                     android:text="매장 식사"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,12 +115,11 @@
                     android:id="@+id/tv_subtitle_store_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="25dp"
                     android:text="반반스프링스 경상대점"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/tv_subtitle_one"
                     app:layout_constraintTop_toBottomOf="@id/tv_subtitle_orderinfo" />
 
@@ -145,7 +142,6 @@
                     android:text="16번"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/tv_subtitle_two"
                     app:layout_constraintStart_toEndOf="@id/tv_subtitle_two"
                     app:layout_constraintTop_toTopOf="@id/tv_subtitle_two" />
@@ -188,7 +184,7 @@
                 <View
                     android:id="@+id/view_division_payment"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="0.7dp"
                     android:layout_marginTop="15dp"
                     android:background="@color/black"
                     app:layout_constraintTop_toBottomOf="@id/rv_menu_payment" />
@@ -221,7 +217,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/round_rectangle_background_stroke_white_light_radius"
                 android:paddingStart="15dp"
                 android:paddingTop="15dp"
@@ -432,7 +428,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/round_rectangle_background_stroke_white_light_radius"
                 android:paddingStart="15dp"
                 android:paddingTop="15dp"
@@ -559,7 +555,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/payment_guide"
                 android:textColor="@color/gray"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:layout_marginLeft="10dp"/>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

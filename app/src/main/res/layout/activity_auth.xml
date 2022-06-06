@@ -7,43 +7,41 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/auth_info"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/baeminjua"
-        android:text="OrdeRing"
-        android:textColor="#E1695E"
-        android:textSize="34sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/mainLogo"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="68dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="본인 인증"
+        android:textColor="@color/main"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainLogo" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintTop_toBottomOf="@+id/mainText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_phoneSignup"
@@ -67,8 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:text="휴대폰 번호"
+        android:textSize="16dp"
         android:textColor="#000000"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -76,13 +74,13 @@
         android:id="@+id/btn_sendSMS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="26dp"
-        android:layout_marginEnd="32dp"
-        android:background="#0D70E6"
-        android:fontFamily="sans-serif-medium"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/background_custom_waiting"
         android:text="인증번호 받기"
-        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
@@ -93,8 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:text="인증번호"
+        android:textSize="16dp"
         android:textColor="#000000"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -103,7 +101,7 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="64dp"
         android:backgroundTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,12 +127,13 @@
         android:id="@+id/btn_verifyCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="26dp"
-        android:layout_marginEnd="32dp"
-        android:background="#0D70E6"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/background_custom_waiting"
         android:text="인증번호 확인"
-        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
@@ -143,10 +142,10 @@
         android:id="@+id/tv_resend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="60dp"
         android:text="인증번호 재전송"
         android:textColor="#8C8888"
-        android:textStyle="bold"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
@@ -154,7 +153,7 @@
         android:id="@+id/tv_timerSec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="60dp"
         android:text="00"
         android:textColor="#000000"
         android:textSize="12sp"
@@ -198,8 +197,8 @@
 
     <ImageButton
         android:id="@+id/ib_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="#FFFFFF"

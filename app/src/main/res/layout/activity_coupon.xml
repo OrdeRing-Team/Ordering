@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_gray">
+    android:background="#F3F3F3">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_layout"
@@ -24,7 +24,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/ic_baseline_arrow_back_24"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +35,6 @@
             android:text="@string/CouponTitleText"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

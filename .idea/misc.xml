@@ -65,18 +65,20 @@
         <entry key="app/src/main/res/drawable/round_background.xml" value="0.163" />
         <entry key="app/src/main/res/drawable/shape_circle.xml" value="0.156" />
         <entry key="app/src/main/res/drawable/supervisor.xml" value="0.1735" />
-        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.2848731884057971" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_basket.xml" value="0.2038131713867187" />
         <entry key="app/src/main/res/layout/activity_coupon.xml" value="0.18490097525151183" />
         <entry key="app/src/main/res/layout/activity_event_webview.xml" value="0.16921997070312503" />
         <entry key="app/src/main/res/layout/activity_fav_store_list.xml" value="0.11413043478260869" />
         <entry key="app/src/main/res/layout/activity_full_vertical_recyclerview.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/activity_full_vertical_viewpager.xml" value="0.2801834106445313" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14990942028985507" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3401268115942029" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_orderlist_detail.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/activity_payment.xml" value="0.22291412353515622" />
         <entry key="app/src/main/res/layout/activity_qrscanner.xml" value="0.131890869140625" />
-        <entry key="app/src/main/res/layout/activity_signup.xml" value="0.22239583333333332" />
+        <entry key="app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19934143870314083" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_stores.xml" value="0.1" />
@@ -90,6 +92,7 @@
         <entry key="app/src/main/res/layout/custom_progressbar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_qr_scanner.xml" value="0.15501519756838905" />
         <entry key="app/src/main/res/layout/custom_store_info_dialog.xml" value="0.13722826086956522" />
+        <entry key="app/src/main/res/layout/dialog_waiting_info.xml" value="0.14990942028985507" />
         <entry key="app/src/main/res/layout/fragment_asian_western_food.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_cafe.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_chinese.xml" value="0.12291666666666666" />
