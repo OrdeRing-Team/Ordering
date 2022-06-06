@@ -517,6 +517,9 @@ public class MenuActivity extends BasicActivity {
 
                                             initReviewRecyclerView();
 
+                                            Log.e("storeLatitude", Double.toString(storeLatitude));
+                                            Log.e("storeLongitude", Double.toString(storeLongitude));
+
                                         }
                                     });
                                 }

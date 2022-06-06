@@ -2,40 +2,29 @@ package com.example.orderingproject;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.orderingproject.Dto.FoodDto;
-import com.example.orderingproject.Dto.ResultDto;
-import com.example.orderingproject.Dto.RetrofitService;
-import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.orderingproject.ENUM_CLASS.RestaurantType;
-import com.example.orderingproject.databinding.FragmentMenuListBinding;
 import com.example.orderingproject.databinding.FragmentStoreInfoBinding;
-
-import java.util.List;
-
-import lombok.SneakyThrows;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.MapView;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.NaverMapOptions;
+import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.Marker;
 
 
-public class StoreInfoFragment extends Fragment {
+public class StoreInfoFragment extends Fragment implements OnMapReadyCallback {
     private View view;
-
+    private MapView mapView;
+    private NaverMap naverMap;
     private FragmentStoreInfoBinding binding;
 
     @Override
@@ -45,10 +34,15 @@ public class StoreInfoFragment extends Fragment {
         binding = FragmentStoreInfoBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
+        mapView = binding.mapView;
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
         initView();
 
         return view;
     }
+
 
     @SuppressLint("SetTextI18n")
     public void initView(){
@@ -62,4 +56,58 @@ public class StoreInfoFragment extends Fragment {
         binding.tvStoreInfoTableCount.setText(Integer.toString(MenuActivity.tableCount)+"개");
     }
 
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap){
+
+        this.naverMap = naverMap;
+
+        //배경 지도 선택
+        naverMap.setMapType(NaverMap.MapType.Basic);
+
+        //위치 및 각도 조정
+        CameraPosition cameraPosition = new CameraPosition(
+                new LatLng(MenuActivity.storeLatitude, MenuActivity.storeLongitude),   // 위치 지정
+                17); // 줌 레벨
+        naverMap.setCameraPosition(cameraPosition);
+
+        Marker marker = new Marker();
+        marker.setPosition(new LatLng(MenuActivity.storeLatitude, MenuActivity.storeLongitude));
+        marker.setCaptionText(MenuActivity.restaurantNameForInfo);
+        marker.setMap(naverMap);
+
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
 }
