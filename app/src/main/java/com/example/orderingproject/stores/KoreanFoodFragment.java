@@ -115,6 +115,8 @@ public class KoreanFoodFragment extends Fragment {
                                             StoreRecyclerAdapter StoreAdapter = new StoreRecyclerAdapter(storeList, getContext());
                                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                             recyclerView.setAdapter(StoreAdapter);
+
+                                            ((StoresActivity)getActivity()).stopCustomProgress();
                                         }
                                     });
                                 }

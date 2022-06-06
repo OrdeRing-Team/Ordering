@@ -81,7 +81,6 @@ public class StoresActivity extends BasicActivity implements HomeFragment.OnAppl
                     });
         }
 
-        //startProgress(this);
 
         ImageButton btn_back = findViewById(R.id.btn_back);
         //뒤로가기 버튼 클릭 이벤트
@@ -132,6 +131,12 @@ public class StoresActivity extends BasicActivity implements HomeFragment.OnAppl
         }
     }
 
+    public void stopCustomProgress(){
+        stopProgress();
+    }
+    public void startCustomProgress(){
+        startProgress(this);
+    }
     @Override
     public void onCatagoryApplySelected(int longitude) {
 
