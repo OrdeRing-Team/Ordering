@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    //상단 + 탭바
+
     <LinearLayout
         android:id="@+id/top"
         android:layout_width="match_parent"
@@ -42,12 +42,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
-                android:fontFamily="@font/baeminjua"
+                android:layout_marginBottom="15dp"
                 android:text="OrdeRing"
                 android:textColor="@color/main"
-                android:textSize="34sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>

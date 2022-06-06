@@ -11,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.orderingproject.MenuActivity;
 import com.example.orderingproject.R;
+import com.example.orderingproject.favoriteStores.FavStoreAdapter;
 import com.example.orderingproject.favoriteStores.FavStoreData;
+import com.example.orderingproject.favoriteStores.FavStoreListActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -50,7 +53,9 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
                 public void onClick(View view) {
                     position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(context, MenuActivity.class);
+
+                        Log.e("리사이클러뷰 아이템", "클릭됨.");
+                        Intent intent = new Intent(itemView.getContext(), FavStoreListActivity.class);
                         intent.putExtra("activity", "storesActivity");
                         intent.putExtra("storeId", String.valueOf(arrayList.get(position).getRestaurantId()));
                         intent.putExtra("storeName", arrayList.get(position).getStoreName());
@@ -60,9 +65,11 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
                         if(profileImageUrl!= null) {
                             intent.putExtra("profileImageUrlfromStore", profileImageUrl);
                         }
+
                         if(backgroundImageUrl != null) {
                             intent.putExtra("backgroundImageUrlfromStore", backgroundImageUrl);
                         }
+
 
                         context.startActivity(intent);
 

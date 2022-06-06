@@ -131,7 +131,7 @@
             android:text="닫기"
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:background="@drawable/round_rectangle_background_stroke_white_light_radius"
+            android:background="@drawable/background_custom_waiting_grayline"
             android:layout_marginEnd="5dp"
             tools:ignore="HardcodedText" />
 
@@ -142,10 +142,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="8"
             android:text="장바구니에 담기"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textColor="@color/black"
             android:layout_marginStart="5dp"
-            android:background="@drawable/round_rectangle_background_stroke_main_light_radius"
+            android:background="@drawable/background_custom_waiting"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>

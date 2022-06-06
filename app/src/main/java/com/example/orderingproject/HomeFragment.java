@@ -60,8 +60,8 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    public static double longitude;
-    public static double latitude;
+    private double longitude;
+    private double latitude;
 
     int currentPage = SplashActivity.adapter.getItemCount() / 2;
 
@@ -125,6 +125,8 @@ public class HomeFragment extends Fragment {
 
 
                     Intent intent = new Intent(getActivity(), StoresActivity.class);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
                     startActivity(intent);
                 }
 
