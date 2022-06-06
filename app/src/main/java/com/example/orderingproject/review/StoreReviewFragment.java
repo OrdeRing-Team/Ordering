@@ -71,6 +71,11 @@ public class StoreReviewFragment extends Fragment {
         binding.ratingBar.setRating(reviewTotalRating);
         binding.tvRating.setText(Float.toString(reviewTotalRating));
 
+        if(reviewList.size() == 0){
+            binding.rvReview.setVisibility(View.GONE);
+            binding.clEmptyReview.setVisibility(View.VISIBLE);
+        }
+
         RecyclerView recyclerView = binding.rvReview;
         ReviewListAdapter reviewListAdapter = new ReviewListAdapter(reviewList, getContext(), binding.clEmptyReview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

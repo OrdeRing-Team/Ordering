@@ -21,6 +21,7 @@ import com.example.orderingproject.Dto.response.MyWaitingInfoDto;
 import com.example.orderingproject.Dto.response.OrderDetailDto;
 import com.example.orderingproject.Dto.response.OrderPreviewDto;
 import com.example.orderingproject.Dto.response.OrderPreviewWithRestSimpleDto;
+import com.example.orderingproject.Dto.response.RecentOrderRestaurantDto;
 import com.example.orderingproject.Dto.response.RepresentativeMenuDto;
 import com.example.orderingproject.Dto.response.RestaurantInfoDto;
 import com.example.orderingproject.Dto.response.RestaurantPreviewWithDistanceDto;
@@ -194,6 +195,6 @@ public interface RetrofitService {
 
 	// 최근 주문 매장 리스트 가져오기
 	@GET("/api/customer/{customerId}/orders/recent")
-	Call<ResultDto<List<RestaurantPreviewDto>>> getRecentOrderList(@Path("customerId") Long customerId);
+	Call<ResultDto<List<RecentOrderRestaurantDto>>> getRecentOrderList(@Path("customerId") Long customerId);
 
 }

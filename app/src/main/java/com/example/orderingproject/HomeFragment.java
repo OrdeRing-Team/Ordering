@@ -33,6 +33,7 @@ import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.RestaurantPreviewDto;
+import com.example.orderingproject.Dto.response.RecentOrderRestaurantDto;
 import com.example.orderingproject.Dto.response.ReviewPreviewDto;
 import com.example.orderingproject.databinding.FragmentHomeBinding;
 import com.example.orderingproject.favoriteStores.FavStoreListActivity;
@@ -316,19 +317,19 @@ public class HomeFragment extends Fragment {
                 @SneakyThrows
                 public void run(){
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/restaurant/" + UserInfo.getCustomerId() + "/reviews/")
+                            .baseUrl("http://www.ordering.ml/api/customer/"+UserInfo.getCustomerId()+"/orders/recent/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<RestaurantPreviewDto>>> call = service.getRecentOrderList(UserInfo.getCustomerId());
+                    Call<ResultDto<List<RecentOrderRestaurantDto>>> call = service.getRecentOrderList(UserInfo.getCustomerId());
 
-                    call.enqueue(new Callback<ResultDto<List<RestaurantPreviewDto>>>() {
+                    call.enqueue(new Callback<ResultDto<List<RecentOrderRestaurantDto>>>() {
                         @Override
-                        public void onResponse(Call<ResultDto<List<RestaurantPreviewDto>>> call, Response<ResultDto<List<RestaurantPreviewDto>>> response) {
+                        public void onResponse(Call<ResultDto<List<RecentOrderRestaurantDto>>> call, Response<ResultDto<List<RecentOrderRestaurantDto>>> response) {
 
                             if (response.isSuccessful()) {
-                                ResultDto<List<RestaurantPreviewDto>> result;
+                                ResultDto<List<RecentOrderRestaurantDto>> result;
                                 result = response.body();
                                 if (!result.getData().isEmpty()) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -350,7 +351,7 @@ public class HomeFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<ResultDto<List<RestaurantPreviewDto>>> call, Throwable t) {
+                        public void onFailure(Call<ResultDto<List<RecentOrderRestaurantDto>>> call, Throwable t) {
                             Toast.makeText(getActivity(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                         }
