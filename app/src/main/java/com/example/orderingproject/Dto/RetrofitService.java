@@ -100,6 +100,8 @@ public interface RetrofitService {
 	@GET("/api/restaurant/{restaurant_id}/info")
 	Call<ResultDto<RestaurantInfoDto>> getStoreNoticeAndCoordinate(@Path("restaurant_id") Long restaurantId);
 
+	/** 장바구니 관련 **/
+
 	// 장바구니 메뉴 추가
 	// 쿼리가 포함된 주소는 아래와 같이 사용
 	// http://www.ordering.ml/api/order/basket?customer_id={customer_id}&restaurant_id={restaurant_id}
@@ -114,6 +116,10 @@ public interface RetrofitService {
 	Call<ResultDto<Boolean>> deleteBasket(@Path("basketId") Long basketId,
 									   @Query(value = "customer_id") Long customerId);
 
+	// 장바구니 비우기
+	@DELETE("api/order/baskets")
+	Call<ResultDto<Boolean>> clearBasket(@Query(value = "customer_id") Long customerId);
+
 	// 장바구니 목록 불러오기
 	@POST("/api/customer/{customerId}/baskets")
 	Call<ResultDto<BasketListResultDto>> getBasketList(@Path("customerId") Long customerId);
@@ -126,6 +132,8 @@ public interface RetrofitService {
 	@PUT("/api/order/baskets")
 	Call<ResultDto<Boolean>> modifyBasketCount(@Query(value = "customer_id") Long customerId,
 											   @Body List<BasketPutDto> countChangedList);
+
+	/** 주문 관련 **/
 
 	// 고객 주문 취소
 	@POST("/api/order/{order_id}/cancel")

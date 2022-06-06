@@ -1,11 +1,8 @@
 package com.example.orderingproject;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.Outline;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -14,28 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.orderingproject.Dialog.CustomDialog;
 import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
 import com.example.orderingproject.Dialog.CustomMenuOptionDialogListener;
-import com.example.orderingproject.Dialog.CustomStoreDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.BasketRequestDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -49,6 +42,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
     HashMap<Long, Long> representMenuHashMap;
     Context context;
     public CustomMenuOptionDialog dialog;
+    public CustomDialog errorDialog;
+
+    View.OnClickListener positiveButton;
+    View.OnClickListener negativeButton;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         //        adapter의 viewHolder에 대한 inner class (setContent()와 비슷한 역할)
@@ -167,61 +164,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
                     dialog.setDialogListener(new CustomMenuOptionDialogListener() {
                         @Override
                         public void onAddBasketButtonClicked(Long foodId, int totalPrice, int totalCount) {
-                            try {
-                                new Thread() {
-                                    @SneakyThrows
-                                    public void run() {
-                                        String url = "http://www.ordering.ml/";
-
-                                        BasketRequestDto basketDto = new BasketRequestDto(foodId, totalPrice, totalCount);
-                                        Retrofit retrofit = new Retrofit.Builder()
-                                                .baseUrl(url)
-                                                .addConverterFactory(GsonConverterFactory.create())
-                                                .build();
-
-                                        RetrofitService service = retrofit.create(RetrofitService.class);
-                                        Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(), Long.valueOf(MenuActivity.store), basketDto);
-
-                                        call.enqueue(new Callback<ResultDto<Boolean>>() {
-                                            @Override
-                                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
-
-                                                if (response.isSuccessful()) {
-                                                    ResultDto<Boolean> result;
-                                                    result = response.body();
-                                                    if (result.getData()) {
-                                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                UserInfo.addBasketCount(totalCount);
-                                                                // MenuActivity.setBasketCount(totalCount);
-                                                                MenuActivity.updateBasket();
-                                                                Toast.makeText(holder.itemView.getContext(), "장바구니에 메뉴를 추가했습니다.", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-                                                        Log.e("result.getData() ", Boolean.toString(result.getData()));
-                                                    }else{
-                                                        Log.e("result.getData()","false");
-                                                    }
-                                                }
-                                                else{
-                                                    Log.e("response","failed");
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
-                                                Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                                                Log.e("e = ", t.getMessage());
-                                            }
-                                        });
-                                    }
-                                }.start();
-
-                            } catch (Exception e) {
-                                Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
-                                Log.e("e = ", e.getMessage());
-                            }
+                            addOnBasket(foodId, totalPrice, totalCount, holder);
+                            Log.e("onAddBasketButtonClicked","실행");
                         }
                     });
                     dialog.show();
@@ -229,8 +173,72 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
                 }
             });
         }
+        positiveButton = view -> {
 
-    };
+            errorDialog.showProgress();
+            try {
+                new Thread() {
+                    @SneakyThrows
+                    public void run() {
+                        String url = "http://www.ordering.ml/";
+
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(url)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        RetrofitService service = retrofit.create(RetrofitService.class);
+                        Call<ResultDto<Boolean>> call =
+                                service.clearBasket(UserInfo.getCustomerId());
+
+                        call.enqueue(new Callback<ResultDto<Boolean>>() {
+                            @Override
+                            public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                                if (response.isSuccessful()) {
+
+                                    ResultDto<Boolean> result;
+                                    result = response.body();
+                                    if (result.getData()) {
+                                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                UserInfo.setBasketCount(0);
+                                                MenuActivity.updateBasket();
+                                                addOnBasket(errorDialog.getFoodId(), errorDialog.getTotalPrice(), errorDialog.getTotalCount(), holder);
+                                                errorDialog.dismiss();
+                                            }
+                                        });
+                                        Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                    }else{
+                                        Log.e("result.getData() ", "false");
+                                        errorDialog.dismiss();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                                Toast.makeText(holder.itemView.getContext(), "장바구니를 초기화 하는 중 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                                Log.e("e = ", t.getMessage());
+                                errorDialog.dismiss();
+                            }
+                        });
+                    }
+                }.start();
+
+            } catch (Exception e) {
+                Toast.makeText(holder.itemView.getContext(), "장바구니를 초기화 하는 중 일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                Log.e("e = ", e.getMessage());
+                errorDialog.dismiss();
+            }
+        };
+
+        negativeButton = view -> {
+            errorDialog.dismiss();
+        };
+
+    }
 
     @Override
     public int getItemCount() {
@@ -243,5 +251,70 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.CustomViewHold
         notifyDataSetChanged();
     }
 
+    private void addOnBasket(Long foodId, int totalPrice, int totalCount, CustomViewHolder holder) {
+        try {
+            new Thread() {
+                @SneakyThrows
+                public void run() {
+                    Log.e("장바구니 담기 버튼", "클릭");
+                    String url = "http://www.ordering.ml/";
+
+                    BasketRequestDto basketDto = new BasketRequestDto(foodId, totalPrice, totalCount);
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    Call<ResultDto<Boolean>> call = service.addBasket(UserInfo.getCustomerId(), Long.valueOf(MenuActivity.store), basketDto);
+
+                    call.enqueue(new Callback<ResultDto<Boolean>>() {
+                        @Override
+                        public void onResponse(Call<ResultDto<Boolean>> call, Response<ResultDto<Boolean>> response) {
+
+                            if (response.isSuccessful()) {
+                                ResultDto<Boolean> result;
+                                result = response.body();
+                                if (result.getData()) {
+                                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            UserInfo.addBasketCount(totalCount);
+                                            // MenuActivity.setBasketCount(totalCount);
+                                            MenuActivity.updateBasket();
+                                            Toast.makeText(holder.itemView.getContext(), "장바구니에 메뉴를 추가했습니다.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                    Log.e("result.getData() ", Boolean.toString(result.getData()));
+                                } else {
+                                    errorDialog = new CustomDialog(
+                                            context,
+                                            "현재 장바구니에 다른 매장의 메뉴가 담겨 있습니다.",
+                                            "이전에 담긴 메뉴를 삭제하고 새로 담으시겠습니까?",
+                                            "담기", "취소",
+                                            positiveButton, negativeButton, "#000000", foodId, totalPrice, totalCount);
+
+                                    errorDialog.show();
+
+                                }
+                            } else {
+                                Log.e("response", "failed");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultDto<Boolean>> call, Throwable t) {
+                            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+                            Log.e("e = ", t.getMessage());
+                        }
+                    });
+                }
+            }.start();
+
+        } catch (Exception e) {
+            Toast.makeText(holder.itemView.getContext(), "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
+            Log.e("e = ", e.getMessage());
+        }
+    }
 }
 

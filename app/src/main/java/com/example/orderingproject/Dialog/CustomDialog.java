@@ -27,6 +27,9 @@ public class CustomDialog extends Dialog {
     String negativeButtonText;
     TextView messages;
     String contentsColor;
+
+    Long foodId;
+    int totalPrice, totalCount;
     int absolutePosition;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -73,7 +76,27 @@ public class CustomDialog extends Dialog {
         this.positiveButton = positiveButton;
         this.negativeButton = negativeButton;
     }
+    public CustomDialog(@NonNull Context context,
+                        String title,
+                        String contents,
+                        String positiveButtonText,
+                        String negativeButtonText,
+                        View.OnClickListener positiveButton,
+                        View.OnClickListener negativeButton, String contentsColor,
+                        Long foodId, int totalPrice, int totalCount){
+        super(context);
 
+        this.title = title;
+        this.contents = contents;
+        this.positiveButtonText = positiveButtonText;
+        this.negativeButtonText = negativeButtonText;
+        this.positiveButton = positiveButton;
+        this.negativeButton = negativeButton;
+        this.contentsColor = contentsColor;
+        this.foodId = foodId;
+        this.totalPrice = totalPrice;
+        this.totalCount = totalCount;
+    }
     public CustomDialog(@NonNull Context context,
                         String title,
                         String contents,
@@ -128,5 +151,17 @@ public class CustomDialog extends Dialog {
 
     public int getAbsolutePosition(){
         return absolutePosition;
+    }
+
+    public Long getFoodId(){
+        return foodId;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
     }
 }
