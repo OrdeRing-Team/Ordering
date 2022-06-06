@@ -23,6 +23,7 @@ import com.example.orderingproject.HomeFragment;
 import com.example.orderingproject.R;
 import com.example.orderingproject.databinding.FragmentAsianWesternFoodBinding;
 import com.example.orderingproject.databinding.FragmentKoreanFoodBinding;
+import com.example.orderingproject.favoriteStores.FavStoreData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class AsianWesternFoodFragment extends Fragment {
                                         public void run() {
                                             result.getData().forEach(restaurantPreviewWithDistanceDto ->{
                                                 //restaurantPreviewWithDistanceDto.getDistanceMeter();
-                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
+                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus(), restaurantPreviewWithDistanceDto.getRestaurantId(), restaurantPreviewWithDistanceDto.getBackgroundImageUrl()));
                                                 Log.e("매장명", restaurantPreviewWithDistanceDto.getRestaurantName());
                                             });
 

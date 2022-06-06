@@ -2,6 +2,7 @@ package com.example.orderingproject.stores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.orderingproject.favoriteStores.FavStoreData;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.CustomViewHolder>{
     ArrayList<StoreData> arrayList;
@@ -44,7 +46,25 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Intent intent = new Intent(context, MenuActivity.class);
+                        intent.putExtra("activity", "storesActivity");
+                        intent.putExtra("storeId", String.valueOf(arrayList.get(position).getRestaurantId()));
+                        intent.putExtra("storeName", arrayList.get(position).getStoreName());
+                        String profileImageUrl = arrayList.get(position).getStoreIcon();
+                        String backgroundImageUrl = arrayList.get(position).getStoreSigMenu();
 
+                        if(profileImageUrl!= null) {
+                            intent.putExtra("profileImageUrlfromStore", profileImageUrl);
+                        }
+                        if(backgroundImageUrl != null) {
+                            intent.putExtra("backgroundImageUrlfromStore", backgroundImageUrl);
+                        }
+
+                        context.startActivity(intent);
+
+                    }
                 }
             });
         }
@@ -84,8 +104,8 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         // onBindViewHolder: put data of item list into xml widgets
         // xml의 위젯과 데이터를 묶는(연결하는, setting하는) 작업.
         // position에 해당하는 data, viewHolder의 itemView에 표시함
-        holder.tv_storeName.setText(arrayList.get(position).getTitle());
-        String imageURL = String.valueOf(arrayList.get(position).getImage());
+        holder.tv_storeName.setText(arrayList.get(position).getStoreName());
+        String imageURL = String.valueOf(arrayList.get(position).getStoreIcon());
         if (imageURL.equals("null")) {
             Glide.with(holder.itemView.getContext()).load(R.drawable.icon).into(holder.iv_storeIcon);
         }
@@ -93,12 +113,12 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
             Glide.with(holder.itemView.getContext()).load(imageURL).into(holder.iv_storeIcon);
         }
 
-        if (arrayList.get(position).getContent().size() == 0) {
+        if (arrayList.get(position).getStoreSigMenus().size() == 0) {
             holder.tv_storeSigMenus.setText("대표 메뉴가 없습니다.");
         }
         else {
             // [, ] 제거
-            String content = String.valueOf(arrayList.get(position).getContent());
+            String content = String.valueOf(arrayList.get(position).getStoreSigMenus());
             String sigMenus = content.substring(1, content.length()-1);
             holder.tv_storeSigMenus.setText(sigMenus);
         }

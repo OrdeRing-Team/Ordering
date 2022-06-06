@@ -204,6 +204,31 @@ public class MenuActivity extends BasicActivity {
                     break;
 
 
+                case "storesActivity":
+                    Log.e("this Intent", "came from storesActivity");
+                    fromTo = "storesActivity";
+                    store = getIntent().getStringExtra("storeId");
+                    restaurantName = getIntent().getStringExtra("storeName");
+                    profileImageUrl = getIntent().getStringExtra("profileImageUrlfromStore");
+                    backgroundImageUrl = getIntent().getStringExtra("backgroundImageUrlfromStore");
+                    service = "takeout";
+
+                    Glide.with(this).load(profileImageUrl).into(binding.ivStoreIcon);
+                    Glide.with(this).load(backgroundImageUrl).into(binding.ivSigmenu);
+                    binding.tvStoreName.setText(restaurantName);
+                    if (profileImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivStoreIcon);
+                    if (backgroundImageUrl == null)
+                        Glide.with(this).load(R.drawable.icon).into(binding.ivSigmenu);
+                    stopProgress();
+                    updateBasket();
+
+                    if (basketCount > 0) {
+                        binding.tvBasketcount.setVisibility(View.VISIBLE);
+                        binding.tvBasketcount.setText(Integer.toString(basketCount));
+                    }
+                    break;
+
                 default:
                     Log.e("this Intent", "came from waitingFrag");
                     fromTo = "waitingFrag";

@@ -102,7 +102,7 @@ public class PizzaFragment extends Fragment {
                                         public void run() {
                                             result.getData().forEach(restaurantPreviewWithDistanceDto ->{
                                                 //restaurantPreviewWithDistanceDto.getDistanceMeter();
-                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
+                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus(), restaurantPreviewWithDistanceDto.getRestaurantId(), restaurantPreviewWithDistanceDto.getBackgroundImageUrl()));
                                                 Log.e("매장명", restaurantPreviewWithDistanceDto.getRestaurantName());
                                             });
 

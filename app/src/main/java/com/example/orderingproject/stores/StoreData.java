@@ -3,48 +3,58 @@ package com.example.orderingproject.stores;
 import java.util.List;
 
 public class StoreData {
-    String image;
-    String title;
-    List content;
-    String score;
+    String storeIcon;
+    String storeName;
+    List<String> storeSigMenus;
+    Long restaurantId;
+    String storeSigMenu;
 
 
-    public StoreData(String image, String title, List<String> content) {
-        this.image = image;
-        this.title = title;
-        this.content = content;
+    public StoreData(String storeIcon, String storeName, List<String> storeSigMenus, Long restaurantId, String storeSigMenu) {
+        this.storeIcon = storeIcon;
+        this.storeName = storeName;
+        this.storeSigMenus = storeSigMenus;
+        this.restaurantId = restaurantId;
+        this.storeSigMenu = storeSigMenu;
     }
 
-    public String getTitle() {
-        return title;
+    public String getStoreIcon() {
+        return storeIcon;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStoreIcon(String storeIcon) {
+        this.storeIcon = storeIcon;
     }
 
-    public List getContent() {
-        return content;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setContent(List content) {
-        this.content = content;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
-    public String getScore() {
-        return score;
+    public List<String> getStoreSigMenus() {
+        return storeSigMenus;
     }
 
-    public void setScore(String score) {
-        this.score = score;
+    public void setStoreSigMenus(List<String> storeSigMenus) {
+        this.storeSigMenus = storeSigMenus;
     }
 
-    public String getImage() {
-        return image;
+    public Long getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
+    public String getStoreSigMenu() {
+        return storeSigMenu;
+    }
+
+    public void setStoreSigMenu(String storeSigMenu) {
+        this.storeSigMenu = storeSigMenu;
+    }
 }

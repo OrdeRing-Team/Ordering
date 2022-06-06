@@ -94,8 +94,14 @@ public class KoreanFoodFragment extends Fragment {
                                         public void run() {
                                             result.getData().forEach(restaurantPreviewWithDistanceDto ->{
                                                 //restaurantPreviewWithDistanceDto.getDistanceMeter();
-                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(), restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
+                                                storeList.add(new StoreData(restaurantPreviewWithDistanceDto.getProfileImageUrl(), restaurantPreviewWithDistanceDto.getRestaurantName(),
+                                                        restaurantPreviewWithDistanceDto.getRepresentativeMenus(), restaurantPreviewWithDistanceDto.getRestaurantId(), restaurantPreviewWithDistanceDto.getBackgroundImageUrl()));
                                                 Log.e("매장명", restaurantPreviewWithDistanceDto.getRestaurantName());
+                                                Log.e("imageurl",String.valueOf(restaurantPreviewWithDistanceDto.getProfileImageUrl()));
+                                                Log.e("represent menu", String.valueOf(restaurantPreviewWithDistanceDto.getRepresentativeMenus()));
+                                                Log.e("restaurant id", String.valueOf(restaurantPreviewWithDistanceDto.getRestaurantId()));
+                                                Log.e("backgroundimage url", String.valueOf(restaurantPreviewWithDistanceDto.getBackgroundImageUrl()));
+
                                             });
 
                                             // 주변 매장이 없을 경우 예외 처리
