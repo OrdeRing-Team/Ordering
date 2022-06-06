@@ -4,11 +4,10 @@
     android:id="@+id/cl_baselayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:background="@drawable/background_custom_grayline"
-    android:padding="15dp">
+    android:background="@color/white"
+    android:padding="20dp"
+    android:layout_marginBottom="0.7dp"
+    android:elevation="5dp">
 
     <TextView
         android:id="@+id/tv_order_out_cancel"
@@ -25,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2020-20-20 14:00"
+        android:textSize="12dp"
         android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_order_out_cancel" />
@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="포장"
-        android:textColor="@color/gray"
-        android:textStyle="bold"
+        android:textSize="12dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/tv_order_out_day"
         app:layout_constraintStart_toEndOf="@id/tv_order_out_day"
         app:layout_constraintTop_toTopOf="@id/tv_order_out_day" />
@@ -68,7 +68,8 @@
         android:id="@+id/item_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_order_out_order_number"
@@ -95,24 +96,14 @@
                 android:id="@+id/tv_order_out_store_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="반반스프링스 경상대점"
+                android:text="매장명 >"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
+                android:paddingRight="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text=">"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_order_out_store_name"
-                app:layout_constraintStart_toEndOf="@id/tv_order_out_store_name"
-                app:layout_constraintTop_toTopOf="@id/tv_order_out_store_name" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -123,7 +114,8 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="아메리카노(ICE) 1개, 헤이즐넛아메리카노(ICE) 2개"
-            android:textColor="@color/black"
+            android:textSize="13dp"
+            android:textColor="#6A6A6A"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_order_out_store_name" />
 
@@ -143,32 +135,36 @@
         android:id="@+id/cl_review_write"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_order_out_inner"
         android:layout_marginTop="10dp"
         android:background="@drawable/round_rectangle_locked"
-        android:backgroundTint="@color/light_main"
-        android:padding="5dp"
+        android:backgroundTint="@color/white"
         android:clickable="true"
-        android:layout_marginBottom="10dp">
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_order_out_inner"
+        app:layout_constraintVertical_bias="0.238">
 
         <ImageView
             android:id="@+id/iv_review_write"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/ic_baseline_edit_24"
+            android:backgroundTint="@color/main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_review_write"
-            android:background="@drawable/ic_baseline_edit_24"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_review_write"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="리뷰 작성하기"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
+            android:textColor="@color/main"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_review_write"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_review_write"
-            app:layout_constraintBottom_toBottomOf="@id/iv_review_write"/>
+            app:layout_constraintTop_toTopOf="@id/iv_review_write" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -165,7 +165,7 @@
                         android:layout_gravity="top"
                         android:background="@color/fui_transparent"
                         android:text="QR코드"
-                        android:textSize="18dp"
+                        android:textSize="17dp"
                         android:textStyle="bold"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
@@ -228,7 +228,7 @@
                         android:layout_gravity="top"
                         android:background="@color/fui_transparent"
                         android:text="추천매장"
-                        android:textSize="18dp"
+                        android:textSize="17dp"
                         android:textStyle="bold"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="15dp"
@@ -299,14 +299,16 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recent_order"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/rv_recent_order"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <LinearLayout
                     android:id="@+id/ll_empty_recent"

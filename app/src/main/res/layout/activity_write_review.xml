@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".WriteReviewActivity">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WriteReviewActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_layout"
@@ -63,31 +59,33 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/top_layout"
-            tools:layout_editor_absoluteX="0dp">
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            tools:ignore="ScrollViewSize">
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F3F3F3"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
-                    android:elevation="1dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="80dp"
                         android:gravity="center"
                         android:text="주문한 메뉴에 대한 후기를 남겨주세요."
                         android:textColor="#6C6C6C"
@@ -97,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="40dp"
+                        android:layout_marginBottom="60dp"
                         android:gravity="center"
                         android:text="매장 운영에 큰 도움이 돼요 !"
                         android:textColor="#6C6C6C"
@@ -118,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:isIndicator="false"
                         android:progressTint="#FFEB3B"
                         android:stepSize="1"
@@ -133,7 +131,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="50dp"
                         android:background="#F6F6F6"
                         android:hint="음식의 맛, 양, 포장 상태 등 \n음식에 대한 솔직한 후기를 남겨주세요 :)"
                         android:inputType="textMultiLine"
@@ -190,11 +188,11 @@
                             android:id="@+id/cv_review_image_uploaded"
                             android:layout_width="350dp"
                             android:layout_height="350dp"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginTop="10dp"
                             android:backgroundTint="@color/white"
-                            app:cardCornerRadius="20dp"
                             android:elevation="20dp"
-                            android:layout_gravity="center_horizontal"
+                            app:cardCornerRadius="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_review_profile">
@@ -211,18 +209,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
                             android:text="다시 선택하시려면 사진을 터치하세요"
-                            android:textColor="@color/gray"
-                            android:layout_marginTop="5dp" />
+                            android:textColor="@color/gray" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
 
-        </ScrollView>
+            </ScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

@@ -122,6 +122,7 @@ public class MenuActivity extends BasicActivity {
         reviewTotalRating = 0;
         storeLatitude = 0;
         storeLongitude = 0;
+
         if (getIntent() != null) {
             switch (getIntent().getStringExtra("activity")) {
                 case "fromQR":

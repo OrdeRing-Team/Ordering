@@ -88,7 +88,7 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
             holder.tv_orderOutCancel.setVisibility(View.VISIBLE);
         }
 
-        holder.tv_orderOutStoreName.setText(arrayList.get(position).getRestaurantName());
+        holder.tv_orderOutStoreName.setText(arrayList.get(position).getRestaurantName() + " >");
 
         holder.tv_orderOutDay.setText(String.valueOf(arrayList.get(position).getReceivedTime()));
         holder.tv_orderOutType.setText(arrayList.get(position).getOrderType() == TABLE ?

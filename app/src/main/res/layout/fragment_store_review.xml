@@ -14,10 +14,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/extra_light_gray">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:elevation="3dp"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -231,6 +233,7 @@
         android:id="@+id/rv_review"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="20dp"
         android:background="@color/white" />
 
 

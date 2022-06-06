@@ -4,7 +4,7 @@
     android:id="@+id/cl_baselayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/background_custom_waiting"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
