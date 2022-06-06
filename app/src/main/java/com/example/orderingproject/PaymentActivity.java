@@ -146,7 +146,6 @@ public class PaymentActivity extends BasicActivity {
                                         public void run() {
                                             stopProgress();
                                             orderId = result.getData();
-                                            Toast.makeText(PaymentActivity.this, "주문이 요청되었습니다.",Toast.LENGTH_SHORT).show();
                                             UserInfo.setBasketCount(0);
                                             if(selectedCouponId == null || selectedCouponId == 0){
                                                 Intent intent = new Intent(PaymentActivity.this, BasketActivity.class);
@@ -237,7 +236,7 @@ public class PaymentActivity extends BasicActivity {
         startProgress(this);
         store = getIntent().getStringExtra("store");
         service = getIntent().getStringExtra("service");
-        restaurantName = getIntent().getStringExtra("restaurantName");
+        restaurantName = MenuActivity.restaurantNameForInfo;
 
         getBasketListFromServer();
     }

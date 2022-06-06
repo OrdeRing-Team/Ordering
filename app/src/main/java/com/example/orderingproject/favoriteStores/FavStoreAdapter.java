@@ -44,6 +44,7 @@ public class FavStoreAdapter extends RecyclerView.Adapter<FavStoreAdapter.Custom
             //item 에 대한 클릭 이벤트 설정
             tv_storeName = itemView.findViewById(R.id.tv_storeName);
             iv_storeIcon = itemView.findViewById(R.id.iv_storeIcon);
+            tv_storeSigMenus = itemView.findViewById(R.id.tv_storeSigMenus);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,6 +114,17 @@ public class FavStoreAdapter extends RecyclerView.Adapter<FavStoreAdapter.Custom
         else {
             Glide.with(holder.itemView.getContext()).load(storeIcon).into(holder.iv_storeIcon);
         }
+
+        if (arrayList.get(position).getStoreSigMenus().size() == 0) {
+            holder.tv_storeSigMenus.setText("대표 메뉴가 없습니다.");
+        }
+        else {
+            // [, ] 제거
+            String content = String.valueOf(arrayList.get(position).getStoreSigMenus());
+            String sigMenus = content.substring(1, content.length()-1);
+            holder.tv_storeSigMenus.setText(sigMenus);
+        }
+
 
     }
 

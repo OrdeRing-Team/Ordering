@@ -26,26 +26,24 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrdeRingProject/app/src/main/res/xml/gathering_things_scene.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrdeRingProject/app/src/main/res/xml/intro_background_scene.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/OrdeRingProject/app/src/main/res/xml/network_security_config.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable-v24/background_custom_grayline.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable-v24/background_payment_unselected.xml" value="0.107" />
         <entry key="app/src/main/res/drawable-v24/background_splash.xml" value="0.156" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_arrow_back_24.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_close_24_sizeup.xml" value="0.188" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_error_outline_24.xml" value="0.147" />
+        <entry key="app/src/main/res/drawable-v24/ic_error_gray.xml" value="0.139" />
         <entry key="app/src/main/res/drawable-v24/menumanage1_custom.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_black_light_radius.xml" value="0.1735" />
+        <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_blue_radius.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_heavy.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_main_light_radius.xml" value="0.1735" />
+        <entry key="app/src/main/res/drawable-v24/round_rectangle_background_stroke_white_light_radius.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable-v24/round_rectangle_locked.xml" value="0.156" />
         <entry key="app/src/main/res/drawable-v24/top_round_rectangle_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_custom.xml" value="0.147" />
-        <entry key="app/src/main/res/drawable/background_custom_btn_clicked.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/background_custom_gray.xml" value="0.1495" />
-        <entry key="app/src/main/res/drawable/background_custom_rectanagle_grayline.xml" value="0.1875" />
-        <entry key="app/src/main/res/drawable/background_custom_waiting.xml" value="0.1875" />
-        <entry key="app/src/main/res/drawable/background_custom_waiting_grayline.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/background_intro_title.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/background_payment_selected.xml" value="0.107" />
         <entry key="app/src/main/res/drawable/cardview_background.xml" value="0.101" />
@@ -73,14 +71,14 @@
         <entry key="app/src/main/res/layout/activity_full_vertical_recyclerview.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/activity_full_vertical_viewpager.xml" value="0.2801834106445313" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3401268115942029" />
-        <entry key="app/src/main/res/layout/activity_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_menu.xml" value="0.4099288940429688" />
+        <entry key="app/src/main/res/layout/activity_orderlist_detail.xml" value="0.251865671641791" />
         <entry key="app/src/main/res/layout/activity_payment.xml" value="0.22291412353515622" />
         <entry key="app/src/main/res/layout/activity_qrscanner.xml" value="0.131890869140625" />
-        <entry key="app/src/main/res/layout/activity_signup.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19934143870314083" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_stores.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_write_review.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_write_review.xml" value="0.24343944974952902" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_login.xml" value="0.19315940174147314" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_notice.xml" value="0.18638406095519922" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.2848731884057971" />
@@ -98,13 +96,14 @@
         <entry key="app/src/main/res/layout/fragment_fast_food.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1347160449926404" />
         <entry key="app/src/main/res/layout/fragment_japanese_food.xml" value="0.26132246376811596" />
-        <entry key="app/src/main/res/layout/fragment_jokbal_bossam.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/fragment_korean_food.xml" value="0.26132246376811596" />
         <entry key="app/src/main/res/layout/fragment_menu_list.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_orderlist.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_orderlist.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_pizza.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_snack_bar.xml" value="0.26132246376811596" />
+        <entry key="app/src/main/res/layout/fragment_store_info.xml" value="0.24196675618489577" />
         <entry key="app/src/main/res/layout/fragment_soup.xml" value="0.13697916666666668" />
         <entry key="app/src/main/res/layout/fragment_store_info.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/fragment_store_review.xml" value="0.22239583333333332" />
@@ -113,13 +112,14 @@
         <entry key="app/src/main/res/layout/item_bucket.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/item_coupon.xml" value="0.3607305936073059" />
         <entry key="app/src/main/res/layout/item_event.xml" value="0.23324275362318841" />
-        <entry key="app/src/main/res/layout/item_fav_store.xml" value="0.14990942028985507" />
         <entry key="app/src/main/res/layout/item_full_vertical_viewpager.xml" value="0.2848731884057971" />
         <entry key="app/src/main/res/layout/item_menu.xml" value="0.22239583333333332" />
-        <entry key="app/src/main/res/layout/item_order_in_progress.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_order_out_progress.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_order_in_progress.xml" value="0.13372335979941496" />
+        <entry key="app/src/main/res/layout/item_order_out_progress.xml" value="0.28587341308593756" />
         <entry key="app/src/main/res/layout/item_payment.xml" value="0.4084468992285454" />
+        <entry key="app/src/main/res/layout/item_recent_order.xml" value="0.24784478942373073" />
         <entry key="app/src/main/res/layout/item_represent.xml" value="0.11684782608695653" />
+        <entry key="app/src/main/res/layout/item_review.xml" value="0.20176544189453127" />
         <entry key="app/src/main/res/layout/item_store.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_intro_title.xml" value="0.16210739614994935" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.11684782608695653" />

@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:isIndicator="true"
                     android:progressTint="#FFEB3B"
-                    android:stepSize="0.1"
+                    android:stepSize="1"
                     android:theme="@style/RatingBar" />
 
             </LinearLayout>
