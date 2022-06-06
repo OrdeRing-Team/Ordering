@@ -234,7 +234,7 @@ public class OrderlistDetailActivity extends BasicActivity {
                 binding.tvOrderDetailCompleteTimeHeader.setVisibility(View.VISIBLE);
                 binding.tvOrderDetailCompleteTime.setVisibility(View.VISIBLE);
                 binding.tvOrderDetailCompleteTime.setText(convertDateToMyFormat(cancelOrCompletedTimeOriginal));
-                binding.clRemainTime.setBackground(getDrawable(R.drawable.round_rectangle_background_stroke_blue_radius));
+                binding.clRemainTime.setBackground(getDrawable(R.drawable.background_custom_waiting_grayline));
                 binding.tvRemainTimeHeader.setText("주문완료");
                 binding.tvComplete.setTextColor(getColor(R.color.blue));
                 binding.tvCheck.setTextColor(getColor(R.color.gray));
