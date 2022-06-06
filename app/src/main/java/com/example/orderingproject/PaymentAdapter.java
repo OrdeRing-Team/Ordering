@@ -22,9 +22,12 @@ import com.bumptech.glide.Glide;
 import com.example.orderingproject.Dialog.CustomMenuOptionDialog;
 import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
+import com.example.orderingproject.Dto.response.BasketFoodDto;
+import com.example.orderingproject.Dto.response.BasketListResultDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.SneakyThrows;
@@ -35,7 +38,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.CustomViewHolder> {
-    ArrayList<BasketData> arrayPaymentList;
+    List<BasketFoodDto> arrayPaymentList;
     Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -50,7 +53,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.CustomVi
         }
     }
 
-    public PaymentAdapter(ArrayList<BasketData> arrayList, Context context) {
+    public PaymentAdapter(List<BasketFoodDto> arrayList, Context context) {
         this.arrayPaymentList = arrayList;
         this.context = context;
     }
@@ -65,15 +68,15 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.CustomVi
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        holder.tvPaymentMenuName.setText(arrayPaymentList.get(position).getBasketFoodName());
+        holder.tvPaymentMenuName.setText(arrayPaymentList.get(position).getFoodName());
         holder.tvPaymentSumPrice
                 .setText(
                         Utillity.computePrice(
-                                arrayPaymentList.get(position).getBasketPrice() *
-                                        arrayPaymentList.get(position).getBasketCount()
+                                arrayPaymentList.get(position).getPrice() *
+                                        arrayPaymentList.get(position).getCount()
                         )
                         + "원");
-        holder.tvPaymentCount.setText(Integer.toString(arrayPaymentList.get(position).getBasketCount()) + "개");
+        holder.tvPaymentCount.setText(Integer.toString(arrayPaymentList.get(position).getCount()) + "개");
     }
 
     @Override

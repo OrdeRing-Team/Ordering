@@ -129,14 +129,13 @@ public class MypageFragment extends Fragment {
     private void changePassword(String currentPw, String newPw) {
         try {
             showProgress();
-
             PasswordChangeDto passwordChangeDto = new PasswordChangeDto(currentPw, newPw);
 
             new Thread() {
                 @SneakyThrows
                 public void run() {
                     Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://www.ordering.ml/api/customer/" + Long.toString(UserInfo.getCustomerId()) + "/password/")
+                            .baseUrl("http://www.ordering.ml/api/customer/" + UserInfo.getCustomerId() + "/password/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
@@ -159,8 +158,12 @@ public class MypageFragment extends Fragment {
                                             hideProgress();
                                         }
                                     });
+                                }else{
+                                    MainActivity.showLongToast(getActivity(),"현재 비밀번호를 다시 확인해 주세요.");
+                                    hideProgress();
                                 }
                             }else{
+                                Log.e("asdasdasd","dasdas");
                             }
                         }
 

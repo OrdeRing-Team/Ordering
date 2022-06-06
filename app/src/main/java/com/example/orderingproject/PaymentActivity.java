@@ -23,6 +23,7 @@ import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.OrderDto;
 import com.example.orderingproject.Dto.response.BasketFoodDto;
+import com.example.orderingproject.Dto.response.BasketListResultDto;
 import com.example.orderingproject.ENUM_CLASS.OrderType;
 import com.example.orderingproject.Exception.FcmErrorException;
 import com.example.orderingproject.databinding.ActivityPaymentBinding;
@@ -49,7 +50,7 @@ public class PaymentActivity extends BasicActivity {
     String store, service, restaurantName;
     String[] serviceSplitArr;
     Long orderId;
-    ArrayList<BasketData> basketList = new ArrayList<>();
+    List<BasketListResultDto> basketList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -273,37 +274,22 @@ public class PaymentActivity extends BasicActivity {
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<BasketFoodDto>>> call = service.getBasketList(UserInfo.getCustomerId());
+                    Call<ResultDto<BasketListResultDto>> call = service.getBasketList(UserInfo.getCustomerId());
 
-                    call.enqueue(new Callback<ResultDto<List<BasketFoodDto>>>() {
+                    call.enqueue(new Callback<ResultDto<BasketListResultDto>>() {
                         @Override
-                        public void onResponse(Call<ResultDto<List<BasketFoodDto>>> call, Response<ResultDto<List<BasketFoodDto>>> response) {
+                        public void onResponse(Call<ResultDto<BasketListResultDto>> call, Response<ResultDto<BasketListResultDto>> response) {
 
                             if (response.isSuccessful()) {
-                                ResultDto<List<BasketFoodDto>> result;
+                                ResultDto<BasketListResultDto> result;
                                 result = response.body();
                                 if (result.getData() != null) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            for(BasketFoodDto i : result.getData()){
-                                                basketList.add(new BasketData(i.getBasketId(),
-                                                        i.getFoodId(),
-                                                        i.getFoodName(),
-                                                        i.getImageUrl(),
-                                                        i.getPrice(),
-                                                        i.getCount()));
-                                                Log.e("결제 정보", "BasketId = " + i.getBasketId() + ", " +
-                                                        "FoodId = " + i.getFoodId() +
-                                                        "FoodName = " + i.getFoodName() +
-                                                        ", image url = " + i.getImageUrl() +
-                                                        ", Price = " + i.getPrice() +
-                                                        ", count = " + i.getCount());
-                                                totalPrice += i.getPrice() * i.getCount();
-                                            }
 
                                             RecyclerView recyclerView = binding.rvMenuPayment;
-                                            PaymentAdapter paymentAdapter = new PaymentAdapter(basketList, PaymentActivity.this);
+                                            PaymentAdapter paymentAdapter = new PaymentAdapter(result.getData().getBasketFoods(), PaymentActivity.this);
                                             recyclerView.setLayoutManager(new LinearLayoutManager(PaymentActivity.this));
                                             recyclerView.setAdapter(paymentAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
@@ -321,7 +307,7 @@ public class PaymentActivity extends BasicActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<ResultDto<List<BasketFoodDto>>> call, Throwable t) {
+                        public void onFailure(Call<ResultDto<BasketListResultDto>> call, Throwable t) {
                             Toast.makeText(PaymentActivity.this, "주문 메뉴를 불러오는 중 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                             stopProgress();

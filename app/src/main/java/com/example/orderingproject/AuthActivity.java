@@ -1,5 +1,6 @@
 package com.example.orderingproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -263,24 +264,26 @@ public class AuthActivity extends BasicActivity {
     }
 
     /* 버튼 Lock거는 함수 */
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void ButtonLock(Button button) {
         if (button.equals(binding.btnSendSMS)) {
-            binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
+            binding.btnSendSMS.setBackground(getDrawable(R.drawable.background_custom_waiting_grayline));
             binding.btnSendSMS.setEnabled(false);
         } else if (button.equals(binding.btnVerifyCode)) {
-            binding.btnVerifyCode.setBackgroundColor(Color.parseColor("#5E5E5E"));
+            binding.btnVerifyCode.setBackground(getDrawable(R.drawable.background_custom_waiting_grayline));
             binding.btnVerifyCode.setEnabled(false);
         }
     }
 
 
     /* 버튼 Lock푸는 함수 */
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void ButtonRelease(Button button) {
         if (button.equals(binding.btnSendSMS)) {
-            binding.btnSendSMS.setBackgroundColor(Color.parseColor("#0D70E6"));
+            binding.btnSendSMS.setBackground(getDrawable(R.drawable.background_custom_waiting));
             binding.btnSendSMS.setEnabled(true);
         } else if (button.equals(binding.btnVerifyCode)) {
-            binding.btnVerifyCode.setBackgroundColor(Color.parseColor("#0D70E6"));
+            binding.btnVerifyCode.setBackground(getDrawable(R.drawable.background_custom_waiting));
             binding.btnVerifyCode.setEnabled(true);
         }
     }
@@ -482,12 +485,13 @@ public class AuthActivity extends BasicActivity {
         finish();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void onCodeSent(){
         binding.tvResend.setVisibility(View.VISIBLE);
         binding.tvVerifyCode.setVisibility(View.VISIBLE);
         binding.etVerifyCode.setVisibility(View.VISIBLE);
         binding.btnVerifyCode.setVisibility(View.VISIBLE);
-        binding.btnSendSMS.setBackgroundColor(Color.parseColor("#5E5E5E"));
+        binding.btnSendSMS.setBackground(getDrawable(R.drawable.background_custom_waiting_grayline));
         binding.btnSendSMS.setEnabled(false);
         binding.etPhoneSignup.setEnabled(false);
         binding.etPhoneSignup.setTextColor(Color.parseColor("#9A9A9A"));

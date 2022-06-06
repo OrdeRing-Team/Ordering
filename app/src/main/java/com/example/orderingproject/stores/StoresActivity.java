@@ -10,11 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.orderingproject.BasicActivity;
 import com.example.orderingproject.HomeFragment;
 import com.example.orderingproject.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class StoresActivity extends AppCompatActivity implements HomeFragment.OnApplySelectedListener {
+public class StoresActivity extends BasicActivity implements HomeFragment.OnApplySelectedListener {
 
     //private ActivityStoresBinding binding;
     private TabLayout tabLayout;
@@ -28,7 +29,7 @@ public class StoresActivity extends AppCompatActivity implements HomeFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stores);
-
+        startProgress(this);
         KoreanFoodFragment koreanFoodFragment = new KoreanFoodFragment();
 
 //        longitude = getIntent().getDoubleExtra("위도",0);
@@ -57,8 +58,6 @@ public class StoresActivity extends AppCompatActivity implements HomeFragment.On
                 finish();
             }
         });
-
-
 
 
         // 메뉴 선택하러 가는 버튼 (임시 !!!!!!) -> 리사이클러뷰로 바뀔 예정

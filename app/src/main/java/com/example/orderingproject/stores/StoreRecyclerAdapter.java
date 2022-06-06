@@ -1,5 +1,6 @@
 package com.example.orderingproject.stores;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -20,12 +21,13 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.CustomViewHolder>{
     ArrayList<StoreData> arrayList;
     Context context;
     int position;
-
 
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -105,8 +107,6 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         holder.tv_storeName.setText(arrayList.get(position).getStoreName());
         String imageURL = String.valueOf(arrayList.get(position).getStoreIcon());
 
-        holder.tv_storeName.setText(arrayList.get(position).getTitle());
-        String imageURL = String.valueOf(arrayList.get(position).getImage());
         if (imageURL.equals("null")) {
             Glide.with(holder.itemView.getContext()).load(R.drawable.icon).into(holder.iv_storeIcon);
         }

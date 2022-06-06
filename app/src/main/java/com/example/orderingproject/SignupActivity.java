@@ -380,7 +380,7 @@ public class SignupActivity extends AppCompatActivity {
 
     /* 버튼 Lock푸는 함수 */
     private void ButtonRelease(Button button) {
-        button.setBackgroundColor(Color.parseColor("#0D70E6"));
+        button.setBackgroundColor(getColor(R.color.main));
         button.setEnabled(true);
     }
 

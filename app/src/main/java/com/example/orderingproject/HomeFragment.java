@@ -44,6 +44,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import lombok.SneakyThrows;
 import retrofit2.Call;
@@ -85,6 +87,8 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
+    ExecutorService executorService = Executors.newCachedThreadPool();
 
     private void initButtonListener() {
         final LocationManager lm = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);

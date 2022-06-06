@@ -25,6 +25,7 @@ import com.example.orderingproject.Dto.ResultDto;
 import com.example.orderingproject.Dto.RetrofitService;
 import com.example.orderingproject.Dto.request.BasketPutDto;
 import com.example.orderingproject.Dto.response.BasketFoodDto;
+import com.example.orderingproject.Dto.response.BasketListResultDto;
 import com.example.orderingproject.Dto.response.OrderDetailDto;
 import com.example.orderingproject.databinding.ActivityBasketBinding;
 
@@ -181,35 +182,21 @@ public class BasketActivity extends BasicActivity {
                             .build();
 
                     RetrofitService service = retrofit.create(RetrofitService.class);
-                    Call<ResultDto<List<BasketFoodDto>>> call = service.getBasketList(UserInfo.getCustomerId());
+                    Call<ResultDto<BasketListResultDto>> call = service.getBasketList(UserInfo.getCustomerId());
 
-                    call.enqueue(new Callback<ResultDto<List<BasketFoodDto>>>() {
+                    call.enqueue(new Callback<ResultDto<BasketListResultDto>>() {
                         @Override
-                        public void onResponse(Call<ResultDto<List<BasketFoodDto>>> call, Response<ResultDto<List<BasketFoodDto>>> response) {
+                        public void onResponse(Call<ResultDto<BasketListResultDto>> call, Response<ResultDto<BasketListResultDto>> response) {
 
                             if (response.isSuccessful()) {
-                                ResultDto<List<BasketFoodDto>> result;
+                                ResultDto<BasketListResultDto> result;
                                 result = response.body();
                                 if (result.getData() != null) {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
                                             totalCount = 0;
-                                            for (BasketFoodDto i : result.getData()) {
-                                                basketList.add(new BasketData(i.getBasketId(),
-                                                        i.getFoodId(),
-                                                        i.getFoodName(),
-                                                        i.getImageUrl(),
-                                                        i.getPrice(),
-                                                        i.getCount()));
-                                                totalCount += i.getCount();
-                                                Log.e("장바구니 정보", "BasketId = " + i.getBasketId() + ", " +
-                                                        "FoodId = " + i.getFoodId() +
-                                                        "FoodName = " + i.getFoodName() +
-                                                        ", image url = " + i.getImageUrl() +
-                                                        ", Price = " + i.getPrice() +
-                                                        ", count = " + i.getCount());
-                                            }
+
                                             if(totalCount == 0){
                                                 emptyImage.setVisibility(View.VISIBLE);
                                                 emptyText.setVisibility(View.VISIBLE);
@@ -219,10 +206,10 @@ public class BasketActivity extends BasicActivity {
                                             UserInfo.setBasketCount(totalCount);
 
                                             RecyclerView recyclerView = binding.rvBasket;
-                                            BasketAdapter basketAdapter = new BasketAdapter(basketList, BasketActivity.this);
+                                            PaymentAdapter paymentAdapter = new PaymentAdapter(result.getData().getBasketFoods(), BasketActivity.this);
                                             recyclerView.setLayoutManager(new LinearLayoutManager(BasketActivity.this));
-                                            recyclerView.setAdapter(basketAdapter);
-                                            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), 1));
+                                            recyclerView.setAdapter(paymentAdapter);
+                                            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
                                             stopProgress();
                                         }
@@ -232,7 +219,7 @@ public class BasketActivity extends BasicActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<ResultDto<List<BasketFoodDto>>> call, Throwable t) {
+                        public void onFailure(Call<ResultDto<BasketListResultDto>> call, Throwable t) {
                             Toast.makeText(BasketActivity.this, "일시적인 오류가 발생하였습니다.", Toast.LENGTH_LONG).show();
                             Log.e("e = ", t.getMessage());
                             stopProgress();
