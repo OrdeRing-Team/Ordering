@@ -287,7 +287,7 @@ public class PaymentActivity extends BasicActivity {
                                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                                         @Override
                                         public void run() {
-
+                                            binding.tvSubtitleStoreName.setText(result.getData().getRestaurantName());
                                             RecyclerView recyclerView = binding.rvMenuPayment;
                                             PaymentAdapter paymentAdapter = new PaymentAdapter(result.getData().getBasketFoods(), PaymentActivity.this);
                                             recyclerView.setLayoutManager(new LinearLayoutManager(PaymentActivity.this));

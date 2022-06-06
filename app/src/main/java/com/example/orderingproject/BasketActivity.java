@@ -46,7 +46,6 @@ public class BasketActivity extends BasicActivity {
     static Button orderButton;
     static int orderCount;
     static int totalCount = 0;
-    ArrayList<BasketData> basketList = new ArrayList<>();
     private ActivityBasketBinding binding;
 
     public static void setEmptyView() {
@@ -197,18 +196,25 @@ public class BasketActivity extends BasicActivity {
                                         public void run() {
                                             totalCount = 0;
 
+                                             for(BasketFoodDto i : result.getData().getBasketFoods()){
+                                                 totalCount += i.getCount();
+                                            }
+
                                             if(totalCount == 0){
                                                 emptyImage.setVisibility(View.VISIBLE);
                                                 emptyText.setVisibility(View.VISIBLE);
                                                 orderButton.setVisibility(View.GONE);
-                                                binding.rvBasket.setVisibility(View.GONE);
+                                                binding.scrollViewBasket.setVisibility(View.GONE);
+                                                binding.tvBasketStoreName.setVisibility(View.GONE);
+                                            }else{
+                                                binding.tvBasketStoreName.setText(result.getData().getRestaurantName());
                                             }
                                             UserInfo.setBasketCount(totalCount);
 
                                             RecyclerView recyclerView = binding.rvBasket;
-                                            PaymentAdapter paymentAdapter = new PaymentAdapter(result.getData().getBasketFoods(), BasketActivity.this);
+                                            BasketAdapter basketAdapter = new BasketAdapter(result.getData().getBasketFoods(), BasketActivity.this);
                                             recyclerView.setLayoutManager(new LinearLayoutManager(BasketActivity.this));
-                                            recyclerView.setAdapter(paymentAdapter);
+                                            recyclerView.setAdapter(basketAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
                                             stopProgress();
