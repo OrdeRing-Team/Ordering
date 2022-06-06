@@ -59,14 +59,13 @@ public class WaitingFragment extends Fragment {
         Log.e("CustomerId", String.valueOf(UserInfo.getCustomerId()));
         getWaitingInfo();
 
-        refreshWaitingView();
 
-        btnClickFuntion();
+        btnClickFunction();
 
         return view;
     }
 
-    private void btnClickFuntion() {
+    private void btnClickFunction() {
         binding.btnCancelWaiting.setOnClickListener(view -> {
             deleteDialog();
         });
@@ -88,6 +87,13 @@ public class WaitingFragment extends Fragment {
 
             getActivity().startActivity(intent);
 
+        });
+
+        binding.btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getWaitingInfo();
+            }
         });
     }
 
@@ -234,24 +240,4 @@ public class WaitingFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void refreshWaitingView() {
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        ft.detach(WaitingListFragment.this).attach(WaitingListFragment.this).commit();
-        SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //ft.commit();
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getWaitingInfo();
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 500);
-
-            }
-        });
-    }
 }
