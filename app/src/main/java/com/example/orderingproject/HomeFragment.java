@@ -134,31 +134,31 @@ public class HomeFragment extends Fragment {
         });
 
 
-        /** 임시 버튼 나중에 삭제 할 것 **/
-        binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "table31");
-                dialog.show();
-                Window window = dialog.getWindow();
-                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            }
-        });
-        binding.btnMinju.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "3", "takeout");
-                dialog.show();
-                Window window = dialog.getWindow();
-                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            }
-        });
-        binding.btnJeonghyun.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.showToast(getActivity(),"더미데이터 들어가면 추가할 예정!!!");
-            }
-        });
+//        /** 임시 버튼 나중에 삭제 할 것 **/
+//        binding.btnSeunggyu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "2", "table31");
+//                dialog.show();
+//                Window window = dialog.getWindow();
+//                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//            }
+//        });
+//        binding.btnMinju.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                CustomStoreDialog dialog = new CustomStoreDialog(getActivity(), "3", "takeout");
+//                dialog.show();
+//                Window window = dialog.getWindow();
+//                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//            }
+//        });
+//        binding.btnJeonghyun.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                MainActivity.showToast(getActivity(),"더미데이터 들어가면 추가할 예정!!!");
+//            }
+//        });
     }
 
 

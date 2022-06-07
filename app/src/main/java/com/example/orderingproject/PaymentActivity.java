@@ -294,6 +294,10 @@ public class PaymentActivity extends BasicActivity {
                                             recyclerView.setAdapter(paymentAdapter);
                                             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),1));
 
+                                            for(BasketFoodDto basketFoodDto : result.getData().getBasketFoods()){
+                                                totalPrice += basketFoodDto.getPrice() * basketFoodDto.getCount();
+                                            }
+
                                             String firstPrice = Utillity.computePrice(totalPrice) + "원";
                                             binding.tvTotalPrice.setText(firstPrice);
                                             binding.tvSubtitleTotalOrderPrice.setText(firstPrice);

@@ -98,29 +98,29 @@ public class CustomStoreDialog extends Dialog {
         });
 
         /** 임시 버튼 **/
-        binding.btnWaiting.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceType")
-            @Override
-            public void onClick(View view) {
-
-                Log.e("Customer Id", String.valueOf(UserInfo.getCustomerId()));
-                Log.e("Restaurant Id", String.valueOf(store));
-
-                // Bundle에 담아서 WaitingInfoDialog로 보낸다.
-                Bundle waitingData = new Bundle();
-                waitingData.putString("storeId", String.valueOf(store));
-                waitingData.putString("storeName", restaurantName);
-                if(profileImageUrl!= null) {
-                    waitingData.putString("profileImageUrl", profileImageUrl);
-                }
-
-                WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
-                waitingInfoDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"waitingInfoDialog");
-                waitingInfoDialog.setArguments(waitingData);
-
-                dismiss();
-            }
-        });
+//        binding.btnWaiting.setOnClickListener(new View.OnClickListener() {
+//            @SuppressLint("ResourceType")
+//            @Override
+//            public void onClick(View view) {
+//
+//                Log.e("Customer Id", String.valueOf(UserInfo.getCustomerId()));
+//                Log.e("Restaurant Id", String.valueOf(store));
+//
+//                // Bundle에 담아서 WaitingInfoDialog로 보낸다.
+//                Bundle waitingData = new Bundle();
+//                waitingData.putString("storeId", String.valueOf(store));
+//                waitingData.putString("storeName", restaurantName);
+//                if(profileImageUrl!= null) {
+//                    waitingData.putString("profileImageUrl", profileImageUrl);
+//                }
+//
+//                WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
+//                waitingInfoDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"waitingInfoDialog");
+//                waitingInfoDialog.setArguments(waitingData);
+//
+//                dismiss();
+//            }
+//        });
     }
 
     public CustomStoreDialog(@NonNull Context context,
