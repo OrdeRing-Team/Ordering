@@ -70,7 +70,6 @@ public class SplashActivity extends Activity {
         extras = getIntent().getExtras();
 
         startSplash2();
-        startLoading();
     }
 
     private boolean getLocalData(){
@@ -246,7 +245,7 @@ public class SplashActivity extends Activity {
                                 // 공지 remoteConfig
                                 // 아래 함수에서 바로 setting
                                 parseNoticeJson(remoteConfig.getString("notice"));
-
+                                startLoading();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
