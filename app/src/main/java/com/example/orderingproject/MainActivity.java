@@ -179,15 +179,9 @@ public class MainActivity extends BasicActivity {
                         // Bundle에 담아서 WaitingInfoDialog로 보낸다.
                         Bundle waitingData = new Bundle();
                         waitingData.putString("storeId", url[3]);
-                        Handler handler_ = new Handler(Looper.getMainLooper());
-                        handler_.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
-                                waitingInfoDialog.show(getSupportFragmentManager(),"waitingInfoDialog");
-                                waitingInfoDialog.setArguments(waitingData);
-                            }
-                        }, 0);
+                        WaitingInfoDialog waitingInfoDialog = new WaitingInfoDialog();
+                        waitingInfoDialog.show(getSupportFragmentManager(),"waitingInfoDialog");
+                        waitingInfoDialog.setArguments(waitingData);
                     }
 
                     else {

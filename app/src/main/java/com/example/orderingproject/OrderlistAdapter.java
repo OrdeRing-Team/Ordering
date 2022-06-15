@@ -154,7 +154,7 @@ public class OrderlistAdapter extends RecyclerView.Adapter<OrderlistAdapter.Cust
         }
 
         holder.tv_order_in_store_name.setText(arrayList.get(position).getRestaurantName());
-        holder.tv_order_in_order_number.setText(String.format("주문번호 : %d번", arrayList.get(position).getOrderId()));
+        holder.tv_order_in_order_number.setText(String.format("주문번호 : %d번", arrayList.get(position).getMyOrderNumber()));
         holder.tv_order_in_type.setText(arrayList.get(position).getOrderType() == TABLE ?
                 (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") : "포장");
         holder.tv_order_in_day.setText(arrayList.get(position).getReceivedTime());

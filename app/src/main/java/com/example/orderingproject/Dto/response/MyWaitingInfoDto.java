@@ -21,5 +21,41 @@ public class MyWaitingInfoDto {
     private String restaurantName;
     private String profileImageUrl;
     private String backgroundImageUrl;
+
+    public Long getWaitingId() {
+        return waitingId;
+    }
+
+    public Integer getMyWaitingNumber() {
+        return myWaitingNumber;
+    }
+
+    public Long getNumInFrontOfMe() {
+        return numInFrontOfMe;
+    }
+
+    public int getEstimatedWaitingTime() {
+        return estimatedWaitingTime;
+    }
+
+    public String getWaitingRegisterTime() {
+        return waitingRegisterTime;
+    }
+
+    public Long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public String getBackgroundImageUrl() {
+        return backgroundImageUrl;
+    }
 }
 

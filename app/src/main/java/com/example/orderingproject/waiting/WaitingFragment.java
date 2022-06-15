@@ -1,5 +1,6 @@
 package com.example.orderingproject.waiting;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -105,7 +106,6 @@ public class WaitingFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        // RequestBody 객체 생성
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
         Call<ResultDto<MyWaitingInfoDto>> call = retrofitService.getWaitingInfo(UserInfo.getCustomerId());
 
@@ -115,24 +115,23 @@ public class WaitingFragment extends Fragment {
                 ResultDto<MyWaitingInfoDto> result = response.body();
 
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
                         if (result.getData() == null) {
                             Log.e("myWaitingNumber", "is null");
                             binding.viewWaitingNone.setVisibility(View.VISIBLE);
                             binding.viewWaiting.setVisibility(View.GONE);
-
                         }
-
                         else {
                             Log.e("myWaitingNumber", String.valueOf(result.getData().getMyWaitingNumber()));
                             UserInfo.setWaitingId(result.getData().getWaitingId());
                             binding.viewWaitingNone.setVisibility(View.GONE);
                             binding.viewWaiting.setVisibility(View.VISIBLE);
                             binding.tvWaitingNum.setText(String.valueOf(result.getData().getMyWaitingNumber()));
-                            binding.tvEstimatedWaitingTime.setText(String.valueOf(result.getData().getEstimatedWaitingTime()) + " 분");
-                            binding.tvNumInFrontOfMe.setText(String.valueOf(result.getData().getNumInFrontOfMe()) + " 팀");
-                            binding.tvStoreName.setText(String.valueOf(result.getData().getRestaurantName()) + " >");
+                            binding.tvEstimatedWaitingTime.setText(result.getData().getEstimatedWaitingTime() + " 분");
+                            binding.tvNumInFrontOfMe.setText(result.getData().getNumInFrontOfMe() + " 팀");
+                            binding.tvStoreName.setText(result.getData().getRestaurantName() + " >");
                             String storeIcon = result.getData().getProfileImageUrl();
                             if (storeIcon == null) Glide.with(getActivity()).load(R.drawable.icon).into(binding.ivStoreIcon);
                             else Glide.with(getActivity()).load(storeIcon).into(binding.ivStoreIcon);

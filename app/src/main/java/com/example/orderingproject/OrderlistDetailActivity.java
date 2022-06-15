@@ -245,7 +245,7 @@ public class OrderlistDetailActivity extends BasicActivity {
 
         binding.tvReceivedTime.setText(receivedTime);
         binding.tvOrderDetailStoreName.setText(restaurantName);
-        binding.tvOrderDetailOrderId.setText(Long.toString(orderId) + "번");
+        binding.tvOrderDetailOrderId.setText(myOrderNumber + "번");
         binding.tvOrderDetailOrderTime.setText(convertDateToMyFormat(receivedTimeOriginal));
         if(orderType == OrderType.PACKING){
             binding.tvOrderDetailOrderType.setText("포장");

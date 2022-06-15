@@ -94,7 +94,7 @@ public class PastOrderAdapter extends RecyclerView.Adapter<PastOrderAdapter.Cust
         holder.tv_orderOutType.setText(arrayList.get(position).getOrderType() == TABLE ?
                 (Integer.toString(arrayList.get(position).getTableNumber())+"번 테이블") :
                 "포장");
-        holder.tv_orderOutOrderNumber.setText(String.format("주문번호 : %d번", arrayList.get(position).getOrderId()));
+        holder.tv_orderOutOrderNumber.setText(String.format("주문번호 : %d번", arrayList.get(position).getMyOrderNumber()));
         Glide.with(context).load(arrayList.get(position).getProfileUrl()).into(holder.iv_orderOutImage);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
